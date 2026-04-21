@@ -28,11 +28,16 @@ class MCPServer:
         """
         self.plugin_manager = plugin_manager
 
-    async def handle_request(self, request: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    async def handle_request(
+        self,
+        request: Dict[str, Any],
+        session_id: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
         """Handle a single MCP JSON-RPC request.
 
         Args:
             request: JSON-RPC request dictionary
+            session_id: Optional MCP session ID for log correlation
 
         Returns:
             JSON-RPC response dictionary, or None for notifications
@@ -52,6 +57,8 @@ class MCPServer:
             params=params,
             is_notification=is_notification,
         )
+        if session_id:
+            request_log_data["mcp_session_id"] = session_id
         logger.info("JSON-RPC request received", extra=request_log_data)
 
         try:
@@ -114,6 +121,8 @@ class MCPServer:
                 result=result,
                 duration_ms=duration_ms,
             )
+            if session_id:
+                response_log_data["mcp_session_id"] = session_id
             logger.info(
                 "JSON-RPC request processed successfully", extra=response_log_data
             )
@@ -139,6 +148,8 @@ class MCPServer:
                 error=error_response.get("error"),
                 duration_ms=duration_ms,
             )
+            if session_id:
+                response_log_data["mcp_session_id"] = session_id
             logger.error(
                 f"Error handling JSON-RPC request {method}: {e}",
                 extra={**response_log_data, "error_type": type(e).__name__},
@@ -253,8 +264,14 @@ class MCPServer:
                 ),
             }
 
+        # Pull MCP session ID from headers (lowercased by the Lambda adapter)
+        # so downstream log lines can be grouped by session.
+        session_id = None
+        if headers:
+            session_id = headers.get("mcp-session-id") or headers.get("Mcp-Session-Id")
+
         # Handle the request (logging is done in handle_request)
-        response = await self.handle_request(request)
+        response = await self.handle_request(request, session_id=session_id)
 
         # If response is None, it was a notification - return empty response
         if response is None:

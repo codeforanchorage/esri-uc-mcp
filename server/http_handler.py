@@ -164,6 +164,10 @@ class UniversalHTTPHandler:
         start_time = time.perf_counter()
         request_id = request_id or "unknown"
 
+        # Pull incoming MCP session ID (sent by clients on every request after
+        # the initial handshake). For `initialize` itself we generate one below.
+        incoming_session_id = headers.get("mcp-session-id") if headers else None
+
         # Validate path - must be /mcp
         if path != "/mcp":
             duration_ms = (time.perf_counter() - start_time) * 1000
@@ -249,8 +253,10 @@ class UniversalHTTPHandler:
             session_id = str(uuid.uuid4())
             logger.info(
                 f"Initialize request detected, generating session ID: {session_id}",
-                extra={"request_id": request_id},
+                extra={"request_id": request_id, "mcp_session_id": session_id},
             )
+
+        effective_session_id = session_id or incoming_session_id
 
         # Log request details
         request_log_data = format_request_log(
@@ -261,6 +267,8 @@ class UniversalHTTPHandler:
             body=body,
             lambda_context=None,  # Not available in universal handler
         )
+        if effective_session_id:
+            request_log_data["mcp_session_id"] = effective_session_id
         logger.info("Incoming HTTP request", extra=request_log_data)
 
         try:
@@ -301,6 +309,8 @@ class UniversalHTTPHandler:
                 duration_ms=duration_ms,
                 success=True,
             )
+            if effective_session_id:
+                response_log_data["mcp_session_id"] = effective_session_id
             logger.info("HTTP request processed successfully", extra=response_log_data)
 
             return (status_code, response_headers, response_body)
@@ -331,6 +341,8 @@ class UniversalHTTPHandler:
                 duration_ms=duration_ms,
                 success=False,
             )
+            if effective_session_id:
+                response_log_data["mcp_session_id"] = effective_session_id
             logger.error(
                 f"Configuration error in request {request_id}: {e}",
                 extra={**response_log_data, "error_type": "ConfigurationError"},
@@ -364,6 +376,8 @@ class UniversalHTTPHandler:
                 duration_ms=duration_ms,
                 success=False,
             )
+            if effective_session_id:
+                response_log_data["mcp_session_id"] = effective_session_id
             logger.error(
                 f"Error processing request {request_id}: {e}",
                 extra={**response_log_data, "error_type": type(e).__name__},
