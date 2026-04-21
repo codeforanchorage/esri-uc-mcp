@@ -13,7 +13,7 @@ variable "aws_region" {
 variable "config_file" {
   description = "Path to config.yaml file"
   type        = string
-  default = "../../config.yaml"
+  default     = "../../config.yaml"
 }
 
 variable "lambda_memory" {
@@ -54,6 +54,18 @@ variable "stage_name" {
 
 variable "custom_domain" {
   description = "Custom domain name for API Gateway (leave empty to skip custom domain setup)"
+  type        = string
+  default     = ""
+}
+
+variable "waf_rate_limit_per_5min" {
+  description = "WAF per-IP rate limit over a 5-minute window. Set to 0 to disable WAF entirely."
+  type        = number
+  default     = 1000
+}
+
+variable "alarm_sns_topic_arn" {
+  description = "Optional SNS topic ARN to notify on CloudWatch alarm state changes. Leave empty to create alarms without notification actions."
   type        = string
   default     = ""
 }

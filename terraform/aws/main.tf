@@ -1,13 +1,6 @@
 terraform {
   required_version = ">= 1.0"
 
-  backend "s3" {
-    bucket  = "opencontext-terraform-state"
-    key     = "opencontext/terraform.tfstate"
-    region  = "us-east-1"
-    encrypt = true
-  }
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -55,6 +48,11 @@ resource "aws_iam_role" "lambda_role" {
       }
     ]
   })
+
+  # Rename-safety: new role must exist before Lambda rebinds; old role destroyed last.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Basic Lambda execution policy
@@ -90,19 +88,11 @@ resource "aws_lambda_function" "mcp_server" {
   depends_on = [
     aws_iam_role_policy_attachment.lambda_basic,
   ]
-}
 
-# Lambda Function URL
-resource "aws_lambda_function_url" "mcp_server_url" {
-  function_name      = aws_lambda_function.mcp_server.function_name
-  authorization_type = "NONE"
-
-  cors {
-    allow_origins  = ["*"]
-    allow_methods  = ["POST"]
-    allow_headers  = ["content-type"]
-    expose_headers = ["x-request-id", "mcp-session-id"]
-    max_age        = 86400
+  # Rename-safety: API Gateway integration must be repointed before old Lambda
+  # is destroyed. New Lambda comes up under new name first.
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -110,4 +100,9 @@ resource "aws_lambda_function_url" "mcp_server_url" {
 resource "aws_cloudwatch_log_group" "lambda_logs" {
   name              = "/aws/lambda/${local.lambda_name}"
   retention_in_days = 14
+
+  # Rename-safety: new log group must exist before Lambda writes to it.
+  lifecycle {
+    create_before_destroy = true
+  }
 }

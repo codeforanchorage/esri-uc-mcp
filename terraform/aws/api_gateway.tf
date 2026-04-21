@@ -24,6 +24,26 @@ resource "aws_api_gateway_method" "mcp_post" {
   api_key_required = false
 }
 
+# API Gateway Method: GET (MCP Streamable HTTP spec allows GET for SSE;
+# Lambda returns 405 Method Not Allowed, which is spec-compliant)
+resource "aws_api_gateway_method" "mcp_get" {
+  rest_api_id      = aws_api_gateway_rest_api.mcp_api.id
+  resource_id      = aws_api_gateway_resource.mcp.id
+  http_method      = "GET"
+  authorization    = "NONE"
+  api_key_required = false
+}
+
+# API Gateway Method: DELETE (MCP spec session termination;
+# Lambda returns 405 Method Not Allowed)
+resource "aws_api_gateway_method" "mcp_delete" {
+  rest_api_id      = aws_api_gateway_rest_api.mcp_api.id
+  resource_id      = aws_api_gateway_resource.mcp.id
+  http_method      = "DELETE"
+  authorization    = "NONE"
+  api_key_required = false
+}
+
 # API Gateway Method: OPTIONS (for CORS, no API key required)
 resource "aws_api_gateway_method" "mcp_options" {
   rest_api_id      = aws_api_gateway_rest_api.mcp_api.id
@@ -38,6 +58,28 @@ resource "aws_api_gateway_integration" "mcp_post_integration" {
   rest_api_id = aws_api_gateway_rest_api.mcp_api.id
   resource_id = aws_api_gateway_resource.mcp.id
   http_method = aws_api_gateway_method.mcp_post.http_method
+
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.mcp_server.invoke_arn
+}
+
+# Lambda Integration for GET
+resource "aws_api_gateway_integration" "mcp_get_integration" {
+  rest_api_id = aws_api_gateway_rest_api.mcp_api.id
+  resource_id = aws_api_gateway_resource.mcp.id
+  http_method = aws_api_gateway_method.mcp_get.http_method
+
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.mcp_server.invoke_arn
+}
+
+# Lambda Integration for DELETE
+resource "aws_api_gateway_integration" "mcp_delete_integration" {
+  rest_api_id = aws_api_gateway_rest_api.mcp_api.id
+  resource_id = aws_api_gateway_resource.mcp.id
+  http_method = aws_api_gateway_method.mcp_delete.http_method
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
@@ -94,8 +136,8 @@ resource "aws_api_gateway_integration_response" "mcp_options_integration_respons
 
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'"
-    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'"
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Accept,Mcp-Session-Id'"
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,DELETE,OPTIONS'"
   }
 
   response_templates = {
@@ -122,9 +164,16 @@ resource "aws_api_gateway_deployment" "mcp_deployment" {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.mcp.id,
       aws_api_gateway_method.mcp_post.id,
+      aws_api_gateway_method.mcp_get.id,
+      aws_api_gateway_method.mcp_delete.id,
       aws_api_gateway_method.mcp_options.id,
       aws_api_gateway_integration.mcp_post_integration.id,
+      aws_api_gateway_integration.mcp_get_integration.id,
+      aws_api_gateway_integration.mcp_delete_integration.id,
       aws_api_gateway_integration.mcp_options_integration.id,
+      # Lambda ARN: a Lambda rename updates integration URI in place; without
+      # this, the deployment snapshot keeps pointing at the old function.
+      aws_lambda_function.mcp_server.arn,
     ]))
   }
 
@@ -134,12 +183,15 @@ resource "aws_api_gateway_deployment" "mcp_deployment" {
 
   depends_on = [
     aws_api_gateway_method.mcp_post,
+    aws_api_gateway_method.mcp_get,
+    aws_api_gateway_method.mcp_delete,
     aws_api_gateway_method.mcp_options,
     aws_api_gateway_integration.mcp_post_integration,
+    aws_api_gateway_integration.mcp_get_integration,
+    aws_api_gateway_integration.mcp_delete_integration,
     aws_api_gateway_integration.mcp_options_integration,
     aws_api_gateway_method_response.mcp_post_response_200,
     aws_api_gateway_method_response.mcp_options_response_200,
-    # aws_api_gateway_integration_response.mcp_post_integration_response,  # Removed - AWS_PROXY ignores it
     aws_api_gateway_integration_response.mcp_options_integration_response,
   ]
 }
@@ -151,6 +203,28 @@ resource "aws_api_gateway_stage" "prod" {
   stage_name    = var.stage_name
 
   xray_tracing_enabled = true
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gateway_access.arn
+    format = jsonencode({
+      requestTime        = "$context.requestTime"
+      requestId          = "$context.requestId"
+      httpMethod         = "$context.httpMethod"
+      resourcePath       = "$context.resourcePath"
+      status             = "$context.status"
+      sourceIp           = "$context.identity.sourceIp"
+      userAgent          = "$context.identity.userAgent"
+      integrationLatency = "$context.integrationLatency"
+      responseLength     = "$context.responseLength"
+    })
+  }
+
+  depends_on = [aws_api_gateway_account.this]
+
+  # Rename-safety: base-path mapping repoints to new stage before old is destroyed.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Method Settings: Throttling for all methods in stage (AWS format: */* not /*/*)
