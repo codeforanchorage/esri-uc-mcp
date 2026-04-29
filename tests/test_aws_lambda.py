@@ -125,7 +125,7 @@ class TestLambdaHandler:
             mock_handler.handle_options = MagicMock(
                 return_value=(
                     200,
-                    {"Access-Control-Allow-Origin": "*"},
+                    {"Access-Control-Allow-Origin": "https://claude.ai"},
                     "",
                 )
             )
@@ -243,7 +243,11 @@ class TestLambdaHandler:
 
             assert response["statusCode"] == 500
             assert response["headers"]["Content-Type"] == "application/json"
-            assert response["headers"]["Access-Control-Allow-Origin"] == "*"
+            # Default origin is claude.ai when no Origin header is sent.
+            assert (
+                response["headers"]["Access-Control-Allow-Origin"]
+                == "https://claude.ai"
+            )
             body = json.loads(response["body"])
             assert body["error"]["code"] == -32603
             assert body["error"]["message"] == "Internal error"

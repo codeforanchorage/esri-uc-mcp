@@ -149,6 +149,7 @@ async def _handle_request(event: Dict[str, Any], context: Any) -> Dict[str, Any]
             f"Configuration error in request {request_id}: {e}",
             extra={"request_id": request_id},
         )
+        # Don't leak config details to the client; full message is in CloudWatch.
         return {
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
@@ -159,7 +160,7 @@ async def _handle_request(event: Dict[str, Any], context: Any) -> Dict[str, Any]
                     "error": {
                         "code": -32603,
                         "message": "Server configuration error",
-                        "data": str(e),
+                        "data": f"Request ID: {request_id}",
                     },
                 }
             ),
@@ -171,6 +172,7 @@ async def _handle_request(event: Dict[str, Any], context: Any) -> Dict[str, Any]
             exc_info=True,
             extra={"request_id": request_id},
         )
+        # Don't leak exception details to the client; full traceback is in CloudWatch.
         return {
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
@@ -181,7 +183,7 @@ async def _handle_request(event: Dict[str, Any], context: Any) -> Dict[str, Any]
                     "error": {
                         "code": -32603,
                         "message": "Internal error",
-                        "data": str(e),
+                        "data": f"Request ID: {request_id}",
                     },
                 }
             ),

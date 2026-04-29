@@ -123,20 +123,52 @@ async def _initialize_server() -> None:
 class UniversalHTTPHandler:
     """Universal HTTP handler for cloud-agnostic request processing."""
 
+    # Browser origins allowed to call /mcp via cross-origin requests.
+    # Native MCP clients (Claude Desktop, Claude Code, server-side
+    # integrations) do not enforce CORS, so they are unaffected by this
+    # list. Add real consumers here as they show up in CloudWatch.
+    ALLOWED_ORIGINS = frozenset(
+        {
+            "https://claude.ai",
+            "https://console.anthropic.com",
+            "http://localhost:6274",
+            "http://127.0.0.1:6274",
+        }
+    )
+    # Default origin returned when no Origin header is sent or the
+    # caller's origin is not on the allowlist. claude.ai is the primary
+    # legitimate browser consumer today; reflecting it ensures the most
+    # common case keeps working without a request-header round-trip.
+    DEFAULT_CORS_ORIGIN = "https://claude.ai"
+
     def __init__(self) -> None:
         """Initialize the universal HTTP handler."""
         logger.info("UniversalHTTPHandler initialized")
 
-    @staticmethod
-    def _get_cors_headers() -> Dict[str, str]:
-        """Get standard CORS headers for responses.
+    @classmethod
+    def _get_cors_headers(
+        cls, request_origin: Optional[str] = None
+    ) -> Dict[str, str]:
+        """Build CORS response headers, reflecting allowlisted origins.
+
+        Args:
+            request_origin: The Origin header from the incoming request,
+                if any. If it matches the allowlist, it's echoed back so
+                the browser will accept the response. Otherwise the
+                default (claude.ai) is sent — non-browser clients ignore
+                CORS, so they are unaffected.
 
         Returns:
-            Dictionary of CORS headers
+            Dictionary of CORS headers.
         """
+        if request_origin and request_origin in cls.ALLOWED_ORIGINS:
+            allow_origin = request_origin
+        else:
+            allow_origin = cls.DEFAULT_CORS_ORIGIN
         return {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+            "Access-Control-Allow-Origin": allow_origin,
+            "Vary": "Origin",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
             "Access-Control-Allow-Headers": "content-type, accept, mcp-session-id",
             "Access-Control-Expose-Headers": "x-request-id, mcp-session-id",
         }
@@ -168,6 +200,9 @@ class UniversalHTTPHandler:
         # the initial handshake). For `initialize` itself we generate one below.
         incoming_session_id = headers.get("mcp-session-id") if headers else None
 
+        # Pull Origin header so CORS responses can reflect allowlisted origins.
+        request_origin = headers.get("origin") if headers else None
+
         # Validate path - must be /mcp
         if path != "/mcp":
             duration_ms = (time.perf_counter() - start_time) * 1000
@@ -192,7 +227,7 @@ class UniversalHTTPHandler:
                 },
             )
             error_headers = {"Content-Type": "application/json"}
-            error_headers.update(self._get_cors_headers())
+            error_headers.update(self._get_cors_headers(request_origin))
             return (
                 404,
                 error_headers,
@@ -223,7 +258,7 @@ class UniversalHTTPHandler:
                 },
             )
             error_headers = {"Content-Type": "application/json", "Allow": "POST"}
-            error_headers.update(self._get_cors_headers())
+            error_headers.update(self._get_cors_headers(request_origin))
             return (
                 405,
                 error_headers,
@@ -295,7 +330,7 @@ class UniversalHTTPHandler:
                 response_headers["Content-Type"] = "application/json"
 
             # Add CORS headers
-            response_headers.update(self._get_cors_headers())
+            response_headers.update(self._get_cors_headers(request_origin))
 
             # Calculate duration
             duration_ms = (time.perf_counter() - start_time) * 1000
@@ -318,6 +353,8 @@ class UniversalHTTPHandler:
         except ConfigurationError as e:
             # Configuration errors should crash
             duration_ms = (time.perf_counter() - start_time) * 1000
+            # Don't leak config details to the client; full exception is in
+            # CloudWatch via logger.error(..., exc_info=True) below.
             error_body = json.dumps(
                 {
                     "jsonrpc": "2.0",
@@ -325,14 +362,14 @@ class UniversalHTTPHandler:
                     "error": {
                         "code": -32603,
                         "message": "Server configuration error",
-                        "data": str(e),
+                        "data": f"Request ID: {request_id}",
                     },
                 }
             )
 
             # Log error response
             error_headers = {"Content-Type": "application/json"}
-            error_headers.update(self._get_cors_headers())
+            error_headers.update(self._get_cors_headers(request_origin))
             response_log_data = format_response_log(
                 request_id=request_id,
                 status_code=500,
@@ -353,6 +390,8 @@ class UniversalHTTPHandler:
 
         except Exception as e:
             duration_ms = (time.perf_counter() - start_time) * 1000
+            # Don't leak exception details to the client; full traceback is in
+            # CloudWatch via logger.error(..., exc_info=True) below.
             error_body = json.dumps(
                 {
                     "jsonrpc": "2.0",
@@ -360,14 +399,14 @@ class UniversalHTTPHandler:
                     "error": {
                         "code": -32603,
                         "message": "Internal error",
-                        "data": str(e),
+                        "data": f"Request ID: {request_id}",
                     },
                 }
             )
 
             # Log error response
             error_headers = {"Content-Type": "application/json"}
-            error_headers.update(self._get_cors_headers())
+            error_headers.update(self._get_cors_headers(request_origin))
             response_log_data = format_response_log(
                 request_id=request_id,
                 status_code=500,
@@ -387,22 +426,23 @@ class UniversalHTTPHandler:
             return (500, error_headers, error_body)
 
     def handle_options(
-        self, request_id: Optional[str] = None
+        self,
+        request_id: Optional[str] = None,
+        request_origin: Optional[str] = None,
     ) -> Tuple[int, Dict[str, str], str]:
         """Handle CORS preflight OPTIONS request.
 
         Args:
             request_id: Optional request ID for logging/tracing
+            request_origin: Origin header from the preflight, used to
+                reflect allowlisted origins back to the browser.
 
         Returns:
             Tuple of (status_code, response_headers, response_body)
         """
         request_id = request_id or "unknown"
         cors_headers = {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
-            "Access-Control-Allow-Headers": "content-type, accept, mcp-session-id",
-            "Access-Control-Expose-Headers": "x-request-id, mcp-session-id",
+            **self._get_cors_headers(request_origin),
             "Access-Control-Max-Age": "86400",
             "Content-Type": "application/json",
             "X-Request-ID": request_id,

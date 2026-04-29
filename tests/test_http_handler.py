@@ -194,10 +194,12 @@ class TestCORS:
                 headers={},
             )
 
-            assert headers["Access-Control-Allow-Origin"] == "*"
+            # No Origin sent → default-origin (claude.ai) is reflected.
+            assert headers["Access-Control-Allow-Origin"] == "https://claude.ai"
+            assert headers["Vary"] == "Origin"
             assert (
                 headers["Access-Control-Allow-Methods"]
-                == "GET, POST, DELETE, OPTIONS"
+                == "POST, OPTIONS"
             )
             assert (
                 headers["Access-Control-Allow-Headers"]
@@ -211,10 +213,12 @@ class TestCORS:
         status, headers, body = handler.handle_options()
 
         assert status == 200
-        assert headers["Access-Control-Allow-Origin"] == "*"
+        # No Origin sent → default-origin reflected.
+        assert headers["Access-Control-Allow-Origin"] == "https://claude.ai"
+        assert headers["Vary"] == "Origin"
         assert (
             headers["Access-Control-Allow-Methods"]
-            == "GET, POST, DELETE, OPTIONS"
+            == "POST, OPTIONS"
         )
         assert (
             headers["Access-Control-Allow-Headers"]
@@ -222,6 +226,36 @@ class TestCORS:
         )
         assert headers["Access-Control-Max-Age"] == "86400"
         assert body == ""
+
+    def test_handle_options_reflects_allowlisted_origin(self):
+        """Allowlisted origins are reflected back in Access-Control-Allow-Origin."""
+        handler = UniversalHTTPHandler()
+
+        _status, headers, _body = handler.handle_options(
+            request_origin="https://claude.ai"
+        )
+        assert headers["Access-Control-Allow-Origin"] == "https://claude.ai"
+
+        _status, headers, _body = handler.handle_options(
+            request_origin="https://console.anthropic.com"
+        )
+        assert (
+            headers["Access-Control-Allow-Origin"]
+            == "https://console.anthropic.com"
+        )
+
+    def test_handle_options_falls_back_for_unknown_origin(self):
+        """Unknown origins do NOT get reflected — default origin is used."""
+        handler = UniversalHTTPHandler()
+
+        _status, headers, _body = handler.handle_options(
+            request_origin="https://attacker.example.com"
+        )
+        assert headers["Access-Control-Allow-Origin"] == "https://claude.ai"
+        assert (
+            "attacker.example.com"
+            not in headers["Access-Control-Allow-Origin"]
+        )
 
 
 class TestSessionID:
@@ -377,7 +411,10 @@ class TestErrorHandling:
             error_body = json.loads(body)
             assert error_body["error"]["code"] == -32603
             assert error_body["error"]["message"] == "Server configuration error"
-            assert "Config error" in error_body["error"]["data"]
+            # Error data must not leak internal config details. It should
+            # only echo a request ID for support correlation.
+            assert "Config error" not in error_body["error"]["data"]
+            assert "Request ID:" in error_body["error"]["data"]
 
     @pytest.mark.asyncio
     async def test_general_exception_returns_500(self):
