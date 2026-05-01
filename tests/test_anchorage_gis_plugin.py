@@ -109,19 +109,21 @@ class TestGetTools:
         plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
         tools = plugin.get_tools()
 
-        assert len(tools) == 11
+        assert len(tools) == 13
         tool_names = [t.name for t in tools]
         assert "find_gis_content" in tool_names
         assert "browse_gallery" in tool_names
         assert "search_spatial_layers" in tool_names
         assert "get_item_details" in tool_names
         assert "get_layer_schema" in tool_names
+        assert "get_distinct_values" in tool_names
         assert "search_layers_by_field" in tool_names
         assert "query_data" in tool_names
         assert "spatial_query_point" in tool_names
         assert "spatial_query_polygon" in tool_names
         assert "aggregate_by_polygon" in tool_names
         assert "filter_by_polygon" in tool_names
+        assert "find_features_spanning_classifications" in tool_names
 
     def test_most_tools_include_city_name(self, anchorage_config):
         plugin = AnchorageGISPlugin(anchorage_config)
@@ -2311,6 +2313,347 @@ class TestErrorRewriter:
 
 
 # ── Config schema ──────────────────────────────────────────────────────
+
+
+class TestGetDistinctValues:
+    """The R2M-vs-R-2M discovery problem. The model needs to confirm
+    the exact format an identifier/code/category is stored in before
+    constructing a WHERE clause that won't silently return zero rows."""
+
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        return p
+
+    @pytest.mark.asyncio
+    async def test_returns_distinct_values_with_next_step_hint(
+        self, plugin
+    ):
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            return_value="https://example.com/FeatureServer/0",
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={"fields": [{"name": "ZONE_CODE"}]},
+        ):
+            mock_resp = Mock()
+            mock_resp.status_code = 200
+            mock_resp.raise_for_status = Mock()
+            mock_resp.json.return_value = {
+                "features": [
+                    {"attributes": {"ZONE_CODE": "R-2M"}},
+                    {"attributes": {"ZONE_CODE": "R-3"}},
+                    {"attributes": {"ZONE_CODE": "B-1"}},
+                ]
+            }
+            plugin.client = AsyncMock()
+            plugin.client.get = AsyncMock(return_value=mock_resp)
+
+            text = await plugin._get_distinct_values({
+                "item_id": "a" * 32,
+                "field": "ZONE_CODE",
+            })
+
+        # Stored values shown verbatim with their actual format.
+        assert "`R-2M`" in text
+        assert "`R-3`" in text
+        assert "`B-1`" in text
+        # Next-step trail tells the model how to use them.
+        assert "CASE-SENSITIVE" in text
+        assert "query_data" in text
+
+    @pytest.mark.asyncio
+    async def test_like_substring_filters_results(self, plugin):
+        # Verify the LIKE filter is built correctly and passed through.
+        captured_params = {}
+
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            return_value="https://example.com/FeatureServer/0",
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={"fields": [{"name": "ZONE_CODE"}]},
+        ):
+            async def fake_get(url, params=None):
+                captured_params.update(params or {})
+                resp = Mock()
+                resp.status_code = 200
+                resp.raise_for_status = Mock()
+                resp.json.return_value = {
+                    "features": [{"attributes": {"ZONE_CODE": "R-2M"}}]
+                }
+                return resp
+
+            plugin.client = Mock()
+            plugin.client.get = fake_get
+            await plugin._get_distinct_values({
+                "item_id": "a" * 32,
+                "field": "ZONE_CODE",
+                "like": "2M",
+            })
+
+        # The where clause must contain the LIKE pattern.
+        assert "LIKE" in captured_params["where"]
+        assert "%2M%" in captured_params["where"]
+        # ArcGIS distinct-values flag must be on.
+        assert captured_params["returnDistinctValues"] == "true"
+
+    @pytest.mark.asyncio
+    async def test_unknown_field_names_recovery_call(self, plugin):
+        # If the model passes a bad field, the error should name
+        # get_layer_schema as the recovery — not a stack trace.
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            return_value="https://example.com/FeatureServer/0",
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={"fields": [{"name": "ZONE_CODE"}]},
+        ):
+            with pytest.raises(ValueError, match="get_layer_schema"):
+                await plugin._get_distinct_values({
+                    "item_id": "a" * 32,
+                    "field": "made_up_field",
+                })
+
+
+class TestFindFeaturesSpanningClassifications:
+    """The split-zoned-parcel pattern, generalised. A source feature
+    (parcel, address, road) qualifies if its footprint touches >=
+    min_distinct distinct values of a classification field on a
+    polygon layer."""
+
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        return p
+
+    @pytest.mark.asyncio
+    async def test_finds_features_touching_multiple_classifications(
+        self, plugin
+    ):
+        # 3 zone polygons (R-1, R-2M, B-1) and 3 parcels:
+        #   parcel 100 — touches R-1 and R-2M (qualifies, 2 distinct)
+        #   parcel 200 — touches R-1, R-2M, B-1 (qualifies, 3 distinct)
+        #   parcel 300 — touches R-1 only (does not qualify)
+        # Each call to source/query with one zone polygon returns the
+        # parcel OBJECTIDs that touch that polygon.
+        cls_polys = [
+            {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [0, 0], [1, 0], [1, 1], [0, 1], [0, 0],
+                    ]],
+                },
+                "properties": {"ZONE_CODE": "R-1"},
+            },
+            {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [1, 0], [2, 0], [2, 1], [1, 1], [1, 0],
+                    ]],
+                },
+                "properties": {"ZONE_CODE": "R-2M"},
+            },
+            {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [2, 0], [3, 0], [3, 1], [2, 1], [2, 0],
+                    ]],
+                },
+                "properties": {"ZONE_CODE": "B-1"},
+            },
+        ]
+        # Per-zone spatial-query results (in order).
+        per_zone_oids = [
+            {"objectIds": [100, 200, 300]},  # R-1
+            {"objectIds": [100, 200]},        # R-2M
+            {"objectIds": [200]},             # B-1
+        ]
+
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            side_effect=[
+                "https://example.com/source/0",
+                "https://example.com/cls/0",
+            ],
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={
+                "geometryType": "esriGeometryPolygon",
+                "fields": [{"name": "ZONE_CODE"}],
+            },
+        ), patch.object(
+            plugin,
+            "_get_record_count",
+            new_callable=AsyncMock,
+            return_value=3,
+        ), patch.object(
+            plugin,
+            "_paged_geojson_fetch",
+            new_callable=AsyncMock,
+            return_value=cls_polys,
+        ):
+            spatial_calls = iter(per_zone_oids)
+            attrs_resp = {
+                "features": [
+                    {"attributes": {"OBJECTID": 100, "Name": "Lot A"}},
+                    {"attributes": {"OBJECTID": 200, "Name": "Lot B"}},
+                ]
+            }
+
+            async def fake_post(url, data=None):
+                resp = Mock()
+                resp.status_code = 200
+                resp.raise_for_status = Mock()
+                resp.json.return_value = next(spatial_calls)
+                return resp
+
+            async def fake_get(url, params=None):
+                # The attribute fetch.
+                resp = Mock()
+                resp.status_code = 200
+                resp.raise_for_status = Mock()
+                resp.json.return_value = attrs_resp
+                return resp
+
+            plugin.client = Mock()
+            plugin.client.post = fake_post
+            plugin.client.get = fake_get
+
+            text = await plugin._find_features_spanning_classifications({
+                "source_item_id": "a" * 32,
+                "classification_item_id": "b" * 32,
+                "classification_field": "ZONE_CODE",
+            })
+
+        # Both qualifying parcels listed with their actual zone codes.
+        assert "OBJECTID 100" in text
+        assert "OBJECTID 200" in text
+        assert "OBJECTID 300" not in text  # only touches 1 zone
+        # Lot 200 touches all three zones.
+        assert "`B-1`" in text
+        assert "`R-1`" in text
+        assert "`R-2M`" in text
+        # Histogram shows distribution across ALL inspected features.
+        assert "touches 1 distinct value(s):" in text
+        assert "touches 2 distinct value(s):" in text
+        assert "touches 3 distinct value(s):" in text
+        # Qualifying count appears in the header.
+        assert "**Qualifying:** 2" in text
+
+    @pytest.mark.asyncio
+    async def test_refuses_when_source_exceeds_cap(self, plugin):
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            side_effect=[
+                "https://example.com/source/0",
+                "https://example.com/cls/0",
+            ],
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={
+                "geometryType": "esriGeometryPolygon",
+                "fields": [{"name": "ZONE_CODE"}],
+            },
+        ), patch.object(
+            plugin,
+            "_get_record_count",
+            new_callable=AsyncMock,
+            return_value=99999,
+        ):
+            with pytest.raises(
+                ValueError, match="exceeding the cap"
+            ):
+                await plugin._find_features_spanning_classifications({
+                    "source_item_id": "a" * 32,
+                    "classification_item_id": "b" * 32,
+                    "classification_field": "ZONE_CODE",
+                })
+
+    @pytest.mark.asyncio
+    async def test_classification_field_validated_against_schema(
+        self, plugin
+    ):
+        # Bad classification_field should fail with a message that
+        # names get_layer_schema as the recovery — same UX pattern as
+        # the rest of the plugin.
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            side_effect=[
+                "https://example.com/source/0",
+                "https://example.com/cls/0",
+            ],
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={
+                "geometryType": "esriGeometryPolygon",
+                "fields": [{"name": "ZONE_CODE"}],
+            },
+        ):
+            with pytest.raises(ValueError, match="get_layer_schema"):
+                await plugin._find_features_spanning_classifications({
+                    "source_item_id": "a" * 32,
+                    "classification_item_id": "b" * 32,
+                    "classification_field": "made_up_field",
+                })
+
+    @pytest.mark.asyncio
+    async def test_classification_must_be_polygon(self, plugin):
+        with patch.object(
+            plugin,
+            "_resolve_layer_url",
+            new_callable=AsyncMock,
+            side_effect=[
+                "https://example.com/source/0",
+                "https://example.com/cls/0",
+            ],
+        ), patch.object(
+            plugin,
+            "_fetch_layer_meta",
+            new_callable=AsyncMock,
+            return_value={
+                "geometryType": "esriGeometryPoint",
+                "fields": [{"name": "ZONE_CODE"}],
+            },
+        ):
+            with pytest.raises(
+                ValueError,
+                match="classification_item_id must point at a polygon",
+            ):
+                await plugin._find_features_spanning_classifications({
+                    "source_item_id": "a" * 32,
+                    "classification_item_id": "b" * 32,
+                    "classification_field": "ZONE_CODE",
+                })
 
 
 class TestConfigSchema:

@@ -10,7 +10,7 @@ import json
 import logging
 import re
 import time
-from collections import OrderedDict, defaultdict
+from collections import Counter, OrderedDict, defaultdict
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlparse
@@ -1684,6 +1684,20 @@ class AnchorageGISPlugin(DataPlugin):
     # resultOffset at this step until AGG_SOURCE_LIMIT is reached.
     AGG_PAGE_SIZE = 1000
 
+    # Caps for find_features_spanning_classifications. The source cap is
+    # higher than AGG_SOURCE_LIMIT because the spanning analysis only
+    # returns the qualifying subset (typically << source size); the
+    # classification cap is higher than expected zoning/floodplain/council
+    # polygon counts so a real layer never silently truncates.
+    SPANNING_SOURCE_LIMIT = 5000
+    SPANNING_CLASSIFICATION_LIMIT = 1000
+
+    # Concurrency cap for per-classification spatial queries. The portal
+    # tolerates polite bursts; a hard cap keeps the spanning tool from
+    # looking like a small DDoS to muniorg.maps.arcgis.com when a
+    # classification layer has hundreds of polygons.
+    SPANNING_QUERY_CONCURRENCY = 10
+
     @staticmethod
     def _ring_contains_point(
         ring: List[List[float]], point: Tuple[float, float]
@@ -2551,6 +2565,443 @@ class AnchorageGISPlugin(DataPlugin):
         )
         return header + body
 
+    async def _get_distinct_values(self, args: Dict[str, Any]) -> str:
+        """Return distinct values of a field — for confirming exact
+        identifier/code formats before constructing a WHERE clause."""
+        item_id = self._validate_item_id(
+            (args.get("item_id") or "").strip()
+        )
+        field = (args.get("field") or "").strip()
+        if not field:
+            raise ValueError("field is required")
+        like = (args.get("like") or "").strip()
+        where = (args.get("where") or "1=1").strip()
+        limit = min(int(args.get("limit", 50)), 500)
+
+        layer_url = await self._resolve_layer_url(item_id)
+        meta = await self._fetch_layer_meta(layer_url)
+        field_names = {f.get("name") for f in meta.get("fields", [])}
+        if field not in field_names:
+            raise ValueError(
+                f"field {field!r} is not a field on this layer. "
+                f"Call `get_layer_schema(item_id='{item_id}')` to "
+                f"see valid names — they are CASE-SENSITIVE. "
+                f"Available: {sorted(field_names)[:12]}..."
+            )
+
+        # Splice the LIKE clause into the user's WHERE before validation
+        # so any injected SQL gets rejected by WhereValidator together
+        # with the rest. Single-quote escape is local to LIKE-substring
+        # construction; not a substitute for WhereValidator.
+        if like:
+            safe_like = like.replace("'", "''")
+            like_clause = f"{field} LIKE '%{safe_like}%'"
+            where = (
+                f"({where}) AND ({like_clause})"
+                if where != "1=1"
+                else like_clause
+            )
+        where = WhereValidator.validate(where)
+
+        # returnDistinctValues only works when returnGeometry=false on
+        # most hosted Feature Services — geometry coords break the
+        # de-dup hash. We also dedupe client-side as a backstop in case
+        # the upstream returns duplicates anyway (older portals do).
+        params = {
+            "f": "json",
+            "where": where,
+            "outFields": field,
+            "returnDistinctValues": "true",
+            "returnGeometry": "false",
+            "orderByFields": field,
+            "resultRecordCount": str(limit),
+        }
+        resp = await self.client.get(
+            f"{layer_url}/query", params=params
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        if "error" in data:
+            err = data["error"]
+            raise RuntimeError(
+                "Distinct-values query failed: "
+                + self._rewrite_arcgis_error(
+                    err.get("message", "Unknown error"),
+                    err.get("details", []),
+                    resource_id=item_id,
+                    has_where=True,
+                )
+            )
+
+        seen: set = set()
+        values: List[Any] = []
+        for f in data.get("features", []):
+            v = (f.get("attributes") or {}).get(field)
+            if v is None or v in seen:
+                continue
+            seen.add(v)
+            values.append(v)
+
+        if not values:
+            suffix = f" containing '{like}'" if like else ""
+            return (
+                f"No distinct values for field `{field}`{suffix} on "
+                f"item `{item_id}` (where: {where!r}). "
+                + (
+                    "Try a different `like` substring, or omit `like` "
+                    "to see all values."
+                    if like
+                    else "The layer may have no records, or every "
+                    "value may be NULL."
+                )
+            )
+
+        capped_note = (
+            " (truncated to limit)" if len(values) >= limit else ""
+        )
+        lines = [
+            f"## Distinct `{field}` values "
+            f"({len(values)}{capped_note}, limit={limit})"
+        ]
+        if like:
+            lines.append(
+                f"_Filtered to values containing '{like}' "
+                f"(case-sensitive)._"
+            )
+        lines.append("")
+        for v in values:
+            lines.append(f"- `{v}`")
+        lines += [
+            "",
+            "---",
+            "**NEXT STEP:** these are the EXACT values the layer "
+            "stores — copy them verbatim into a WHERE clause. Field "
+            "and value matching is CASE-SENSITIVE.",
+            f"Example: `query_data(item_id='{item_id}', "
+            f"where=\"{field}='<paste a value above>'\", limit=1)` "
+            "to count records with that value.",
+        ]
+        return "\n".join(lines)
+
+    async def _find_features_spanning_classifications(
+        self, args: Dict[str, Any]
+    ) -> str:
+        """Find source features whose footprint touches >= min_distinct
+        distinct values of a classification field in another polygon
+        layer. The "split-zoned parcel" pattern, generalised."""
+        source_item_id = self._validate_item_id(
+            (args.get("source_item_id") or "").strip()
+        )
+        classification_item_id = self._validate_item_id(
+            (args.get("classification_item_id") or "").strip()
+        )
+        classification_field = (
+            args.get("classification_field") or ""
+        ).strip()
+        if not classification_field:
+            raise ValueError("classification_field is required")
+
+        # Enforce min_distinct >= 2 — anything less is "any feature
+        # touching a classification", which is just spatial_query_polygon.
+        min_distinct = max(2, int(args.get("min_distinct", 2)))
+        source_where = WhereValidator.validate(
+            args.get("source_where") or "1=1"
+        )
+        classification_where = WhereValidator.validate(
+            args.get("classification_where") or "1=1"
+        )
+        out_fields = OutFieldsValidator.validate(
+            args.get("out_fields") or "*"
+        )
+        limit = min(int(args.get("limit", 100)), 1000)
+        max_source = min(
+            int(
+                args.get(
+                    "max_source_features", self.SPANNING_SOURCE_LIMIT
+                )
+            ),
+            self.SPANNING_SOURCE_LIMIT,
+        )
+
+        source_url = await self._resolve_layer_url(source_item_id)
+        classification_url = await self._resolve_layer_url(
+            classification_item_id
+        )
+        cls_meta = await self._fetch_layer_meta(classification_url)
+        cls_geom = cls_meta.get("geometryType", "")
+        if cls_geom not in (
+            "esriGeometryPolygon",
+            "esriGeometryMultiPatch",
+        ):
+            raise ValueError(
+                f"classification_item_id must point at a polygon "
+                f"layer (got geometryType={cls_geom or 'unknown'!r}). "
+                f"Spanning analysis needs polygons to define the "
+                f"distinct regions a source feature might cross."
+            )
+        cls_field_names = {
+            f.get("name") for f in cls_meta.get("fields", [])
+        }
+        if classification_field not in cls_field_names:
+            raise ValueError(
+                f"classification_field {classification_field!r} is "
+                f"not a field on the classification layer. Call "
+                f"`get_layer_schema(item_id="
+                f"'{classification_item_id}')` to see valid names — "
+                f"they are CASE-SENSITIVE. Available: "
+                f"{sorted(cls_field_names)[:12]}..."
+            )
+
+        # Pre-flight: refuse if the source layer has more features
+        # matching source_where than the cap. Doing this up front saves
+        # the per-classification spatial-query round-trips that would
+        # otherwise be wasted.
+        source_count = await self._get_record_count(
+            source_url, source_where
+        )
+        if source_count is None:
+            source_count = 0
+        if source_count > max_source:
+            raise ValueError(
+                f"source layer has {source_count:,} features matching "
+                f"source_where, exceeding the cap of "
+                f"{max_source:,}. Narrow `source_where` to fit under "
+                f"the cap (e.g. limit by neighborhood, zone, or "
+                f"region). The cap exists to bound per-call compute "
+                f"on the upstream portal."
+            )
+        if source_count == 0:
+            return (
+                f"source layer has 0 features matching source_where "
+                f"({source_where!r}). Nothing to spatially join "
+                f"against."
+            )
+
+        cls_polys = await self._paged_geojson_fetch(
+            classification_url,
+            where=classification_where,
+            out_fields=classification_field,
+            limit=self.SPANNING_CLASSIFICATION_LIMIT,
+        )
+        if not cls_polys:
+            raise ValueError(
+                f"classification_where ({classification_where!r}) "
+                f"matched no polygons in the classification layer. "
+                f"Verify with `query_data(item_id="
+                f"'{classification_item_id}', limit=1)`."
+            )
+
+        # Drop polygons whose classification value is NULL — they would
+        # falsely contribute "no value" as a distinct classification.
+        valid_cls: List[Tuple[Any, Dict[str, Any]]] = []
+        for p in cls_polys:
+            val = (p.get("properties") or {}).get(classification_field)
+            geom = p.get("geometry")
+            if val is None or not geom:
+                continue
+            valid_cls.append((val, geom))
+        if not valid_cls:
+            raise ValueError(
+                f"all classification polygons matching "
+                f"classification_where have NULL "
+                f"`{classification_field}` values or missing "
+                f"geometry. Pick a different field or narrow "
+                f"classification_where."
+            )
+
+        sem = asyncio.Semaphore(self.SPANNING_QUERY_CONCURRENCY)
+        src_to_values: Dict[Any, set] = defaultdict(set)
+        skipped_polys = 0
+
+        async def query_one(value: Any, geom: Dict[str, Any]) -> None:
+            nonlocal skipped_polys
+            try:
+                esri_geom = self._geojson_to_esri_polygon(geom)
+            except ValueError:
+                # Polygon too complex (rings/coords over our cap).
+                # Skip and report the count so the user knows
+                # coverage is partial.
+                skipped_polys += 1
+                return
+            params = {
+                "where": source_where,
+                "geometry": json.dumps(
+                    esri_geom, separators=(",", ":")
+                ),
+                "geometryType": "esriGeometryPolygon",
+                "spatialRel": "esriSpatialRelIntersects",
+                "inSR": "4326",
+                "returnIdsOnly": "true",
+                "f": "json",
+            }
+            async with sem:
+                try:
+                    resp = await self.client.post(
+                        f"{source_url}/query", data=params
+                    )
+                    resp.raise_for_status()
+                    data = resp.json()
+                except Exception:
+                    skipped_polys += 1
+                    return
+            if "error" in data:
+                skipped_polys += 1
+                return
+            for oid in data.get("objectIds") or []:
+                src_to_values[oid].add(value)
+
+        await asyncio.gather(
+            *[query_one(v, g) for v, g in valid_cls]
+        )
+
+        qualifying = {
+            oid: vals
+            for oid, vals in src_to_values.items()
+            if len(vals) >= min_distinct
+        }
+
+        # Histogram covers ALL source features that touched any
+        # classification, not just qualifiers — gives the model context
+        # about the distribution before highlighting the cutoff.
+        histogram = Counter(
+            len(vals) for vals in src_to_values.values()
+        )
+
+        city = self.plugin_config.city_name
+        lines = [
+            f"## Source features spanning multiple "
+            f"`{classification_field}` values",
+            f"**City:** {city}",
+            f"**Source:** {source_item_id} "
+            f"({source_count:,} features matching source_where)",
+            f"**Classification:** {classification_item_id}, field "
+            f"`{classification_field}` "
+            f"({len(valid_cls):,} polygon(s) with non-null value)",
+            f"**Threshold:** features touching "
+            f">= {min_distinct} distinct values qualify",
+            f"**Qualifying:** {len(qualifying):,} feature(s)",
+        ]
+        if skipped_polys:
+            lines.append(
+                f"**Skipped:** {skipped_polys} classification "
+                f"polygon(s) — too complex for spatial query payload "
+                f"or upstream error. Coverage is partial; narrow "
+                f"`classification_where` to inspect them separately."
+            )
+        lines.append("")
+
+        if histogram:
+            lines.append(
+                "### Distribution of source features by distinct "
+                "classification touch-count"
+            )
+            for count in sorted(histogram.keys()):
+                n = histogram[count]
+                marker = (
+                    "  ← qualifying"
+                    if count >= min_distinct
+                    else ""
+                )
+                lines.append(
+                    f"- touches {count} distinct value(s): "
+                    f"{n:,} feature(s){marker}"
+                )
+            lines.append("")
+
+        if not qualifying:
+            lines.append(
+                f"_No source features touch >= {min_distinct} "
+                f"distinct `{classification_field}` values. "
+                f"Try lowering `min_distinct`, broadening "
+                f"`source_where`, or confirming the classification "
+                f"layer has the expected boundary detail._"
+            )
+            return "\n".join(lines)
+
+        # Fetch attributes for the qualifying subset, capped at limit.
+        # Sort by descending distinct-value count so the most-split
+        # features show first — they tend to be the most interesting.
+        qualifying_oids = sorted(
+            qualifying.keys(),
+            key=lambda o: (-len(qualifying[o]), o),
+        )[:limit]
+
+        attrs_resp = await self.client.get(
+            f"{source_url}/query",
+            params={
+                "where": source_where,
+                "objectIds": ",".join(map(str, qualifying_oids)),
+                "outFields": out_fields,
+                "returnGeometry": "false",
+                "f": "json",
+            },
+        )
+        attrs_resp.raise_for_status()
+        attrs_data = attrs_resp.json()
+        if "error" in attrs_data:
+            err = attrs_data["error"]
+            raise RuntimeError(
+                "Attribute fetch for qualifying features failed: "
+                + self._rewrite_arcgis_error(
+                    err.get("message", "Unknown error"),
+                    err.get("details", []),
+                    resource_id=source_item_id,
+                    has_out_fields=out_fields != "*",
+                    has_where=source_where != "1=1",
+                )
+            )
+
+        # Index by OID for join with the value sets. ArcGIS layers may
+        # name the OID field OBJECTID, OID, or FID — try all three.
+        features_by_oid: Dict[Any, Dict[str, Any]] = {}
+        for f in attrs_data.get("features", []):
+            attrs = f.get("attributes") or {}
+            oid = (
+                attrs.get("OBJECTID")
+                or attrs.get("OID")
+                or attrs.get("FID")
+            )
+            if oid is not None:
+                features_by_oid[oid] = attrs
+
+        showing = len(qualifying_oids)
+        total = len(qualifying)
+        lines.append(
+            f"### Qualifying features (showing {showing:,} of "
+            f"{total:,}, sorted by distinct-value count desc)"
+        )
+        if showing < total:
+            lines.append(
+                f"_Truncated to limit={limit}. Increase `limit` to "
+                f"see more._"
+            )
+        lines.append("")
+
+        for oid in qualifying_oids:
+            attrs = features_by_oid.get(
+                oid,
+                {"OBJECTID": oid, "_note": "attributes unavailable"},
+            )
+            vals = sorted(str(v) for v in qualifying[oid])
+            lines.append(
+                f"**OBJECTID {oid}** — touches {len(vals)} "
+                f"value(s): "
+                + ", ".join(f"`{v}`" for v in vals)
+            )
+            for k, v in attrs.items():
+                if k in ("OBJECTID", "OID", "FID"):
+                    continue
+                lines.append(f"  {k}: {v}")
+            lines.append("")
+
+        lines += [
+            "---",
+            "_Values shown use the layer's native format — "
+            "case-sensitive. Pass them verbatim if you filter on "
+            "them next._",
+        ]
+        return "\n".join(lines)
+
     # ── Tool definitions ──────────────────────────────────────────────────
 
     def get_tools(self) -> List[ToolDefinition]:
@@ -2736,6 +3187,73 @@ class AnchorageGISPlugin(DataPlugin):
                             ),
                         },
                     },
+                },
+            ),
+            ToolDefinition(
+                name="get_distinct_values",
+                description=(
+                    f"List the distinct values that appear in a "
+                    f"{city} Feature Service field — for confirming "
+                    f"the EXACT format of identifiers, codes, or "
+                    f"categories before writing a WHERE clause. "
+                    f"Use whenever the user mentions a value (e.g. "
+                    f"'zone R2M', 'parcel 1-213-29', 'community "
+                    f"council Fairview') and you need to verify how "
+                    f"the layer actually stores it. Common variants: "
+                    f"'R2M' vs 'R-2M', '1-213-29' vs '0012132900', "
+                    f"'Fairview' vs 'FAIRVIEW'.\n\n"
+                    f"Optional `like` parameter narrows results to "
+                    f"values containing a substring (case-sensitive "
+                    f"on the layer side).\n\n"
+                    f"TYPICAL CHAIN: `find_gis_content` → "
+                    f"`get_layer_schema` → `get_distinct_values` → "
+                    f"`query_data` (with the verified value)."
+                ),
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "item_id": {
+                            "type": "string",
+                            "description": (
+                                "ArcGIS item ID of a queryable "
+                                "Feature/Map Service."
+                            ),
+                        },
+                        "field": {
+                            "type": "string",
+                            "description": (
+                                "Field name to get distinct values "
+                                "for. CASE-SENSITIVE — use the exact "
+                                "name from `get_layer_schema`."
+                            ),
+                        },
+                        "like": {
+                            "type": "string",
+                            "description": (
+                                "Optional substring; only values "
+                                "containing this string are returned. "
+                                "E.g. like='2M' surfaces 'R-2M', "
+                                "'R-2M (PUD)'."
+                            ),
+                        },
+                        "where": {
+                            "type": "string",
+                            "description": (
+                                "Optional SQL WHERE to narrow which "
+                                "records contribute distinct values."
+                            ),
+                            "default": "1=1",
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": (
+                                "Max distinct values to return "
+                                "(default 50, max 500)."
+                            ),
+                            "default": 50,
+                        },
+                    },
+                    "required": ["item_id", "field"],
                 },
             ),
             ToolDefinition(
@@ -3283,6 +3801,152 @@ class AnchorageGISPlugin(DataPlugin):
                     ],
                 },
             ),
+            ToolDefinition(
+                name="find_features_spanning_classifications",
+                description=(
+                    f"Find {city} source features whose footprint "
+                    f"touches >= `min_distinct` distinct values of a "
+                    f"classification field in another polygon layer. "
+                    f"This is the 'split-zoned parcel' / 'parcel "
+                    f"crosses a flood zone boundary' / 'address spans "
+                    f"two community councils' pattern, generalised.\n\n"
+                    f"WHEN TO USE: any question of the form 'which X "
+                    f"span / cross / are split by / fall in multiple "
+                    f"Y?'. Examples: 'split-zoned parcels', 'parcels "
+                    f"on a flood zone boundary', 'roads crossing "
+                    f"district lines', 'addresses on a council "
+                    f"boundary'.\n\n"
+                    f"WHY NOT `aggregate_by_polygon`: that tool "
+                    f"reduces each source feature to a single point "
+                    f"and assigns it to one polygon — a parcel "
+                    f"straddling two zones is silently put in one "
+                    f"of them. This tool uses true spatial "
+                    f"intersection so split features are caught.\n\n"
+                    f"PRE-FLIGHT (recommended): "
+                    f"`get_layer_schema(item_id="
+                    f"<classification_item_id>)` to confirm the "
+                    f"field name, then `get_distinct_values(item_id="
+                    f"<classification_item_id>, field="
+                    f"<classification_field>)` to see what values "
+                    f"exist. Field names and values are "
+                    f"CASE-SENSITIVE.\n\n"
+                    f"CAPS: source layer must have <= 5,000 features "
+                    f"matching `source_where` (use `source_where` to "
+                    f"narrow if exceeded — e.g. by "
+                    f"neighborhood/zone/region). Classification layer "
+                    f"capped at 1,000 polygons.\n\n"
+                    f"OUTPUT: a histogram of distinct-value "
+                    f"touch-counts across ALL source features (so the "
+                    f"model sees the distribution), plus the "
+                    f"qualifying features (>= min_distinct) listed "
+                    f"with the actual values they span. Both are "
+                    f"returned in one call — this IS the final "
+                    f"answer for split-feature questions, no further "
+                    f"chaining needed."
+                ),
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "source_item_id": {
+                            "type": "string",
+                            "description": (
+                                "ArcGIS item ID of the layer whose "
+                                "features you want to test for "
+                                "spanning (e.g. parcels, addresses, "
+                                "roads). Can be polygon, polyline, "
+                                "or point."
+                            ),
+                        },
+                        "classification_item_id": {
+                            "type": "string",
+                            "description": (
+                                "ArcGIS item ID of the polygon layer "
+                                "whose distinct values define the "
+                                "boundaries (e.g. zoning, flood "
+                                "zones, community councils). MUST "
+                                "be a polygon layer."
+                            ),
+                        },
+                        "classification_field": {
+                            "type": "string",
+                            "description": (
+                                "Field on the classification layer "
+                                "whose distinct values matter "
+                                "(e.g. 'ZONE_CODE', "
+                                "'FLOOD_ZONE_TYPE', 'COUNCIL'). "
+                                "CASE-SENSITIVE."
+                            ),
+                        },
+                        "min_distinct": {
+                            "type": "integer",
+                            "description": (
+                                "Minimum number of distinct "
+                                "classification values a source "
+                                "feature must touch to qualify. "
+                                "Default 2 (= 'spans a boundary'). "
+                                "Use 3+ for 'spans multiple "
+                                "boundaries'."
+                            ),
+                            "default": 2,
+                            "minimum": 2,
+                        },
+                        "source_where": {
+                            "type": "string",
+                            "description": (
+                                "SQL WHERE on the source layer to "
+                                "narrow features inspected. Required "
+                                "to be tight enough that <= 5,000 "
+                                "features match."
+                            ),
+                            "default": "1=1",
+                        },
+                        "classification_where": {
+                            "type": "string",
+                            "description": (
+                                "SQL WHERE on the classification "
+                                "layer to narrow which polygons "
+                                "contribute (e.g. exclude retired "
+                                "districts)."
+                            ),
+                            "default": "1=1",
+                        },
+                        "out_fields": {
+                            "type": "string",
+                            "description": (
+                                "Comma-separated source-layer field "
+                                "names to return for qualifying "
+                                "features."
+                            ),
+                            "default": "*",
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": (
+                                "Max qualifying features to list in "
+                                "the response (default 100, max "
+                                "1000). The histogram covers ALL "
+                                "qualifying features regardless."
+                            ),
+                            "default": 100,
+                        },
+                        "max_source_features": {
+                            "type": "integer",
+                            "description": (
+                                "Safety cap on source features "
+                                "matching source_where (default "
+                                "5000, max 5000). Tool refuses with "
+                                "a clear error if exceeded."
+                            ),
+                            "default": 5000,
+                        },
+                    },
+                    "required": [
+                        "source_item_id",
+                        "classification_item_id",
+                        "classification_field",
+                    ],
+                },
+            ),
         ]
 
     # ── Tool dispatch ─────────────────────────────────────────────────────
@@ -3327,6 +3991,9 @@ class AnchorageGISPlugin(DataPlugin):
 
             elif tool_name == "get_layer_schema":
                 text = await self._get_layer_schema(arguments)
+
+            elif tool_name == "get_distinct_values":
+                text = await self._get_distinct_values(arguments)
 
             elif tool_name == "search_layers_by_field":
                 text = await self._search_layers_by_field(arguments)
@@ -3496,6 +4163,11 @@ class AnchorageGISPlugin(DataPlugin):
 
             elif tool_name == "filter_by_polygon":
                 text = await self._filter_by_polygon(arguments)
+
+            elif tool_name == "find_features_spanning_classifications":
+                text = await self._find_features_spanning_classifications(
+                    arguments
+                )
 
             else:
                 return ToolResult(
