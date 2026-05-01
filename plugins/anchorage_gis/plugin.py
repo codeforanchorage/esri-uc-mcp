@@ -3060,20 +3060,28 @@ class AnchorageGISPlugin(DataPlugin):
                 f"classification_where."
             )
 
+        # Group polygons by their classification value so we send ONE
+        # spatial query per distinct value instead of one per polygon.
+        # For a typical zoning layer with 1,000 polygons but ~50 zones,
+        # this collapses 1,000 upstream queries into 50 — the original
+        # implementation hit the Esri 6,000-req/min quota easily and
+        # the silent failure path then masked the rate-limit error as
+        # "attributes unavailable". One query per value is also more
+        # honest semantically: we want distinct VALUES per source
+        # feature, not distinct polygons.
+        by_value: Dict[Any, List[Dict[str, Any]]] = defaultdict(list)
+        for value, geom in valid_cls:
+            by_value[value].append(geom)
+
         sem = asyncio.Semaphore(self.SPANNING_QUERY_CONCURRENCY)
         src_to_values: Dict[Any, set] = defaultdict(set)
         skipped_polys = 0
+        rate_limited = False
 
-        async def query_one(value: Any, geom: Dict[str, Any]) -> None:
-            nonlocal skipped_polys
-            try:
-                esri_geom = self._geojson_to_esri_polygon(geom)
-            except ValueError:
-                # Polygon too complex (rings/coords over our cap).
-                # Skip and report the count so the user knows
-                # coverage is partial.
-                skipped_polys += 1
-                return
+        async def query_geometry(
+            value: Any, esri_geom: Dict[str, Any]
+        ) -> None:
+            nonlocal skipped_polys, rate_limited
             params = {
                 "where": source_where,
                 "geometry": json.dumps(
@@ -3096,13 +3104,70 @@ class AnchorageGISPlugin(DataPlugin):
                     skipped_polys += 1
                     return
             if "error" in data:
+                err_msg = (
+                    data["error"].get("message", "") or ""
+                ).lower()
+                # Esri uses both phrasings depending on the tier.
+                if (
+                    "too many requests" in err_msg
+                    or "quota exceeded" in err_msg
+                ):
+                    rate_limited = True
                 skipped_polys += 1
                 return
             for oid in data.get("objectIds") or []:
                 src_to_values[oid].add(value)
 
+        async def query_one_value(
+            value: Any, geoms: List[Dict[str, Any]]
+        ) -> None:
+            """Combine all polygons for this value into one query
+            when feasible; fall back to per-polygon if the combined
+            geometry exceeds the filter caps."""
+            nonlocal skipped_polys
+            all_rings: List[Any] = []
+            skipped_in_value = 0
+            for geom in geoms:
+                try:
+                    esri = self._geojson_to_esri_polygon(geom)
+                except ValueError:
+                    skipped_in_value += 1
+                    continue
+                all_rings.extend(esri.get("rings") or [])
+            if not all_rings:
+                skipped_polys += skipped_in_value
+                return
+            coord_count = sum(
+                len(r) for r in all_rings if isinstance(r, list)
+            )
+            if (
+                len(all_rings) <= self.MAX_FILTER_RINGS
+                and coord_count <= self.MAX_FILTER_COORDS
+            ):
+                # Combined fits — one query for the whole value.
+                combined = {
+                    "rings": all_rings,
+                    "spatialReference": {"wkid": 4326},
+                }
+                skipped_polys += skipped_in_value
+                await query_geometry(value, combined)
+                return
+            # Combined too big — fall back to per-polygon for this
+            # value. Rare, but real for sprawling zone categories.
+            skipped_polys += skipped_in_value
+            for geom in geoms:
+                try:
+                    esri = self._geojson_to_esri_polygon(geom)
+                except ValueError:
+                    skipped_polys += 1
+                    continue
+                await query_geometry(value, esri)
+
         await asyncio.gather(
-            *[query_one(v, g) for v, g in valid_cls]
+            *[
+                query_one_value(v, gs)
+                for v, gs in by_value.items()
+            ]
         )
 
         qualifying = {
@@ -3133,11 +3198,21 @@ class AnchorageGISPlugin(DataPlugin):
             f"**Qualifying:** {len(qualifying):,} feature(s)",
         ]
         if skipped_polys:
+            note = (
+                "Coverage is partial; narrow "
+                "`classification_where` to inspect them separately."
+            )
+            if rate_limited:
+                note = (
+                    "**Upstream rate-limited some queries** — "
+                    "results below are partial. Wait 60s and retry, "
+                    "or narrow `classification_where` to reduce the "
+                    "per-call query count."
+                )
             lines.append(
                 f"**Skipped:** {skipped_polys} classification "
                 f"polygon(s) — too complex for spatial query payload "
-                f"or upstream error. Coverage is partial; narrow "
-                f"`classification_where` to inspect them separately."
+                f"or upstream error. {note}"
             )
         lines.append("")
 
@@ -3177,9 +3252,14 @@ class AnchorageGISPlugin(DataPlugin):
             key=lambda o: (-len(qualifying[o]), o),
         )[:limit]
 
-        attrs_resp = await self.client.get(
+        # POST (not GET) for the attribute fetch — with limit=100, the
+        # objectIds list pushes the URL past portal length limits when
+        # combined with where + outFields, and the upstream silently
+        # truncated to zero features. POST sends the same params in
+        # the body and is unaffected.
+        attrs_resp = await self.client.post(
             f"{source_url}/query",
-            params={
+            data={
                 "where": source_where,
                 "objectIds": ",".join(map(str, qualifying_oids)),
                 "outFields": out_fields,
@@ -3189,31 +3269,30 @@ class AnchorageGISPlugin(DataPlugin):
         )
         attrs_resp.raise_for_status()
         attrs_data = attrs_resp.json()
+        attrs_error: Optional[str] = None
         if "error" in attrs_data:
             err = attrs_data["error"]
-            raise RuntimeError(
-                "Attribute fetch for qualifying features failed: "
-                + self._rewrite_arcgis_error(
-                    err.get("message", "Unknown error"),
-                    err.get("details", []),
-                    resource_id=source_item_id,
-                    has_out_fields=out_fields != "*",
-                    has_where=source_where != "1=1",
-                )
+            attrs_error = self._rewrite_arcgis_error(
+                err.get("message", "Unknown error"),
+                err.get("details", []),
+                resource_id=source_item_id,
+                has_out_fields=out_fields != "*",
+                has_where=source_where != "1=1",
             )
 
         # Index by OID for join with the value sets. ArcGIS layers may
         # name the OID field OBJECTID, OID, or FID — try all three.
         features_by_oid: Dict[Any, Dict[str, Any]] = {}
-        for f in attrs_data.get("features", []):
-            attrs = f.get("attributes") or {}
-            oid = (
-                attrs.get("OBJECTID")
-                or attrs.get("OID")
-                or attrs.get("FID")
-            )
-            if oid is not None:
-                features_by_oid[oid] = attrs
+        if not attrs_error:
+            for f in attrs_data.get("features", []):
+                attrs = f.get("attributes") or {}
+                oid = (
+                    attrs.get("OBJECTID")
+                    or attrs.get("OID")
+                    or attrs.get("FID")
+                )
+                if oid is not None:
+                    features_by_oid[oid] = attrs
 
         showing = len(qualifying_oids)
         total = len(qualifying)
@@ -3228,12 +3307,60 @@ class AnchorageGISPlugin(DataPlugin):
             )
         lines.append("")
 
-        for oid in qualifying_oids:
-            attrs = features_by_oid.get(
-                oid,
-                {"OBJECTID": oid, "_note": "attributes unavailable"},
+        # If the attribute fetch failed or returned nothing, surface
+        # that loudly and DO NOT pretend OBJECTIDs are user-facing
+        # identifiers. The previous "_note: attributes unavailable"
+        # fallback was silently dangerous: GPT-4o-class models would
+        # report "OBJECTID 1747" as if it were a parcel number.
+        if not features_by_oid and qualifying_oids:
+            reason = (
+                attrs_error
+                or "the upstream returned 0 records for the OIDs "
+                "sent. Most common cause is a transient rate-limit "
+                "from the Esri portal — retry in 60 seconds."
             )
+            lines.append(
+                "> **WARNING: attributes could not be loaded for the "
+                "qualifying features.** The spanning analysis "
+                f"itself succeeded ({total:,} features identified), "
+                "but the bulk attribute fetch returned no records.\n"
+                f">\n"
+                f"> Reason: {reason}\n"
+                f">\n"
+                f"> The OBJECTIDs below are INTERNAL LAYER ROW IDs, "
+                f"not user-facing identifiers (parcel numbers, "
+                f"addresses, names). DO NOT report them to the user "
+                f"as parcel numbers. To recover the real "
+                f"identifiers, query each OID individually with "
+                f"`query_data(item_id='{source_item_id}', "
+                f"where='OBJECTID=<oid>', limit=1)`, or wait and "
+                f"retry this whole call."
+            )
+            lines.append("")
+            for oid in qualifying_oids:
+                vals = sorted(str(v) for v in qualifying[oid])
+                lines.append(
+                    f"- OBJECTID `{oid}` (internal ID, not a "
+                    f"parcel#) — touches {len(vals)} value(s): "
+                    + ", ".join(f"`{v}`" for v in vals)
+                )
+            return "\n".join(lines)
+
+        for oid in qualifying_oids:
+            attrs = features_by_oid.get(oid)
             vals = sorted(str(v) for v in qualifying[oid])
+            if attrs is None:
+                # Per-row miss in an otherwise-successful response.
+                # Still surface it honestly rather than silently.
+                lines.append(
+                    f"**OBJECTID {oid}** _(attributes not returned "
+                    f"by upstream — internal row ID only, NOT a "
+                    f"user-facing parcel number)_ — touches "
+                    f"{len(vals)} value(s): "
+                    + ", ".join(f"`{v}`" for v in vals)
+                )
+                lines.append("")
+                continue
             lines.append(
                 f"**OBJECTID {oid}** — touches {len(vals)} "
                 f"value(s): "

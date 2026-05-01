@@ -2585,23 +2585,19 @@ class TestFindFeaturesSpanningClassifications:
             }
 
             async def fake_post(url, data=None):
+                # Attribute fetch is now POST too — distinguish by
+                # which params are present.
                 resp = Mock()
                 resp.status_code = 200
                 resp.raise_for_status = Mock()
-                resp.json.return_value = next(spatial_calls)
-                return resp
-
-            async def fake_get(url, params=None):
-                # The attribute fetch.
-                resp = Mock()
-                resp.status_code = 200
-                resp.raise_for_status = Mock()
-                resp.json.return_value = attrs_resp
+                if (data or {}).get("objectIds"):
+                    resp.json.return_value = attrs_resp
+                else:
+                    resp.json.return_value = next(spatial_calls)
                 return resp
 
             plugin.client = Mock()
             plugin.client.post = fake_post
-            plugin.client.get = fake_get
 
             text = await plugin._find_features_spanning_classifications({
                 "source_item_id": "a" * 32,
@@ -2687,6 +2683,96 @@ class TestFindFeaturesSpanningClassifications:
                     "classification_item_id": "b" * 32,
                     "classification_field": "made_up_field",
                 })
+
+    @pytest.mark.asyncio
+    async def test_attribute_fetch_failure_warns_loudly(self, plugin):
+        # Regression for the GPT-4o-reports-OBJECTID-as-parcel-number
+        # bug: when the bulk attribute fetch returns no records (rate
+        # limit, transient upstream error), the response MUST warn
+        # the model that OBJECTIDs are NOT user-facing identifiers
+        # and must not be reported as parcel numbers / addresses.
+        # Previously the silent fallback to "_note: attributes
+        # unavailable" let the model render "OBJECTID 1747" as the
+        # answer to "list parcel numbers".
+        cls_polys = [
+            {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [0, 0], [1, 0], [1, 1], [0, 1], [0, 0],
+                    ]],
+                },
+                "properties": {"ZONE_CODE": "R-1"},
+            },
+            {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [1, 0], [2, 0], [2, 1], [1, 1], [1, 0],
+                    ]],
+                },
+                "properties": {"ZONE_CODE": "R-2M"},
+            },
+        ]
+
+        with patch.object(
+            plugin, "_resolve_layer_url", new_callable=AsyncMock,
+            side_effect=[
+                "https://example.com/source/0",
+                "https://example.com/cls/0",
+            ],
+        ), patch.object(
+            plugin, "_fetch_layer_meta", new_callable=AsyncMock,
+            return_value={
+                "geometryType": "esriGeometryPolygon",
+                "fields": [{"name": "ZONE_CODE"}],
+            },
+        ), patch.object(
+            plugin, "_get_record_count", new_callable=AsyncMock,
+            return_value=2,
+        ), patch.object(
+            plugin, "_paged_geojson_fetch", new_callable=AsyncMock,
+            return_value=cls_polys,
+        ):
+            async def fake_post(url, data=None):
+                resp = Mock()
+                resp.status_code = 200
+                resp.raise_for_status = Mock()
+                if (data or {}).get("objectIds"):
+                    # Simulate the rate-limit failure: no error key,
+                    # just an empty features list (the silent shape
+                    # we used to render as "_note: attributes
+                    # unavailable").
+                    resp.json.return_value = {"features": []}
+                else:
+                    # Spatial-query side: both zones contain parcel 100.
+                    resp.json.return_value = {"objectIds": [100]}
+                return resp
+
+            plugin.client = Mock()
+            plugin.client.post = fake_post
+
+            text = await plugin._find_features_spanning_classifications(
+                {
+                    "source_item_id": "a" * 32,
+                    "classification_item_id": "b" * 32,
+                    "classification_field": "ZONE_CODE",
+                }
+            )
+
+        # Parcel 100 touches both zones → qualifies. Attribute fetch
+        # returned empty → the warning must fire.
+        assert "WARNING" in text
+        assert "INTERNAL LAYER ROW IDs" in text
+        assert "DO NOT report them" in text
+        # The model is told how to recover.
+        assert "query_data" in text
+        assert "OBJECTID=" in text
+        # The qualifying OID is still surfaced (with the value set)
+        # so the model has something to work with.
+        assert "100" in text
+        # The dangerous old marker must not be present anywhere.
+        assert "_note: attributes unavailable" not in text
 
     @pytest.mark.asyncio
     async def test_classification_must_be_polygon(self, plugin):
