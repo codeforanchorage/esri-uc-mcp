@@ -239,6 +239,19 @@ class AnchorageGISPlugin(DataPlugin):
         return "Unknown"
 
     @staticmethod
+    def _with_retrieved_footer(text: str) -> str:
+        # Stamp every tool response with a UTC retrieval timestamp so
+        # models can tell stale outputs from fresh ones. Skip if the
+        # text already carries a Retrieved: line (query_data emits one
+        # in its provenance header) to avoid double-stamping.
+        if not text or "Retrieved:" in text:
+            return text
+        retrieved_at = datetime.now(timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
+        return f"{text}\n\n_Retrieved: {retrieved_at}_"
+
+    @staticmethod
     def _ms_to_iso_smart(ms: Any) -> Any:
         # Midnight UTC → date-only (preserves output for true date fields
         # like effective/inspection dates). Non-midnight → full ISO so we
@@ -4241,15 +4254,19 @@ class AnchorageGISPlugin(DataPlugin):
                     f"Query records from a {city} ArcGIS Feature Service. "
                     f"Provide the item ID — the plugin resolves the service "
                     f"URL automatically.\n\n"
+                    f"DISCOVERY-FIRST WORKFLOW: `find_gis_content` / "
+                    f"`search_spatial_layers` (find items) → "
+                    f"`get_item_details` (confirm the item is queryable) → "
+                    f"`get_layer_schema` (see the REAL field names) → "
+                    f"`query_data`. Never guess field names — they are "
+                    f"case-sensitive, and typos are rejected up front with "
+                    f"a 'did you mean' suggestion before the query runs.\n"
                     f"COUNTING ('how many X?'): set `limit=1` and read the "
                     f"'TOTAL COUNT' line at the top of the response. The "
                     f"total reflects the WHERE clause (default `1=1` = "
                     f"all records).\n"
                     f"LISTING: set `limit` to how many records you want "
                     f"and (optionally) `where` to filter.\n"
-                    f"DISCOVERING FIELD NAMES: call `get_layer_schema` "
-                    f"first to see the available fields before writing a "
-                    f"WHERE clause or selecting `out_fields`.\n"
                     f"PRECONDITION: the item must be a Feature Service or "
                     f"Map Service (not a Web Map or app). If unsure, "
                     f"`get_item_details` shows the type and service URL."
@@ -4325,11 +4342,16 @@ class AnchorageGISPlugin(DataPlugin):
                     f"Service. Given a lon/lat (WGS84), returns the "
                     f"attributes of every polygon feature that contains "
                     f"the point — e.g. 'which park is at this location?', "
-                    f"'which zoning district?', 'which flood zone?'. Use "
-                    f"get_layer_schema first to confirm the layer's "
-                    f"geometryType is esriGeometryPolygon. Returns "
-                    f"attributes only; polygon geometry is not included "
-                    f"in the response."
+                    f"'which zoning district?', 'which flood zone?'.\n\n"
+                    f"DISCOVERY-FIRST: call `get_layer_schema` before "
+                    f"using this tool to (a) confirm the layer's "
+                    f"geometryType is esriGeometryPolygon and (b) see the "
+                    f"real field names if you plan to narrow with `where` "
+                    f"or `out_fields`. Field names are case-sensitive; "
+                    f"guessed names will be rejected before the query "
+                    f"runs.\n"
+                    f"Returns attributes only; polygon geometry is not "
+                    f"included in the response."
                 ),
                 input_schema={
                     "type": "object",
@@ -4400,11 +4422,18 @@ class AnchorageGISPlugin(DataPlugin):
                     f"straddle a boundary — e.g. 'which LRSA road "
                     f"segments fall within Assembly District 5?', "
                     f"'which trails cross this park?', 'which parcels "
-                    f"touch this flood zone?'. Note: the ArcGIS REST "
-                    f"'intersects' relation returns whole features — "
-                    f"set return_geometry=true to retrieve GeoJSON "
-                    f"geometries for precise client-side clipping at "
-                    f"the filter boundary."
+                    f"touch this flood zone?'.\n\n"
+                    f"DISCOVERY-FIRST: call `get_layer_schema` on BOTH "
+                    f"the target layer (`item_id`) and any filter layer "
+                    f"(`filter_item_id`) before writing `where` / "
+                    f"`filter_where` — they live in different schemas "
+                    f"with different field names. Field names are "
+                    f"case-sensitive; guessed names are rejected before "
+                    f"the query runs.\n"
+                    f"Note: the ArcGIS REST 'intersects' relation "
+                    f"returns whole features — set return_geometry=true "
+                    f"to retrieve GeoJSON geometries for precise "
+                    f"client-side clipping at the filter boundary."
                 ),
                 input_schema={
                     "type": "object",
@@ -5194,7 +5223,9 @@ class AnchorageGISPlugin(DataPlugin):
                 )
 
             return ToolResult(
-                content=[{"type": "text", "text": text}],
+                content=[
+                    {"type": "text", "text": self._with_retrieved_footer(text)}
+                ],
                 success=True,
             )
 
