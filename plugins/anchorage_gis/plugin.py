@@ -238,6 +238,23 @@ class AnchorageGISPlugin(DataPlugin):
                 pass
         return "Unknown"
 
+    @staticmethod
+    def _ms_to_iso_smart(ms: Any) -> Any:
+        # Midnight UTC → date-only (preserves output for true date fields
+        # like effective/inspection dates). Non-midnight → full ISO so we
+        # don't silently drop the time-of-day on real datetime fields.
+        # On failure, return the raw value rather than a placeholder —
+        # losing the data is worse than showing the epoch ms.
+        if ms is None or ms == "":
+            return ms
+        try:
+            dt = datetime.fromtimestamp(int(ms) / 1000, tz=timezone.utc)
+        except (ValueError, TypeError, OSError):
+            return ms
+        if dt.hour == dt.minute == dt.second == dt.microsecond == 0:
+            return dt.strftime("%Y-%m-%d")
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     def _format_details(self, item: Dict[str, Any]) -> str:
         title = item.get("title", "Untitled")
         item_type = item.get("type", "Unknown")
@@ -327,14 +344,58 @@ class AnchorageGISPlugin(DataPlugin):
         geometry_type: Optional[str] = None,
         name_field: Optional[str] = None,
         item_id: Optional[str] = None,
+        service_url: Optional[str] = None,
+        where: Optional[str] = None,
+        out_fields: Optional[str] = None,
     ) -> str:
+        provenance: List[str] = []
+        if service_url:
+            provenance.append(f"Source: {service_url}")
+        if where is not None or out_fields is not None:
+            parts = []
+            if where is not None:
+                parts.append(f"where={where!r}")
+            if out_fields is not None:
+                parts.append(f"outFields={out_fields!r}")
+            parts.append(f"resultRecordCount={limit}")
+            provenance.append(f"Query: {', '.join(parts)}")
+        if provenance:
+            retrieved_at = datetime.now(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            )
+            provenance.append(f"Retrieved: {retrieved_at}")
+
+        # Truncation banner: make it impossible to miss that the listed
+        # records are a sample. Only fire when total_count proves the
+        # cap; for non-paginating callers (spatial_*) total_count is
+        # None and we stay silent.
+        truncated = (
+            total_count is not None
+            and len(records) > 0
+            and total_count > len(records)
+        )
+        if truncated:
+            provenance.append(
+                f"**TRUNCATED:** returned {len(records)} of "
+                f"{total_count:,} matching records (limit={limit}). "
+                f"The records below are a SAMPLE — do not generalize "
+                f"counts or percentages from them. Use the TOTAL COUNT "
+                f"line below for 'how many?' questions, or narrow the "
+                f"WHERE clause to get a complete listing."
+            )
+
         if not records:
+            if provenance:
+                return "\n".join(provenance + ["", "No records returned."])
             return "No records returned."
 
         count_part = f"{len(records)}"
         if total_count is not None:
             count_part += f" of {total_count:,} total"
-        lines = [f"Returned {count_part} record(s) (limit: {limit})."]
+        lines = list(provenance)
+        if provenance:
+            lines.append("")
+        lines.append(f"Returned {count_part} record(s) (limit: {limit}).")
         if total_count is not None:
             lines.append(
                 f"TOTAL COUNT (records matching the WHERE clause): "
@@ -390,7 +451,7 @@ class AnchorageGISPlugin(DataPlugin):
                 if key == "__geometry__":
                     continue
                 if date_fields and key in date_fields and value is not None:
-                    value = self._ms_to_date(value)
+                    value = self._ms_to_iso_smart(value)
                 lines.append(f"  {key}: {value}")
             if geometry is not None:
                 geom_str = json.dumps(geometry, separators=(",", ":"))
@@ -4917,6 +4978,9 @@ class AnchorageGISPlugin(DataPlugin):
                     geometry_type=quick_meta.get("geometry_type"),
                     name_field=quick_meta.get("name_field"),
                     item_id=item_id,
+                    service_url=service_url,
+                    where=validated_where,
+                    out_fields=out_fields,
                 )
                 if not records:
                     text += self._no_data_hint(where)
