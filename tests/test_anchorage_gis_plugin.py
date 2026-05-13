@@ -2475,6 +2475,33 @@ class TestAnchorageCoveragePct:
             {"xmin": "bad"}
         ) is None
 
+    def test_degenerate_bbox_returns_none(self):
+        # Single-point layer (e.g. one hospital). xmin == xmax,
+        # ymin == ymax. The math would say "0% overlap" because the
+        # intersection has zero area — but the point IS inside
+        # Anchorage. Return None so the caveat stays silent rather
+        # than emitting a misleading "does not overlap" message.
+        for extent in (
+            {  # both dims degenerate
+                "xmin": -149.9, "ymin": 61.2,
+                "xmax": -149.9, "ymax": 61.2,
+                "spatialReference": {"wkid": 4326},
+            },
+            {  # zero-width
+                "xmin": -149.9, "ymin": 61.0,
+                "xmax": -149.9, "ymax": 61.3,
+                "spatialReference": {"wkid": 4326},
+            },
+            {  # zero-height
+                "xmin": -150.0, "ymin": 61.2,
+                "xmax": -149.0, "ymax": 61.2,
+                "spatialReference": {"wkid": 4326},
+            },
+        ):
+            assert (
+                AnchorageGISPlugin._anchorage_coverage_pct(extent) is None
+            )
+
 
 class TestErrorRewriter:
     """Reactive rewriting of ArcGIS error messages so weaker models

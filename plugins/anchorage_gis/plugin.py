@@ -1955,6 +1955,12 @@ class AnchorageGISPlugin(DataPlugin):
         if any(not isinstance(v, (int, float)) for v in coords):
             return None
         xmin, ymin, xmax, ymax = coords
+        # Degenerate bbox (single point or zero-width/height) carries no
+        # useful coverage signal — a hospital layer with one point in
+        # downtown isn't "non-overlapping Anchorage", it just has no
+        # area. Return None so the caveat stays silent.
+        if xmin == xmax or ymin == ymax:
+            return None
         sr = extent.get("spatialReference") or {}
         wkid = sr.get("wkid") or sr.get("latestWkid")
         if wkid in (4326, 4269):
