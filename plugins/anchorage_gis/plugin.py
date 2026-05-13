@@ -1873,6 +1873,22 @@ class AnchorageGISPlugin(DataPlugin):
         except Exception:
             return None
 
+    async def _safe_date_fields(self, item_id: str) -> Optional[set]:
+        # Best-effort lookup of date field names for an item's layer.
+        # Used by paths (spatial_*) that don't otherwise need the layer
+        # URL upstream — resolve via get_dataset, then quick_meta. Any
+        # failure returns None so callers fall back to raw epoch
+        # rendering rather than blocking the user's spatial result.
+        try:
+            item = await self.get_dataset(item_id)
+            service_url = self._ensure_layer_url(item.get("url", ""))
+            if not service_url:
+                return None
+            quick_meta = await self._get_layer_quick_meta(service_url)
+            return (quick_meta or {}).get("date_fields")
+        except Exception:
+            return None
+
     async def _get_layer_quick_meta(
         self, service_url: str
     ) -> Dict[str, Any]:
@@ -5000,15 +5016,18 @@ class AnchorageGISPlugin(DataPlugin):
                         error_message="lon and lat are required",
                     )
                 limit = min(int(arguments.get("limit", 10)), 50)
-                records = await self.spatial_query_point(
-                    item_id,
-                    lon=arguments["lon"],
-                    lat=arguments["lat"],
-                    filters={
-                        "where": arguments.get("where", "1=1"),
-                        "out_fields": arguments.get("out_fields", "*"),
-                    },
-                    limit=limit,
+                records, date_fields = await asyncio.gather(
+                    self.spatial_query_point(
+                        item_id,
+                        lon=arguments["lon"],
+                        lat=arguments["lat"],
+                        filters={
+                            "where": arguments.get("where", "1=1"),
+                            "out_fields": arguments.get("out_fields", "*"),
+                        },
+                        limit=limit,
+                    ),
+                    self._safe_date_fields(item_id),
                 )
                 if not records:
                     text = (
@@ -5018,9 +5037,14 @@ class AnchorageGISPlugin(DataPlugin):
                 else:
                     # total_count=None avoids a misleading "of N total"
                     # line: every match is already in `records`, there
-                    # is no paging going on.
+                    # is no paging going on. date_fields comes from a
+                    # best-effort meta lookup; raw epoch falls through
+                    # on any failure.
                     text = self._format_query_results(
-                        records, limit, total_count=None, date_fields=None
+                        records,
+                        limit,
+                        total_count=None,
+                        date_fields=date_fields,
                     )
 
             elif tool_name == "spatial_query_polygon":
@@ -5054,19 +5078,27 @@ class AnchorageGISPlugin(DataPlugin):
                     if return_geometry
                     else min(requested_limit, 1000)
                 )
-                records = await self.spatial_query_polygon(
-                    item_id,
-                    filter_geometry=filter_geometry,
-                    filter_item_id=filter_item_id,
-                    filter_where=arguments.get("filter_where", "1=1"),
-                    spatial_rel=arguments.get("spatial_rel", "intersects"),
-                    filters={
-                        "where": arguments.get("where", "1=1"),
-                        "out_fields": arguments.get("out_fields", "*"),
-                    },
-                    limit=effective_limit,
-                    return_geometry=return_geometry,
+                records, date_fields = await asyncio.gather(
+                    self.spatial_query_polygon(
+                        item_id,
+                        filter_geometry=filter_geometry,
+                        filter_item_id=filter_item_id,
+                        filter_where=arguments.get("filter_where", "1=1"),
+                        spatial_rel=arguments.get("spatial_rel", "intersects"),
+                        filters={
+                            "where": arguments.get("where", "1=1"),
+                            "out_fields": arguments.get("out_fields", "*"),
+                        },
+                        limit=effective_limit,
+                        return_geometry=return_geometry,
+                    ),
+                    self._safe_date_fields(item_id),
                 )
+                # return_geometry=True uses f=geojson which renders
+                # dates as ISO strings server-side, so skip our
+                # epoch→ISO path to avoid double conversion.
+                if return_geometry:
+                    date_fields = None
                 if not records:
                     text = (
                         f"No features in item `{item_id}` match the "
@@ -5077,7 +5109,7 @@ class AnchorageGISPlugin(DataPlugin):
                         records,
                         effective_limit,
                         total_count=None,
-                        date_fields=None,
+                        date_fields=date_fields,
                     )
 
             elif tool_name == "aggregate_by_polygon":
