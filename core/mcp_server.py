@@ -161,8 +161,20 @@ class MCPServer:
                 return None
             return error_response
 
+    # MCP protocol revisions this server implements. The wire format for a
+    # tools-only server is compatible across these, so we echo the client's
+    # requested version when it's one we recognize, else fall back to a
+    # known-good default. (Previously this was hardcoded, which could make
+    # clients on a newer revision -- e.g. M365 Copilot -- warn or balk.)
+    SUPPORTED_PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
+    DEFAULT_PROTOCOL_VERSION = "2025-03-26"
+
     async def _handle_initialize(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Handle initialize request.
+
+        Negotiates the protocol version against the client's request and
+        populates serverInfo / instructions from config so each deployment
+        can identify itself and steer the model independently.
 
         Args:
             params: Initialize parameters
@@ -170,16 +182,32 @@ class MCPServer:
         Returns:
             Initialize response
         """
-        return {
-            "protocolVersion": "2025-03-26",
+        config = self.plugin_manager.config or {}
+
+        requested_version = params.get("protocolVersion")
+        protocol_version = (
+            requested_version
+            if requested_version in self.SUPPORTED_PROTOCOL_VERSIONS
+            else self.DEFAULT_PROTOCOL_VERSION
+        )
+
+        result: Dict[str, Any] = {
+            "protocolVersion": protocol_version,
             "capabilities": {
                 "tools": {},
             },
             "serverInfo": {
-                "name": "opencontext",
-                "version": "1.0.0",
+                "name": config.get("server_name", "OpenContext"),
+                "version": str(config.get("server_version", "1.0.0")),
             },
         }
+
+        # Optional per-deployment guidance string surfaced to the client/model.
+        instructions = config.get("instructions")
+        if instructions:
+            result["instructions"] = instructions
+
+        return result
 
     async def _handle_tools_list(self) -> Dict[str, Any]:
         """Handle tools/list request.

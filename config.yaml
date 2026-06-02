@@ -3,6 +3,14 @@ server_name: "Anchorage GIS MCP"
 description: "Municipality of Anchorage GIS MCP server - Safe, conversational access to Anchorage GIS maps, apps, and spatial data"
 organization: "Municipality of Anchorage"
 
+# Optional per-deployment guidance returned in the MCP `initialize` response
+# (server-level `instructions`). Use this to steer model behavior WITHOUT
+# editing tool descriptions -- e.g. a Copilot/GPT-5.1 profile on the GCC
+# deployment vs a Claude profile on the public one. Leave commented out to
+# send no instructions (backward-compatible default).
+# instructions: |
+#   Start with find_gis_content for discovery. All tools are read-only.
+
 plugins:
   anchorage_gis:
     enabled: true

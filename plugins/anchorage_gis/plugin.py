@@ -4030,7 +4030,7 @@ class AnchorageGISPlugin(DataPlugin):
         city = (
             self.plugin_config.city_name if self.plugin_config else "Unknown"
         )
-        return [
+        tools = [
             ToolDefinition(
                 name="find_gis_content",
                 description=(
@@ -4988,6 +4988,14 @@ class AnchorageGISPlugin(DataPlugin):
                 },
             ),
         ]
+        # Every tool in this plugin is read-only and reaches out to external
+        # ArcGIS services, so advertise the MCP safety hints uniformly. This
+        # lets clients (e.g. M365 Copilot) treat them as safe and skip
+        # per-call confirmation prompts.
+        for tool in tools:
+            if tool.annotations is None:
+                tool.annotations = {"readOnlyHint": True, "openWorldHint": True}
+        return tools
 
     # ── Tool dispatch ─────────────────────────────────────────────────────
 

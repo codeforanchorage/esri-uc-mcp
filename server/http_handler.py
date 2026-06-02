@@ -141,6 +141,12 @@ class UniversalHTTPHandler:
     # common case keeps working without a request-header round-trip.
     DEFAULT_CORS_ORIGIN = "https://claude.ai"
 
+    # Request paths that carry MCP JSON-RPC. The hardened GCC route
+    # (/mcp-gcc) shares this same Lambda handler as the public /mcp route;
+    # its API-key requirement is enforced at API Gateway, not here, so the
+    # handler simply needs to accept the path.
+    MCP_PATHS = frozenset({"/mcp", "/mcp-gcc"})
+
     def __init__(self) -> None:
         """Initialize the universal HTTP handler."""
         logger.info("UniversalHTTPHandler initialized")
@@ -203,8 +209,8 @@ class UniversalHTTPHandler:
         # Pull Origin header so CORS responses can reflect allowlisted origins.
         request_origin = headers.get("origin") if headers else None
 
-        # Validate path - must be /mcp
-        if path != "/mcp":
+        # Validate path - must be an MCP route
+        if path not in self.MCP_PATHS:
             duration_ms = (time.perf_counter() - start_time) * 1000
             error_body = json.dumps(
                 {
@@ -213,7 +219,7 @@ class UniversalHTTPHandler:
                     "error": {
                         "code": -32601,
                         "message": "Not Found",
-                        "data": f"Path '{path}' not found. Expected '/mcp'",
+                        "data": f"Path '{path}' not found. Expected '/mcp' or '/mcp-gcc'",
                     },
                 }
             )

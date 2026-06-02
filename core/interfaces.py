@@ -28,6 +28,13 @@ class ToolDefinition(BaseModel):
     input_schema: Dict[str, Any] = Field(
         ..., description="JSON Schema for tool input parameters"
     )
+    annotations: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description=(
+            "Optional MCP tool annotations (e.g. readOnlyHint, openWorldHint) "
+            "that hint at a tool's behavior to clients."
+        ),
+    )
 
 
 class ToolResult(BaseModel):

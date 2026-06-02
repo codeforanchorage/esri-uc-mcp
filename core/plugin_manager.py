@@ -279,13 +279,14 @@ class PluginManager:
             for tool_def in plugin_tools:
                 # Use double underscore separator to match _register_tools
                 prefixed_name = f"{plugin_name}__{tool_def.name}"
-                tools.append(
-                    {
-                        "name": prefixed_name,
-                        "description": tool_def.description,
-                        "inputSchema": tool_def.input_schema,
-                    }
-                )
+                tool_dict: Dict[str, Any] = {
+                    "name": prefixed_name,
+                    "description": tool_def.description,
+                    "inputSchema": tool_def.input_schema,
+                }
+                if tool_def.annotations:
+                    tool_dict["annotations"] = tool_def.annotations
+                tools.append(tool_dict)
 
         return tools
 

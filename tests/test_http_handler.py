@@ -44,6 +44,34 @@ class TestPathValidation:
             mock_init.assert_called_once()
 
     @pytest.mark.asyncio
+    async def test_valid_path_mcp_gcc_succeeds(self):
+        """The hardened GCC route shares this handler and must be accepted
+        (its API-key requirement is enforced upstream at API Gateway)."""
+        handler = UniversalHTTPHandler()
+
+        with (
+            patch("server.http_handler._initialize_server") as mock_init,
+            patch("server.http_handler._mcp_server") as mock_mcp_server,
+        ):
+            mock_mcp_server.handle_http_request = AsyncMock(
+                return_value={
+                    "statusCode": 200,
+                    "headers": {},
+                    "body": json.dumps({"result": "success"}),
+                }
+            )
+
+            status, headers, body = await handler.handle_request(
+                method="POST",
+                path="/mcp-gcc",
+                body=json.dumps({"jsonrpc": "2.0", "id": 1, "method": "ping"}),
+                headers={},
+            )
+
+            assert status == 200
+            mock_init.assert_called_once()
+
+    @pytest.mark.asyncio
     async def test_invalid_path_returns_404(self):
         """Test that invalid path returns 404."""
         handler = UniversalHTTPHandler()

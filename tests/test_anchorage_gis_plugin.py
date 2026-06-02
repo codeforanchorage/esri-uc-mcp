@@ -137,6 +137,19 @@ class TestGetTools:
         ]
         assert len(city_tools) >= 5
 
+    def test_all_tools_marked_read_only(self, anchorage_config):
+        """Every tool in this read-only plugin advertises readOnlyHint so
+        clients (e.g. M365 Copilot) can skip per-call confirmation."""
+        plugin = AnchorageGISPlugin(anchorage_config)
+        plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        tools = plugin.get_tools()
+
+        assert tools, "expected at least one tool"
+        for t in tools:
+            assert t.annotations is not None, f"{t.name} missing annotations"
+            assert t.annotations.get("readOnlyHint") is True, t.name
+            assert t.annotations.get("openWorldHint") is True, t.name
+
 
 # ── execute_tool ───────────────────────────────────────────────────────
 

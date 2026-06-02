@@ -20,6 +20,7 @@ class TestInitialize:
     async def test_initialize_returns_correct_response(self):
         """Test that initialize returns correct protocol version and capabilities."""
         plugin_manager = MagicMock(spec=PluginManager)
+        plugin_manager.config = {}
         server = MCPServer(plugin_manager)
 
         request = {
@@ -35,16 +36,65 @@ class TestInitialize:
         assert response["jsonrpc"] == "2.0"
         assert response["id"] == 1
         assert "result" in response
+        # No protocolVersion requested -> server falls back to its default.
         assert response["result"]["protocolVersion"] == "2025-03-26"
         assert "capabilities" in response["result"]
         assert "serverInfo" in response["result"]
-        assert response["result"]["serverInfo"]["name"] == "opencontext"
+        # Empty config -> default server name.
+        assert response["result"]["serverInfo"]["name"] == "OpenContext"
         assert response["result"]["serverInfo"]["version"] == "1.0.0"
+        # No instructions configured -> key omitted.
+        assert "instructions" not in response["result"]
+
+    @pytest.mark.asyncio
+    async def test_initialize_negotiates_version_and_uses_config(self):
+        """Initialize echoes a supported requested version and pulls
+        serverInfo name + instructions from config."""
+        plugin_manager = MagicMock(spec=PluginManager)
+        plugin_manager.config = {
+            "server_name": "Anchorage GIS MCP",
+            "instructions": "Start with find_gis_content.",
+        }
+        server = MCPServer(plugin_manager)
+
+        request = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {"protocolVersion": "2025-06-18"},
+        }
+
+        response = await server.handle_request(request)
+
+        result = response["result"]
+        # Requested version is supported -> echoed back.
+        assert result["protocolVersion"] == "2025-06-18"
+        assert result["serverInfo"]["name"] == "Anchorage GIS MCP"
+        assert result["instructions"] == "Start with find_gis_content."
+
+    @pytest.mark.asyncio
+    async def test_initialize_unsupported_version_falls_back(self):
+        """An unrecognized requested version falls back to the default."""
+        plugin_manager = MagicMock(spec=PluginManager)
+        plugin_manager.config = {}
+        server = MCPServer(plugin_manager)
+
+        request = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {"protocolVersion": "1999-01-01"},
+        }
+
+        response = await server.handle_request(request)
+
+        assert response["result"]["protocolVersion"] == "2025-03-26"
 
     @pytest.mark.asyncio
     async def test_initialize_notification_returns_none(self):
         """Test that initialize notification (no id) returns None."""
         plugin_manager = MagicMock(spec=PluginManager)
+        plugin_manager.config = {}
         server = MCPServer(plugin_manager)
 
         request = {
