@@ -75,3 +75,9 @@ variable "alarm_sns_topic_arn" {
   type        = string
   default     = ""
 }
+
+variable "enable_gcc_route" {
+  description = "Create the hardened, API-key-required /mcp-gcc route (for the M365 GCC Copilot consumer) on the same Lambda. Leave false on deployments that only serve the public /mcp route."
+  type        = bool
+  default     = false
+}

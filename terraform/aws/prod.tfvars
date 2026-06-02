@@ -1,7 +1,7 @@
-lambda_name     = "anchorage-gis-mcp-prod"
-stage_name      = "prod"
-aws_region      = "us-west-2"
-config_file     = "config.yaml"
+lambda_name = "anchorage-gis-mcp-prod"
+stage_name  = "prod"
+aws_region  = "us-west-2"
+config_file = "config.yaml"
 # 1024 MB: aggregate_by_polygon holds up to AGG_SOURCE_LIMIT source features in
 # memory plus a bounded 32-entry polygon cache. Also buys more Lambda
 # CPU, which accelerates the pure-Python point-in-polygon work.
@@ -21,3 +21,8 @@ lambda_reserved_concurrency = 10
 # conversational, so 1 rps sustained per IP (~300/5min) is plenty for
 # real users and tight enough to slow scrapers and denial-of-wallet probes.
 waf_rate_limit_per_5min = 300
+
+# Hardened, API-key-gated /mcp-gcc route for the M365 GCC Copilot consumer.
+# The public /mcp route (Claude) is unaffected. After apply, retrieve the key
+# with: terraform output -raw gcc_api_key_value
+enable_gcc_route = true

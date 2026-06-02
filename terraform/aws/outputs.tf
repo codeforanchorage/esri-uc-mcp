@@ -44,3 +44,21 @@ output "custom_domain_target" {
   description = "API Gateway regional domain name — city IT points the custom domain CNAME here"
   value       = var.custom_domain != "" ? aws_api_gateway_domain_name.custom[0].regional_domain_name : null
 }
+
+# ── GCC route outputs (only populated when var.enable_gcc_route = true) ─────
+
+output "gcc_mcp_url" {
+  description = "API-key-gated MCP URL for the M365 GCC Copilot connector"
+  value       = var.enable_gcc_route ? "${aws_api_gateway_stage.prod.invoke_url}/mcp-gcc" : null
+}
+
+output "gcc_api_key_id" {
+  description = "ID of the API key for the GCC Copilot connector"
+  value       = var.enable_gcc_route ? aws_api_gateway_api_key.gcc[0].id : null
+}
+
+output "gcc_api_key_value" {
+  description = "Secret API key for the GCC Copilot connector — configure as a shared connection on the Power Platform custom connector (end users never see it)"
+  value       = var.enable_gcc_route ? aws_api_gateway_api_key.gcc[0].value : null
+  sensitive   = true
+}
