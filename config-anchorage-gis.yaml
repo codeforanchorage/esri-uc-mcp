@@ -3,10 +3,11 @@ server_name: "Anchorage GIS MCP"
 description: "Municipality of Anchorage GIS MCP server - Safe, conversational access to Anchorage GIS maps, apps, and spatial data"
 organization: "Municipality of Anchorage"
 
-# Per-deployment guidance returned in the MCP `initialize` response. Tuned for
-# the M365 GCC Copilot (GPT-5.1) consumer: pushes the model to DECOMPOSE
-# multi-step spatial questions and answer them from these datasets rather than
-# escalating. Keep in sync with config.yaml.
+# Per-deployment guidance returned in the MCP `initialize` response. Applies to
+# EVERY consumer (Claude on the public /mcp route, and any Copilot/GCC
+# connector if added) -- the text is model-agnostic. Pushes the model to
+# DECOMPOSE multi-step spatial questions and answer them from these datasets
+# rather than escalating. Keep in sync with config.yaml.
 instructions: |
   You are connected to the Municipality of Anchorage GIS. These tools can
   answer multi-step spatial and quantitative questions about Anchorage

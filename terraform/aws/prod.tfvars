@@ -22,7 +22,10 @@ lambda_reserved_concurrency = 10
 # real users and tight enough to slow scrapers and denial-of-wallet probes.
 waf_rate_limit_per_5min = 300
 
-# Hardened, API-key-gated /mcp-gcc route for the M365 GCC Copilot consumer.
-# The public /mcp route (Claude) is unaffected. After apply, retrieve the key
-# with: terraform output -raw gcc_api_key_value
-enable_gcc_route = true
+# Hardened, API-key-gated /mcp-gcc route for an M365 GCC Copilot consumer.
+# Disabled: the Copilot Studio connector was never wired up, and the
+# buffering tools + instructions already ship on the public /mcp route (same
+# Lambda), so the keyed route is unused surface area. Re-enable by flipping
+# this to true and re-applying (a fresh API key is generated; retrieve with
+# `terraform output -raw gcc_api_key_value`).
+enable_gcc_route = false
