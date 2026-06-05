@@ -2397,6 +2397,43 @@ class AnchorageGISPlugin(DataPlugin):
         return best
 
     @staticmethod
+    def _geometry_bbox(
+        geometry: Dict[str, Any],
+    ) -> Optional[Tuple[float, float, float, float]]:
+        """(min_lon, min_lat, max_lon, max_lat) for a Polygon/MultiPolygon.
+
+        Used as a cheap candidate prefilter before the O(edges) precise
+        distance test in aggregate_by_polygon -- skip a polygon entirely
+        when the point lies outside its (buffer-padded) bounding box.
+        """
+        gtype = (geometry or {}).get("type", "")
+        coords = (geometry or {}).get("coordinates") or []
+        rings: List[List[List[float]]] = []
+        if gtype == "Polygon":
+            rings = list(coords)
+        elif gtype == "MultiPolygon":
+            for poly in coords:
+                rings.extend(poly)
+        else:
+            return None
+        min_x = min_y = float("inf")
+        max_x = max_y = float("-inf")
+        for ring in rings:
+            for pt in ring:
+                x, y = pt[0], pt[1]
+                if x < min_x:
+                    min_x = x
+                if x > max_x:
+                    max_x = x
+                if y < min_y:
+                    min_y = y
+                if y > max_y:
+                    max_y = y
+        if min_x == float("inf"):
+            return None
+        return (min_x, min_y, max_x, max_y)
+
+    @staticmethod
     def _ring_area(ring: List[List[float]]) -> float:
         """Shoelace area (signed). Positive for CCW rings."""
         area = 0.0
@@ -3023,28 +3060,60 @@ class AnchorageGISPlugin(DataPlugin):
                 continue
             source_points.append((point, props))
 
-        # Pre-compute polygon areas for 'largest' policy.
+        # Pre-compute a bounding box per polygon (cheap) for the candidate
+        # prefilter below, plus areas when 'largest' needs them. Without the
+        # prefilter, matching is O(source x polygons x edges) -- on the full
+        # census-block layer (~3,700 blocks) against ~180 park polygons that
+        # blew past the 29s API Gateway timeout. The bbox check prunes all
+        # but the few nearby polygons before the precise distance test.
+        for p in agg_polygons:
+            p["_bbox"] = self._geometry_bbox(p["geometry"])
         if overlap_policy == "largest":
             for p in agg_polygons:
                 p["_area"] = self._geometry_area(p["geometry"])
 
+        first_only = overlap_policy == "first_match"
+        m_per_deg = self._M_PER_DEG_LAT
         buckets: Dict[Any, Dict[str, Any]] = defaultdict(
             lambda: {"count": 0, **{f: 0.0 for f in sum_fields}}
         )
         unmatched_count = 0
         for point, props in source_points:
+            px, py = point
+            # Buffer padding in degrees, consistent with the cos(lat)
+            # scaling _point_to_geometry_distance_m uses, so the prefilter
+            # is a safe superset (never excludes a true match).
             if buffer_m > 0:
-                matches = [
-                    p for p in agg_polygons
-                    if self._point_to_geometry_distance_m(
-                        p["geometry"], point
-                    ) <= buffer_m
-                ]
+                lat_scale = math.cos(math.radians(py))
+                pad_lat = buffer_m / m_per_deg
+                pad_lon = (
+                    buffer_m / (m_per_deg * lat_scale)
+                    if lat_scale > 1e-9
+                    else 360.0
+                )
             else:
-                matches = [
-                    p for p in agg_polygons
-                    if self._geometry_contains_point(p["geometry"], point)
-                ]
+                pad_lat = pad_lon = 0.0
+            matches = []
+            for p in agg_polygons:
+                bb = p["_bbox"]
+                if bb is not None and (
+                    px < bb[0] - pad_lon
+                    or px > bb[2] + pad_lon
+                    or py < bb[1] - pad_lat
+                    or py > bb[3] + pad_lat
+                ):
+                    continue
+                if buffer_m > 0:
+                    hit = (
+                        self._point_to_geometry_distance_m(p["geometry"], point)
+                        <= buffer_m
+                    )
+                else:
+                    hit = self._geometry_contains_point(p["geometry"], point)
+                if hit:
+                    matches.append(p)
+                    if first_only:
+                        break
             if not matches:
                 unmatched_count += 1
                 continue
