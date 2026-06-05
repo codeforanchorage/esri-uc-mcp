@@ -84,9 +84,14 @@ resource "aws_lambda_function" "mcp_server" {
   # at the per-IP level; this is defense in depth and cost protection.
   reserved_concurrent_executions = var.lambda_reserved_concurrency
 
+  # Config is shipped INSIDE the deployment package as config.yaml and read at
+  # runtime (server/http_handler.py). It is NOT passed via OPENCONTEXT_CONFIG
+  # because the full config -- once the server `instructions` block is included
+  # -- exceeds Lambda's hard 4KB limit on total environment-variable size.
+  # Leaving the env var empty makes the handler fall back to the packaged file.
   environment {
     variables = {
-      OPENCONTEXT_CONFIG = local.config_json
+      OPENCONTEXT_CONFIG = ""
     }
   }
 

@@ -514,7 +514,9 @@ class TestConfigLoading:
             server.http_handler._config = None
 
             _load_config()
-            mock_load.assert_called_once_with("config.yaml")
+            import server.http_handler as _h
+
+            mock_load.assert_called_once_with(_h._packaged_config_path())
 
     def test_load_config_raises_on_invalid_json(self):
         """Test that invalid JSON in environment variable raises error."""

@@ -248,6 +248,11 @@ cp -r plugins "$PACKAGE_DIR/"
 cp -r custom_plugins "$PACKAGE_DIR/" 2>/dev/null || mkdir -p "$PACKAGE_DIR/custom_plugins"
 cp -r server "$PACKAGE_DIR/"
 cp requirements.txt "$PACKAGE_DIR/" 2>/dev/null || true
+# Ship config.yaml INSIDE the package. The Lambda reads it at runtime
+# (server/http_handler.py::_packaged_config_path) instead of via the
+# OPENCONTEXT_CONFIG env var, which AWS caps at 4KB -- the config now exceeds
+# that once the server `instructions` block is included.
+cp config.yaml "$PACKAGE_DIR/"
 
 # Install Python dependencies into package directory
 echo "Installing Python dependencies..."
