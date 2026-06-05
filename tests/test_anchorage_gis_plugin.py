@@ -4160,7 +4160,9 @@ _SQUARE = {
 
 def _cov_resp(cov_sum):
     r = Mock()
+    r.status_code = 200
     r.raise_for_status = Mock()
+    r.headers = {"content-type": "application/json"}
     r.json.return_value = {"features": [{"attributes": {"cov_sum": cov_sum}}]}
     return r
 
@@ -4322,3 +4324,98 @@ class TestCoverageByPolygon:
                     "overlay_item_id": "b" * 32,
                     "target_id_field": "Parcel_ID",
                 })
+
+
+# ── transient-error retry hardening ────────────────────────────────────
+
+
+def _json_resp(payload, status=200):
+    r = Mock()
+    r.status_code = status
+    r.text = str(payload)
+    r.json.return_value = payload
+    r.headers = {"content-type": "application/json"}
+    return r
+
+
+class TestArcgisRetry:
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        p.ARCGIS_RETRY_BACKOFF_S = 0  # no real sleeping in tests
+        return p
+
+    def test_error_text_never_empty(self):
+        f = AnchorageGISPlugin._arcgis_error_text
+        assert f({"code": 500, "message": ""}).strip()  # non-empty
+        assert f({}).strip()
+        full = f({"code": 400, "message": "boom", "details": ["bad field"]})
+        assert "code 400" in full and "boom" in full and "bad field" in full
+
+    def test_transient_classification(self):
+        t = AnchorageGISPlugin._is_transient_arcgis_error
+        assert t({"code": 500, "message": ""}) is True
+        assert t({"code": 503, "message": "busy"}) is True
+        assert t({"message": ""}) is True            # empty msg
+        assert t({"code": 400, "message": "Invalid field 'x'"}) is False
+
+    @pytest.mark.asyncio
+    async def test_retries_transient_then_succeeds(self, plugin):
+        bad = _json_resp({"error": {"code": 500, "message": ""}})
+        good = _json_resp({"features": [1, 2]})
+        plugin.client = Mock()
+        plugin.client.get = AsyncMock(side_effect=[bad, good])
+        out = await plugin._request_json_with_retry("http://x/query", params={})
+        assert out == {"features": [1, 2]}
+        assert plugin.client.get.await_count == 2
+
+    @pytest.mark.asyncio
+    async def test_clear_error_after_max_attempts(self, plugin):
+        bad = _json_resp({"error": {"code": 500, "message": ""}})
+        plugin.client = Mock()
+        plugin.client.get = AsyncMock(return_value=bad)
+        with pytest.raises(RuntimeError, match="after 3 attempt"):
+            await plugin._request_json_with_retry("http://x/query")
+        assert plugin.client.get.await_count == 3
+
+    @pytest.mark.asyncio
+    async def test_non_transient_raises_immediately(self, plugin):
+        bad = _json_resp({"error": {"code": 400, "message": "Invalid field 'foo'"}})
+        plugin.client = Mock()
+        plugin.client.get = AsyncMock(return_value=bad)
+        with pytest.raises(RuntimeError, match="Invalid field"):
+            await plugin._request_json_with_retry("http://x/query")
+        assert plugin.client.get.await_count == 1
+
+    @pytest.mark.asyncio
+    async def test_network_error_retried(self, plugin):
+        good = _json_resp({"ok": True})
+        plugin.client = Mock()
+        plugin.client.get = AsyncMock(
+            side_effect=[httpx.ConnectError("boom"), good]
+        )
+        out = await plugin._request_json_with_retry("http://x")
+        assert out == {"ok": True}
+        assert plugin.client.get.await_count == 2
+
+    @pytest.mark.asyncio
+    async def test_http_4xx_raises_immediately(self, plugin):
+        plugin.client = Mock()
+        plugin.client.get = AsyncMock(return_value=_json_resp({}, status=404))
+        with pytest.raises(RuntimeError, match="HTTP 404"):
+            await plugin._request_json_with_retry("http://x")
+        assert plugin.client.get.await_count == 1
+
+    @pytest.mark.asyncio
+    async def test_http_5xx_retried(self, plugin):
+        good = _json_resp({"ok": True})
+        plugin.client = Mock()
+        plugin.client.post = AsyncMock(
+            side_effect=[_json_resp({}, status=503), good]
+        )
+        out = await plugin._request_json_with_retry(
+            "http://x", method="post", data={}
+        )
+        assert out == {"ok": True}
+        assert plugin.client.post.await_count == 2

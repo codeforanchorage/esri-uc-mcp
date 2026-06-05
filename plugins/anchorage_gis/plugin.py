@@ -2237,6 +2237,13 @@ class AnchorageGISPlugin(DataPlugin):
     # resultOffset at this step until AGG_SOURCE_LIMIT is reached.
     AGG_PAGE_SIZE = 1000
 
+    # Transient-failure retry for the high-fan-out spatial paths
+    # (_paged_geojson_fetch, _overlay_area_in_target). Cold starts and brief
+    # ArcGIS blips otherwise surface as an opaque "Tool execution failed".
+    # Keep attempts few and backoff short -- the API Gateway ceiling is 29s.
+    ARCGIS_MAX_ATTEMPTS = 3
+    ARCGIS_RETRY_BACKOFF_S = 0.4
+
     # Caps for find_features_spanning_classifications. The source cap is
     # higher than AGG_SOURCE_LIMIT because the spanning analysis only
     # returns the qualifying subset (typically << source size); the
@@ -2902,6 +2909,110 @@ class AnchorageGISPlugin(DataPlugin):
             self._agg_layer_cache.popitem(last=False)
         return result
 
+    @staticmethod
+    def _arcgis_error_text(err: Any) -> str:
+        """Build a non-empty, actionable message from an ArcGIS error object.
+
+        ArcGIS sometimes returns ``{"error": {"code": 500, "message": ""}}``
+        on a transient blip -- never surface that as an empty string.
+        """
+        if not isinstance(err, dict):
+            return str(err) or "unknown ArcGIS error"
+        parts: List[str] = []
+        code = err.get("code")
+        if code is not None:
+            parts.append(f"code {code}")
+        msg = (err.get("message") or "").strip()
+        if msg:
+            parts.append(msg)
+        details = [str(d) for d in (err.get("details") or []) if d]
+        if details:
+            parts.append("; ".join(details))
+        return " -- ".join(parts) or (
+            "ArcGIS returned an error with no message (usually a transient "
+            "server blip -- retry the request)"
+        )
+
+    @classmethod
+    def _is_transient_arcgis_error(cls, err: Any) -> bool:
+        """Heuristic: 5xx-class codes and empty-message errors are transient."""
+        if not isinstance(err, dict):
+            return False
+        code = err.get("code")
+        msg = (err.get("message") or "").strip()
+        if code in (500, 502, 503, 504):
+            return True
+        # Empty message (with or without a code) is the cold-start blip shape.
+        return not msg
+
+    async def _request_json_with_retry(
+        self,
+        url: str,
+        *,
+        method: str = "get",
+        params: Optional[Dict[str, Any]] = None,
+        data: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """HTTP request + JSON parse, retrying transient upstream failures.
+
+        Retries httpx transport/timeout errors, HTTP 5xx, and transient
+        ArcGIS error bodies (5xx-class or empty-message). Non-transient
+        failures (4xx, real ArcGIS errors) raise immediately with a clear
+        message. The final transient failure also raises a clear, non-empty
+        message rather than the opaque empty-string error seen before.
+        """
+        last_desc = "unknown error"
+        attempt = 0
+        while attempt < self.ARCGIS_MAX_ATTEMPTS:
+            attempt += 1
+            transient = False
+            try:
+                if method == "post":
+                    resp = await self.client.post(url, data=data)
+                else:
+                    resp = await self.client.get(url, params=params)
+            except (httpx.TransportError, httpx.TimeoutException) as e:
+                transient, last_desc = True, f"network error: {e!r}"
+            else:
+                status = resp.status_code
+                if status >= 500:
+                    transient, last_desc = True, f"upstream HTTP {status}"
+                elif status >= 400:
+                    raise RuntimeError(
+                        f"Feature Service error (HTTP {status}): "
+                        f"{resp.text[:200]}"
+                    )
+                else:
+                    try:
+                        payload = resp.json()
+                    except Exception as e:
+                        raise ValueError(
+                            f"Feature Service returned non-JSON (content-type "
+                            f"{resp.headers.get('content-type', '?')})"
+                        ) from e
+                    err = (
+                        payload.get("error")
+                        if isinstance(payload, dict)
+                        else None
+                    )
+                    if not err:
+                        return payload
+                    if self._is_transient_arcgis_error(err):
+                        transient = True
+                        last_desc = self._arcgis_error_text(err)
+                    else:
+                        raise RuntimeError(
+                            f"Feature Service query failed: "
+                            f"{self._arcgis_error_text(err)}"
+                        )
+            if not transient or attempt >= self.ARCGIS_MAX_ATTEMPTS:
+                break
+            await asyncio.sleep(self.ARCGIS_RETRY_BACKOFF_S * attempt)
+        raise RuntimeError(
+            f"Feature Service request failed after {attempt} attempt(s): "
+            f"{last_desc}"
+        )
+
     async def _paged_geojson_fetch(
         self,
         layer_url: str,
@@ -2926,13 +3037,9 @@ class AnchorageGISPlugin(DataPlugin):
                 "resultOffset": str(offset),
                 "maxAllowableOffset": str(self.GEOMETRY_SIMPLIFY_OFFSET_DEG),
             }
-            resp = await self.client.get(query_url, params=params)
-            resp.raise_for_status()
-            data = resp.json()
-            if "error" in data:
-                raise RuntimeError(
-                    data["error"].get("message", str(data["error"]))
-                )
+            data = await self._request_json_with_retry(
+                query_url, method="get", params=params
+            )
             page = data.get("features") or []
             if not page:
                 break
@@ -3267,12 +3374,8 @@ class AnchorageGISPlugin(DataPlugin):
             "f": "json",
         }
         async with sem:
-            resp = await self.client.post(overlay_query_url, data=params)
-        resp.raise_for_status()
-        data = resp.json()
-        if data.get("error"):
-            raise RuntimeError(
-                data["error"].get("message", "overlay area query failed")
+            data = await self._request_json_with_retry(
+                overlay_query_url, method="post", data=params
             )
         feats = data.get("features") or []
         if not feats:
