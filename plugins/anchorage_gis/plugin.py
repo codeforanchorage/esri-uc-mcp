@@ -2224,10 +2224,14 @@ class AnchorageGISPlugin(DataPlugin):
     # Safety cap on source features pulled for a single aggregation call.
     # A council-by-council rollup of a city-wide dataset is typically a few
     # hundred to a few thousand features; beyond this the analysis is
-    # probably better served by a server-side stats endpoint. 2000 is the
-    # tightest value that still covers all real Anchorage rollups observed
-    # in CloudWatch -- raise only with evidence of legitimate truncation.
-    AGG_SOURCE_LIMIT = 2000
+    # probably better served by a server-side stats endpoint. Raised from
+    # 2000 to 5000 with evidence: the census-block layer
+    # (CensusBlock_2020_MOA_Population) has 3,709 blocks, and a real
+    # "population within 1/2 mile of a park" rollup truncated at 2000,
+    # under-counting the total. 5000 covers it in one pass and matches both
+    # the tool's advertised max and the Lambda memory already provisioned
+    # for it (see config.yaml lambda_memory comment).
+    AGG_SOURCE_LIMIT = 5000
 
     # ArcGIS maxRecordCount is usually 1000 or 2000. We page through with
     # resultOffset at this step until AGG_SOURCE_LIMIT is reached.
