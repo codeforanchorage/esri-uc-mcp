@@ -46,6 +46,22 @@ instructions: |
     d. Report the total. Note any caveats the tool surfaces (coverage,
        small samples, capped fetches) rather than omitting them.
 
+  Lot-coverage -- "what share of each X is covered by Y" questions:
+  - "How many <parcels> with under <N>% <building/pavement> coverage" is a
+    coverage_by_polygon call -- NOT something to escalate or write code for.
+    It spatially sums overlay area per target / target area, so it works even
+    when the overlay (e.g. footprints) has no parcel id. Read the headline
+    "N of M targets in band" count.
+
+  Worked example -- "religious parcels with under 40% building coverage":
+    a. find_gis_content("parcels") -> parcels layer; get_layer_schema for the
+       land-use field, a parcel id, and an area field (usually Shape__Area).
+    b. find_gis_content("buildings") -> building-footprints layer.
+    c. coverage_by_polygon(target_item_id=<parcels>, overlay_item_id=<bldgs>,
+       target_id_field='Parcel_ID', target_where="Land_Use='Religious'",
+       max_coverage_pct=40). Report the in-band count; note the 0%-coverage
+       (vacant) and layer-extent caveats it surfaces.
+
   All tools are READ-ONLY and safe to call without confirmation.
 
 plugins:

@@ -2251,6 +2251,16 @@ class AnchorageGISPlugin(DataPlugin):
     # classification layer has hundreds of polygons.
     SPANNING_QUERY_CONCURRENCY = 10
 
+    # coverage_by_polygon fans out one server-side SUM(area) query per
+    # target polygon. Cap the target count so the fan-out finishes inside
+    # API Gateway's 29s ceiling: ~235 targets ran ~6.7s in testing, so 800
+    # at this concurrency stays well under. Narrow target_where past this.
+    COVERAGE_TARGET_LIMIT = 800
+    COVERAGE_QUERY_CONCURRENCY = 12
+    # How many rows of the per-target breakdown to render (sorted by
+    # coverage). The headline count is always exact; the table is a sample.
+    COVERAGE_TABLE_ROWS = 50
+
     @staticmethod
     def _ring_contains_point(
         ring: List[List[float]], point: Tuple[float, float]
@@ -3217,6 +3227,287 @@ class AnchorageGISPlugin(DataPlugin):
                 f"_Source fetch hit the {max_source:,}-feature cap. "
                 f"Narrow source_where to get a complete picture._",
             ]
+        return "\n".join(lines)
+
+    # Esri numeric field types eligible to hold an area value.
+    _NUMERIC_FIELD_TYPES = frozenset({
+        "esriFieldTypeInteger",
+        "esriFieldTypeSmallInteger",
+        "esriFieldTypeBigInteger",
+        "esriFieldTypeDouble",
+        "esriFieldTypeSingle",
+        "esriFieldTypeOID",
+    })
+
+    async def _overlay_area_in_target(
+        self,
+        overlay_query_url: str,
+        esri_target: Dict[str, Any],
+        overlay_where: str,
+        overlay_area_field: str,
+        sem: asyncio.Semaphore,
+    ) -> float:
+        """Server-side SUM of overlay-feature area intersecting one target.
+
+        Uses ArcGIS outStatistics so the sum is computed upstream -- no
+        geometry crosses the wire. Intersect-based (a feature straddling the
+        target boundary is counted in full, not clipped).
+        """
+        params = {
+            "where": overlay_where,
+            "geometry": json.dumps(esri_target, separators=(",", ":")),
+            "geometryType": "esriGeometryPolygon",
+            "inSR": "4326",
+            "spatialRel": "esriSpatialRelIntersects",
+            "outStatistics": json.dumps([{
+                "statisticType": "sum",
+                "onStatisticField": overlay_area_field,
+                "outStatisticFieldName": "cov_sum",
+            }]),
+            "f": "json",
+        }
+        async with sem:
+            resp = await self.client.post(overlay_query_url, data=params)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("error"):
+            raise RuntimeError(
+                data["error"].get("message", "overlay area query failed")
+            )
+        feats = data.get("features") or []
+        if not feats:
+            return 0.0
+        val = (feats[0].get("attributes") or {}).get("cov_sum")
+        return float(val) if val is not None else 0.0
+
+    async def _coverage_by_polygon(self, args: Dict[str, Any]) -> str:
+        target_item_id = self._validate_item_id(
+            (args.get("target_item_id") or "").strip()
+        )
+        overlay_item_id = self._validate_item_id(
+            (args.get("overlay_item_id") or "").strip()
+        )
+        target_id_field = (args.get("target_id_field") or "").strip()
+        if not target_id_field:
+            raise ValueError(
+                "target_id_field is required -- a field that labels each "
+                "target polygon (e.g. 'Parcel_ID')."
+            )
+        target_area_field = (
+            args.get("target_area_field") or "Shape__Area"
+        ).strip()
+        overlay_area_field = (
+            args.get("overlay_area_field") or "Shape__Area"
+        ).strip()
+        target_where = WhereValidator.validate(args.get("target_where") or "1=1")
+        overlay_where = WhereValidator.validate(
+            args.get("overlay_where") or "1=1"
+        )
+
+        def _opt_pct(name: str) -> Optional[float]:
+            raw = args.get(name)
+            if raw is None or str(raw) == "":
+                return None
+            try:
+                v = float(raw)
+            except (TypeError, ValueError) as exc:
+                raise ValueError(f"{name} must be a number (got {raw!r})") from exc
+            if v < 0:
+                raise ValueError(f"{name} must be >= 0 (got {v})")
+            return v
+
+        max_cov = _opt_pct("max_coverage_pct")
+        min_cov = _opt_pct("min_coverage_pct")
+        if min_cov is not None and max_cov is not None and min_cov >= max_cov:
+            raise ValueError(
+                "min_coverage_pct must be less than max_coverage_pct"
+            )
+        max_targets = min(
+            int(args.get("max_targets", self.COVERAGE_TARGET_LIMIT)),
+            self.COVERAGE_TARGET_LIMIT,
+        )
+
+        target_url = await self._resolve_layer_url(target_item_id)
+        overlay_url = await self._resolve_layer_url(overlay_item_id)
+        target_meta = await self._fetch_layer_meta(target_url)
+        overlay_meta = await self._fetch_layer_meta(overlay_url)
+        poly_types = ("esriGeometryPolygon", "esriGeometryMultiPatch")
+        if target_meta.get("geometryType") not in poly_types:
+            raise ValueError(
+                f"target_item_id must be a polygon layer (got "
+                f"geometryType={target_meta.get('geometryType')!r})"
+            )
+        if overlay_meta.get("geometryType") not in poly_types:
+            raise ValueError(
+                f"overlay_item_id must be a polygon layer (got "
+                f"geometryType={overlay_meta.get('geometryType')!r})"
+            )
+
+        target_fields = {
+            f.get("name"): f for f in target_meta.get("fields", [])
+        }
+        overlay_fields = {
+            f.get("name"): f for f in overlay_meta.get("fields", [])
+        }
+        if target_id_field not in target_fields:
+            raise ValueError(
+                f"target_id_field {target_id_field!r} is not a field on the "
+                f"target layer. Available: {sorted(target_fields)[:12]}..."
+            )
+        for label, fld, fields in (
+            ("target_area_field", target_area_field, target_fields),
+            ("overlay_area_field", overlay_area_field, overlay_fields),
+        ):
+            if fld not in fields:
+                raise ValueError(
+                    f"{label} {fld!r} is not a field on the layer. Most "
+                    f"hosted layers expose 'Shape__Area'; otherwise pass an "
+                    f"explicit numeric area field. Available: "
+                    f"{sorted(fields)[:12]}..."
+                )
+            if fields[fld].get("type") not in self._NUMERIC_FIELD_TYPES:
+                raise ValueError(
+                    f"{label} {fld!r} is not numeric, so it can't be an area."
+                )
+
+        targets = await self._paged_geojson_fetch(
+            target_url,
+            where=target_where,
+            out_fields=f"{target_id_field},{target_area_field}",
+            limit=max_targets,
+        )
+        if not targets:
+            raise ValueError(
+                f"target_where {target_where!r} matched no polygons on the "
+                f"target layer"
+            )
+        truncated = len(targets) >= max_targets
+
+        sem = asyncio.Semaphore(self.COVERAGE_QUERY_CONCURRENCY)
+        overlay_query_url = f"{overlay_url}/query"
+
+        async def score(feat: Dict[str, Any]) -> Dict[str, Any]:
+            props = feat.get("properties") or {}
+            geom = feat.get("geometry")
+            tid = props.get(target_id_field)
+            try:
+                area = float(props.get(target_area_field))
+            except (TypeError, ValueError):
+                area = 0.0
+            if not geom or area <= 0:
+                return {"id": tid, "coverage": None}
+            try:
+                esri = self._geojson_to_esri_polygon(geom)
+                covered = await self._overlay_area_in_target(
+                    overlay_query_url, esri, overlay_where,
+                    overlay_area_field, sem,
+                )
+            except Exception:
+                return {"id": tid, "coverage": None}
+            return {
+                "id": tid,
+                "coverage": 100.0 * covered / area,
+                "covered": covered,
+                "area": area,
+            }
+
+        rows = await asyncio.gather(*[score(f) for f in targets])
+        scored = [r for r in rows if r["coverage"] is not None]
+        skipped = len(rows) - len(scored)
+        zero_cov = sum(1 for r in scored if r["coverage"] == 0.0)
+
+        def in_band(c: float) -> bool:
+            if min_cov is not None and c < min_cov:
+                return False
+            if max_cov is not None and c >= max_cov:
+                return False
+            return True
+
+        matched = sorted(
+            (r for r in scored if in_band(r["coverage"])),
+            key=lambda r: r["coverage"],
+        )
+
+        if max_cov is not None and min_cov is not None:
+            band = f"{min_cov:g}% <= coverage < {max_cov:g}%"
+        elif max_cov is not None:
+            band = f"coverage < {max_cov:g}%"
+        elif min_cov is not None:
+            band = f"coverage >= {min_cov:g}%"
+        else:
+            band = "all (no coverage filter)"
+
+        city = self.plugin_config.city_name
+        lines = [
+            f"## Coverage: {overlay_area_field} of {overlay_item_id} "
+            f"within {target_item_id}",
+            f"**City:** {city}  |  **Target filter:** `{target_where}`  |  "
+            f"**ID field:** `{target_id_field}`",
+            f"**Coverage band:** {band}",
+            f"**Targets measured:** {len(scored):,}  |  "
+            f"**In band:** {len(matched):,}  |  "
+            f"**Out of band:** {len(scored) - len(matched):,}",
+            "",
+            f"**{len(matched):,} of {len(scored):,} targets fall in the "
+            f"band ({band}).**",
+            "",
+        ]
+
+        if matched:
+            shown = matched[: self.COVERAGE_TABLE_ROWS]
+            lines.append(
+                f"| {target_id_field} | Coverage % | Covered area | "
+                f"Target area |"
+            )
+            lines.append("|---|---|---|---|")
+            for r in shown:
+                lines.append(
+                    f"| {r['id']} | {r['coverage']:.1f}% | "
+                    f"{r['covered']:,.0f} | {r['area']:,.0f} |"
+                )
+            if len(matched) > len(shown):
+                lines.append("")
+                lines.append(
+                    f"_Showing the {len(shown)} lowest-coverage of "
+                    f"{len(matched):,} in-band targets (sorted ascending). "
+                    f"The headline count above is exact._"
+                )
+
+        # Caveats.
+        caveats = [
+            "_Coverage is **intersect-based, not clipped**: an overlay "
+            "feature straddling a target boundary is counted in full, so "
+            "coverage can exceed 100%. Good for screening, not survey-grade._",
+            f"_Both areas use the layers' stored `{target_area_field}` / "
+            f"`{overlay_area_field}`; the ratio is valid when both layers "
+            f"share a spatial reference (true for MOA hosted layers)._",
+        ]
+        if zero_cov:
+            caveats.append(
+                f"_{zero_cov:,} target(s) returned **0% coverage** (no "
+                f"overlay feature intersects) -- vacant land, or outside the "
+                f"overlay layer's extent. Decide whether 0% belongs in your "
+                f"answer._"
+            )
+        if skipped:
+            caveats.append(
+                f"_{skipped:,} target(s) were skipped (missing geometry/area "
+                f"or an upstream query error) and are not in the counts._"
+            )
+        tmeta = await self._safe_layer_meta(target_item_id)
+        cov_pct = tmeta.get("coverage_pct")
+        if cov_pct is not None and cov_pct < self.COVERAGE_THRESHOLD:
+            caveats.append(
+                f"_The target layer's extent covers ~{cov_pct * 100:.0f}% of "
+                f"{city}; targets outside that extent are absent entirely._"
+            )
+        if truncated:
+            caveats.append(
+                f"_Hit the {max_targets:,}-target cap. Narrow `target_where` "
+                f"for a complete picture._"
+            )
+        lines.append("")
+        lines.extend(caveats)
         return "\n".join(lines)
 
     async def _filter_by_polygon(self, args: Dict[str, Any]) -> str:
@@ -5121,6 +5412,119 @@ class AnchorageGISPlugin(DataPlugin):
                 },
             ),
             ToolDefinition(
+                name="coverage_by_polygon",
+                description=(
+                    f"Compute, for each {city} target polygon, the share of "
+                    f"its area covered by overlapping features from an "
+                    f"overlay polygon layer, then count/list the targets in a "
+                    f"coverage band. This is the LOT-COVERAGE / "
+                    f"impervious-surface / buildable-land pattern -- e.g. "
+                    f"'religious parcels with under 40% building coverage', "
+                    f"'lots more than 80% paved'. Works WITHOUT a shared key: "
+                    f"the overlay is joined to each target spatially (so use "
+                    f"this when footprints/overlay have no parcel id). For "
+                    f"each target it sums overlay area intersecting it "
+                    f"(server-side) and divides by the target's own area. "
+                    f"Returns 'N of M targets in band' plus the "
+                    f"lowest-coverage targets. Intersect-based, not clipped "
+                    f"(screening-grade)."
+                ),
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "target_item_id": {
+                            "type": "string",
+                            "description": (
+                                "ArcGIS item ID of the polygon layer being "
+                                "measured (e.g. parcels). Coverage is "
+                                "reported per target polygon."
+                            ),
+                        },
+                        "overlay_item_id": {
+                            "type": "string",
+                            "description": (
+                                "ArcGIS item ID of the polygon layer whose "
+                                "area counts as coverage (e.g. building "
+                                "footprints)."
+                            ),
+                        },
+                        "target_id_field": {
+                            "type": "string",
+                            "description": (
+                                "Field on the target layer that labels each "
+                                "target in the output (e.g. 'Parcel_ID'). "
+                                "Call get_layer_schema to find it."
+                            ),
+                        },
+                        "target_where": {
+                            "type": "string",
+                            "description": (
+                                "SQL WHERE to select target polygons, e.g. "
+                                "\"Land_Use='Religious'\". Narrow this -- the "
+                                "tool runs one spatial query per target and "
+                                "caps the count."
+                            ),
+                            "default": "1=1",
+                        },
+                        "overlay_where": {
+                            "type": "string",
+                            "description": (
+                                "Optional SQL WHERE applied to the overlay "
+                                "layer before summing (e.g. exclude sheds)."
+                            ),
+                            "default": "1=1",
+                        },
+                        "max_coverage_pct": {
+                            "type": "number",
+                            "description": (
+                                "Keep only targets with coverage STRICTLY "
+                                "BELOW this percent (e.g. 40 for 'under 40% "
+                                "covered'). Omit for no upper bound."
+                            ),
+                        },
+                        "min_coverage_pct": {
+                            "type": "number",
+                            "description": (
+                                "Keep only targets with coverage AT OR ABOVE "
+                                "this percent. Omit for no lower bound. "
+                                "Combine with max for a band."
+                            ),
+                        },
+                        "target_area_field": {
+                            "type": "string",
+                            "description": (
+                                "Numeric area field on the target layer "
+                                "(denominator). Defaults to 'Shape__Area', "
+                                "which most hosted layers expose."
+                            ),
+                            "default": "Shape__Area",
+                        },
+                        "overlay_area_field": {
+                            "type": "string",
+                            "description": (
+                                "Numeric area field on the overlay layer "
+                                "(numerator). Defaults to 'Shape__Area'."
+                            ),
+                            "default": "Shape__Area",
+                        },
+                        "max_targets": {
+                            "type": "integer",
+                            "description": (
+                                "Cap on target polygons measured (default "
+                                "800, max 800). Narrow target_where if you "
+                                "hit it."
+                            ),
+                            "default": 800,
+                        },
+                    },
+                    "required": [
+                        "target_item_id",
+                        "overlay_item_id",
+                        "target_id_field",
+                    ],
+                },
+            ),
+            ToolDefinition(
                 name="filter_by_polygon",
                 description=(
                     f"Return the subset of records from one {city} layer "
@@ -5610,6 +6014,9 @@ class AnchorageGISPlugin(DataPlugin):
 
             elif tool_name == "aggregate_by_polygon":
                 text = await self._aggregate_by_polygon(arguments)
+
+            elif tool_name == "coverage_by_polygon":
+                text = await self._coverage_by_polygon(arguments)
 
             elif tool_name == "filter_by_polygon":
                 text = await self._filter_by_polygon(arguments)

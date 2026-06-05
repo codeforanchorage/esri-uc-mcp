@@ -109,7 +109,7 @@ class TestGetTools:
         plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
         tools = plugin.get_tools()
 
-        assert len(tools) == 14
+        assert len(tools) == 15
         tool_names = [t.name for t in tools]
         assert "find_gis_content" in tool_names
         assert "browse_gallery" in tool_names
@@ -123,6 +123,7 @@ class TestGetTools:
         assert "spatial_query_point" in tool_names
         assert "spatial_query_polygon" in tool_names
         assert "aggregate_by_polygon" in tool_names
+        assert "coverage_by_polygon" in tool_names
         assert "filter_by_polygon" in tool_names
         assert "find_features_spanning_classifications" in tool_names
 
@@ -4123,3 +4124,201 @@ class TestBufferToolSchemas:
         assert "buffer_distance" in props
         assert "buffer_units" in props
         assert "miles" in props["buffer_units"]["enum"]
+
+    def test_coverage_tool_schema(self, anchorage_config):
+        plugin = AnchorageGISPlugin(anchorage_config)
+        plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        tool = next(
+            t for t in plugin.get_tools() if t.name == "coverage_by_polygon"
+        )
+        props = tool.input_schema["properties"]
+        for p in (
+            "target_item_id", "overlay_item_id", "target_id_field",
+            "target_where", "max_coverage_pct", "min_coverage_pct",
+        ):
+            assert p in props, p
+        assert tool.input_schema["required"] == [
+            "target_item_id", "overlay_item_id", "target_id_field",
+        ]
+
+
+# ── coverage_by_polygon ────────────────────────────────────────────────
+
+
+_COV_META = {
+    "geometryType": "esriGeometryPolygon",
+    "fields": [
+        {"name": "Parcel_ID", "type": "esriFieldTypeString"},
+        {"name": "Shape__Area", "type": "esriFieldTypeDouble"},
+    ],
+}
+_SQUARE = {
+    "type": "Polygon",
+    "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
+}
+
+
+def _cov_resp(cov_sum):
+    r = Mock()
+    r.raise_for_status = Mock()
+    r.json.return_value = {"features": [{"attributes": {"cov_sum": cov_sum}}]}
+    return r
+
+
+class TestCoverageByPolygon:
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        return p
+
+    def _target(self, pid, area):
+        return {
+            "properties": {"Parcel_ID": pid, "Shape__Area": area},
+            "geometry": _SQUARE,
+        }
+
+    def _patches(self, plugin, targets, cov_sum=100.0):
+        """Patch layer resolution/meta/fetch; stub the overlay sum query."""
+        plugin.client = Mock()
+        plugin.client.post = AsyncMock(return_value=_cov_resp(cov_sum))
+        return (
+            patch.object(
+                plugin, "_resolve_layer_url", new_callable=AsyncMock,
+                side_effect=lambda iid: f"https://services2.arcgis.com/x/{iid}/FeatureServer/0",
+            ),
+            patch.object(
+                plugin, "_fetch_layer_meta", new_callable=AsyncMock,
+                return_value=_COV_META,
+            ),
+            patch.object(
+                plugin, "_paged_geojson_fetch", new_callable=AsyncMock,
+                return_value=targets,
+            ),
+            patch.object(
+                plugin, "_safe_layer_meta", new_callable=AsyncMock,
+                return_value={},
+            ),
+        )
+
+    @pytest.mark.asyncio
+    async def test_under_threshold_band(self, plugin):
+        # cov_sum=100 fixed; areas drive coverage: A=10%, B=50%, C=100%.
+        targets = [
+            self._target("A", 1000.0),
+            self._target("B", 200.0),
+            self._target("C", 100.0),
+        ]
+        p1, p2, p3, p4 = self._patches(plugin, targets)
+        with p1, p2, p3, p4:
+            text = await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+                "target_where": "Land_Use='Religious'",
+                "max_coverage_pct": 40,
+            })
+        # Only A (10%) is under 40%.
+        assert "1 of 3 targets fall in the band" in text
+        assert "coverage < 40%" in text
+        assert "| A | 10.0% |" in text
+        assert "| B |" not in text  # 50% excluded
+
+    @pytest.mark.asyncio
+    async def test_no_band_measures_all(self, plugin):
+        targets = [self._target("A", 1000.0), self._target("B", 200.0)]
+        p1, p2, p3, p4 = self._patches(plugin, targets)
+        with p1, p2, p3, p4:
+            text = await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+            })
+        assert "2 of 2 targets fall in the band" in text
+        assert "all (no coverage filter)" in text
+
+    @pytest.mark.asyncio
+    async def test_band_min_and_max(self, plugin):
+        targets = [
+            self._target("A", 1000.0),  # 10%
+            self._target("B", 250.0),   # 40%
+            self._target("C", 100.0),   # 100%
+        ]
+        p1, p2, p3, p4 = self._patches(plugin, targets)
+        with p1, p2, p3, p4:
+            text = await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+                "min_coverage_pct": 20,
+                "max_coverage_pct": 80,
+            })
+        # B (40%) only: A below min, C above max.
+        assert "1 of 3 targets fall in the band" in text
+        assert "20% <= coverage < 80%" in text
+
+    @pytest.mark.asyncio
+    async def test_zero_coverage_caveat(self, plugin):
+        targets = [self._target("A", 1000.0)]
+        p1, p2, p3, p4 = self._patches(plugin, targets, cov_sum=0.0)
+        with p1, p2, p3, p4:
+            text = await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+                "max_coverage_pct": 40,
+            })
+        assert "0% coverage" in text
+        assert "| A | 0.0% |" in text
+
+    @pytest.mark.asyncio
+    async def test_zero_area_target_skipped(self, plugin):
+        targets = [self._target("A", 1000.0), self._target("B", 0.0)]
+        p1, p2, p3, p4 = self._patches(plugin, targets)
+        with p1, p2, p3, p4:
+            text = await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+            })
+        assert "Targets measured:** 1" in text
+        assert "skipped" in text.lower()
+
+    @pytest.mark.asyncio
+    async def test_rejects_unknown_id_field(self, plugin):
+        p1, p2, p3, p4 = self._patches(plugin, [])
+        with p1, p2, p3, p4:
+            with pytest.raises(ValueError, match="target_id_field"):
+                await plugin._coverage_by_polygon({
+                    "target_item_id": "a" * 32,
+                    "overlay_item_id": "b" * 32,
+                    "target_id_field": "NOT_A_FIELD",
+                })
+
+    @pytest.mark.asyncio
+    async def test_rejects_inverted_band(self, plugin):
+        with pytest.raises(ValueError, match="less than"):
+            await plugin._coverage_by_polygon({
+                "target_item_id": "a" * 32,
+                "overlay_item_id": "b" * 32,
+                "target_id_field": "Parcel_ID",
+                "min_coverage_pct": 80,
+                "max_coverage_pct": 40,
+            })
+
+    @pytest.mark.asyncio
+    async def test_rejects_non_polygon_overlay(self, plugin):
+        point_meta = {"geometryType": "esriGeometryPoint", "fields": []}
+        with patch.object(
+            plugin, "_resolve_layer_url", new_callable=AsyncMock,
+            side_effect=lambda iid: f"https://x/{iid}/0",
+        ), patch.object(
+            plugin, "_fetch_layer_meta", new_callable=AsyncMock,
+            side_effect=[_COV_META, point_meta],
+        ):
+            with pytest.raises(ValueError, match="overlay_item_id must be a polygon"):
+                await plugin._coverage_by_polygon({
+                    "target_item_id": "a" * 32,
+                    "overlay_item_id": "b" * 32,
+                    "target_id_field": "Parcel_ID",
+                })
