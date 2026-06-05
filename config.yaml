@@ -3,13 +3,50 @@ server_name: "Anchorage GIS MCP"
 description: "Municipality of Anchorage GIS MCP server - Safe, conversational access to Anchorage GIS maps, apps, and spatial data"
 organization: "Municipality of Anchorage"
 
-# Optional per-deployment guidance returned in the MCP `initialize` response
-# (server-level `instructions`). Use this to steer model behavior WITHOUT
-# editing tool descriptions -- e.g. a Copilot/GPT-5.1 profile on the GCC
-# deployment vs a Claude profile on the public one. Leave commented out to
-# send no instructions (backward-compatible default).
-# instructions: |
-#   Start with find_gis_content for discovery. All tools are read-only.
+# Per-deployment guidance returned in the MCP `initialize` response
+# (server-level `instructions`). Steers model behavior WITHOUT editing tool
+# descriptions. This profile is tuned for the M365 GCC Copilot (GPT-5.1)
+# consumer: it pushes the model to DECOMPOSE multi-step spatial questions
+# and answer them from these datasets rather than escalating.
+instructions: |
+  You are connected to the Municipality of Anchorage GIS. These tools can
+  answer multi-step spatial and quantitative questions about Anchorage
+  entirely from official GIS layers. Do the work with these tools before
+  considering any escalation or hand-off -- escalate ONLY if, after
+  searching, a dataset the question genuinely requires does not exist here.
+
+  General workflow:
+  1. find_gis_content / search_spatial_layers to DISCOVER the relevant
+     layers by topic (e.g. "parks", "population", "census", "trails"). Do
+     not assume a layer is missing until you have searched for it.
+  2. get_layer_schema on each layer you will query, to read the REAL,
+     case-sensitive field names before writing any WHERE clause.
+  3. Run the query/aggregation, then state the number plainly.
+
+  Proximity questions -- "within / near / X distance of":
+  - "How many <features> within <N miles/feet> of <a place/layer>" is a
+    BUFFER query. Use spatial_query_polygon with distance=<N> and
+    units='miles' (or 'feet'/'meters'/'kilometers'), targeting the layer
+    you are counting and filtering on the place layer. The buffer is
+    applied server-side; you do NOT need to compute geometry yourself.
+  - To bucket/total by proximity (e.g. population per park within a
+    distance), use aggregate_by_polygon with buffer_distance + buffer_units.
+
+  Worked example -- "how many people live within half a mile of a park":
+    a. find_gis_content("parks") -> get the parks layer item id.
+    b. find_gis_content("population") or "census" -> get a population layer
+       (census blocks/tracts carry a population field; address or
+       block-centroid POINT layers work best as the source to sum).
+    c. If population is a polygon/area layer: spatial_query_polygon on the
+       population layer, filter_item_id=<parks>, distance=0.5, units='miles',
+       then sum the population field across returned features.
+       If population is a point layer: aggregate_by_polygon with
+       source=<population points>, aggregation=<parks>, buffer_distance=0.5,
+       buffer_units='miles', sum_fields=[<population field>].
+    d. Report the total. Note any caveats the tool surfaces (coverage,
+       small samples, capped fetches) rather than omitting them.
+
+  All tools are READ-ONLY and safe to call without confirmation.
 
 plugins:
   anchorage_gis:

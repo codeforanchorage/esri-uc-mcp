@@ -3844,3 +3844,282 @@ class TestConfigSchema:
                 city_name="Test",
                 gallery_url="",
             )
+
+
+# ── Proximity buffer support ───────────────────────────────────────────
+
+
+class TestLinearUnitNormalization:
+    def test_aliases_canonicalize(self):
+        f = AnchorageGISPlugin._normalize_linear_unit
+        assert f("mi") == "miles"
+        assert f("Miles") == "miles"
+        assert f(" FT ") == "feet"
+        assert f("kilometre") == "kilometers"
+        assert f(None) == "meters"
+        assert f("") == "meters"
+
+    def test_unknown_unit_rejected(self):
+        with pytest.raises(ValueError, match="supported linear unit"):
+            AnchorageGISPlugin._normalize_linear_unit("furlongs")
+
+    def test_esri_and_meter_maps_cover_same_keys(self):
+        esri = set(AnchorageGISPlugin._ESRI_LINEAR_UNITS)
+        meters = set(AnchorageGISPlugin._LINEAR_UNIT_TO_METERS)
+        canonical = set(AnchorageGISPlugin._LINEAR_UNIT_ALIASES.values())
+        assert esri == meters == canonical
+
+
+class TestPointToGeometryDistance:
+    SQUARE = {
+        "type": "Polygon",
+        "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
+    }
+
+    def test_point_inside_is_zero(self):
+        d = AnchorageGISPlugin._point_to_geometry_distance_m(
+            self.SQUARE, (0.5, 0.5)
+        )
+        assert d == 0.0
+
+    def test_point_just_outside_edge_metric(self):
+        # 0.001 deg east of the x=1 edge at ~0.5 deg lat. Ground distance
+        # ~= 0.001 * 111195 * cos(0.5 deg) ~= 111.2 m.
+        d = AnchorageGISPlugin._point_to_geometry_distance_m(
+            self.SQUARE, (1.001, 0.5)
+        )
+        assert 110.0 < d < 112.5
+
+    def test_nearest_is_corner_for_diagonal_point(self):
+        # Point off the (1,1) corner: distance is to the corner, not an edge.
+        d = AnchorageGISPlugin._point_to_geometry_distance_m(
+            self.SQUARE, (1.001, 1.001)
+        )
+        # ~ sqrt(2) * ~111 m at this latitude.
+        assert 150.0 < d < 162.0
+
+
+class TestSpatialQueryPolygonBuffer:
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        return p
+
+    @pytest.mark.asyncio
+    async def test_distance_and_units_passed_to_query(self, plugin):
+        captured = {}
+
+        async def fake_post(url, data=None):
+            captured["url"] = url
+            captured["data"] = data
+            resp = Mock()
+            resp.raise_for_status = Mock()
+            resp.json.return_value = {"features": []}
+            resp.headers = {"content-type": "application/json"}
+            return resp
+
+        plugin.client = Mock()
+        plugin.client.post = AsyncMock(side_effect=fake_post)
+
+        with patch.object(
+            plugin,
+            "get_dataset",
+            new_callable=AsyncMock,
+            return_value={
+                "url": "https://services.arcgis.com/Ce3DhLRthdwbHlfF/FeatureServer/0",
+                "type": "Feature Service",
+            },
+        ):
+            await plugin.spatial_query_polygon(
+                "c" * 32,
+                filter_geometry={
+                    "type": "Polygon",
+                    "coordinates": [
+                        [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+                    ],
+                },
+                distance=0.5,
+                units="miles",
+            )
+
+        assert captured["data"]["distance"] == "0.5"
+        assert captured["data"]["units"] == "esriSRUnit_StatuteMile"
+
+    @pytest.mark.asyncio
+    async def test_zero_distance_sends_no_buffer(self, plugin):
+        captured = {}
+
+        async def fake_post(url, data=None):
+            captured["data"] = data
+            resp = Mock()
+            resp.raise_for_status = Mock()
+            resp.json.return_value = {"features": []}
+            resp.headers = {"content-type": "application/json"}
+            return resp
+
+        plugin.client = Mock()
+        plugin.client.post = AsyncMock(side_effect=fake_post)
+
+        with patch.object(
+            plugin,
+            "get_dataset",
+            new_callable=AsyncMock,
+            return_value={
+                "url": "https://services.arcgis.com/Ce3DhLRthdwbHlfF/FeatureServer/0",
+                "type": "Feature Service",
+            },
+        ):
+            await plugin.spatial_query_polygon(
+                "c" * 32,
+                filter_geometry={
+                    "type": "Polygon",
+                    "coordinates": [
+                        [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+                    ],
+                },
+                distance=0,
+            )
+
+        assert "distance" not in captured["data"]
+        assert "units" not in captured["data"]
+
+    @pytest.mark.asyncio
+    async def test_invalid_units_rejected(self, plugin):
+        with patch.object(
+            plugin,
+            "get_dataset",
+            new_callable=AsyncMock,
+            return_value={"url": "x", "type": "Feature Service"},
+        ):
+            with pytest.raises(ValueError, match="supported linear unit"):
+                await plugin.spatial_query_polygon(
+                    "c" * 32,
+                    filter_geometry={
+                        "type": "Polygon",
+                        "coordinates": [
+                            [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+                        ],
+                    },
+                    distance=1,
+                    units="furlongs",
+                )
+
+
+class TestAggregateByPolygonBuffer:
+    @pytest.fixture
+    def plugin(self, anchorage_config):
+        p = AnchorageGISPlugin(anchorage_config)
+        p.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        return p
+
+    # Single council: Midtown covering [0,0]-[2,2] near the equator so the
+    # metric scale is easy to reason about.
+    AGG = [
+        {
+            "group": "Midtown",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]]],
+            },
+        }
+    ]
+    SOURCE_META = {
+        "geometryType": "esriGeometryPoint",
+        "fields": [{"name": "OBJECTID", "type": "esriFieldTypeOID"}],
+    }
+    # One point ~0.35 mi east of the x=2 edge (0.005 deg * 111195 * cos(1 deg)).
+    SOURCE = [
+        {"geometry": {"type": "Point", "coordinates": [2.005, 1.0]},
+         "properties": {"OBJECTID": 1}}
+    ]
+
+    def _patches(self, plugin):
+        return (
+            patch.object(
+                plugin, "_fetch_aggregation_polygons",
+                new_callable=AsyncMock, return_value=self.AGG,
+            ),
+            patch.object(
+                plugin, "_resolve_layer_url", new_callable=AsyncMock,
+                return_value="https://services.arcgis.com/Ce3DhLRthdwbHlfF/FeatureServer/0",
+            ),
+            patch.object(
+                plugin, "_fetch_layer_meta", new_callable=AsyncMock,
+                return_value=self.SOURCE_META,
+            ),
+            patch.object(
+                plugin, "_paged_geojson_fetch", new_callable=AsyncMock,
+                return_value=self.SOURCE,
+            ),
+        )
+
+    @pytest.mark.asyncio
+    async def test_point_outside_unmatched_without_buffer(self, plugin):
+        p1, p2, p3, p4 = self._patches(plugin)
+        with p1, p2, p3, p4:
+            text = await plugin._aggregate_by_polygon(
+                {
+                    "source_item_id": _SOURCE_ID,
+                    "aggregation_item_id": _AGG_ID,
+                    "group_by_field": "COUNCIL",
+                }
+            )
+        assert "Unmatched:** 1" in text
+
+    @pytest.mark.asyncio
+    async def test_point_matched_within_half_mile_buffer(self, plugin):
+        p1, p2, p3, p4 = self._patches(plugin)
+        with p1, p2, p3, p4:
+            text = await plugin._aggregate_by_polygon(
+                {
+                    "source_item_id": _SOURCE_ID,
+                    "aggregation_item_id": _AGG_ID,
+                    "group_by_field": "COUNCIL",
+                    "buffer_distance": 0.5,
+                    "buffer_units": "miles",
+                }
+            )
+        assert "Unmatched:** 0" in text
+        assert "Midtown" in text
+        assert "0.5 miles" in text
+
+    @pytest.mark.asyncio
+    async def test_point_outside_tight_buffer_still_unmatched(self, plugin):
+        # 0.1 mi buffer (~161 m) is far short of the ~620 m gap.
+        p1, p2, p3, p4 = self._patches(plugin)
+        with p1, p2, p3, p4:
+            text = await plugin._aggregate_by_polygon(
+                {
+                    "source_item_id": _SOURCE_ID,
+                    "aggregation_item_id": _AGG_ID,
+                    "group_by_field": "COUNCIL",
+                    "buffer_distance": 0.1,
+                    "buffer_units": "miles",
+                }
+            )
+        assert "Unmatched:** 1" in text
+
+
+class TestBufferToolSchemas:
+    def test_spatial_query_polygon_exposes_distance_units(self, anchorage_config):
+        plugin = AnchorageGISPlugin(anchorage_config)
+        plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        tool = next(
+            t for t in plugin.get_tools() if t.name == "spatial_query_polygon"
+        )
+        props = tool.input_schema["properties"]
+        assert "distance" in props
+        assert "units" in props
+        assert "miles" in props["units"]["enum"]
+
+    def test_aggregate_exposes_buffer_params(self, anchorage_config):
+        plugin = AnchorageGISPlugin(anchorage_config)
+        plugin.plugin_config = AnchorageGISPluginConfig(**anchorage_config)
+        tool = next(
+            t for t in plugin.get_tools() if t.name == "aggregate_by_polygon"
+        )
+        props = tool.input_schema["properties"]
+        assert "buffer_distance" in props
+        assert "buffer_units" in props
+        assert "miles" in props["buffer_units"]["enum"]

@@ -8,6 +8,7 @@ discovering maps, apps, and spatial datasets published by MOA GIS.
 import asyncio
 import json
 import logging
+import math
 import re
 import time
 from collections import Counter, OrderedDict, defaultdict
@@ -1098,6 +1099,47 @@ class AnchorageGISPlugin(DataPlugin):
         "envelope_intersects": "esriSpatialRelEnvelopeIntersects",
     }
 
+    # Linear units accepted from the model (case-insensitive, with common
+    # aliases) and how they map to (a) the ArcGIS REST `units` constant for
+    # server-side buffered queries, and (b) meters for client-side distance
+    # math in aggregate_by_polygon. Keep the two maps in lock-step.
+    _LINEAR_UNIT_ALIASES = {
+        "meters": "meters", "meter": "meters", "metre": "meters",
+        "metres": "meters", "m": "meters",
+        "kilometers": "kilometers", "kilometer": "kilometers",
+        "kilometre": "kilometers", "kilometres": "kilometers",
+        "km": "kilometers",
+        "feet": "feet", "foot": "feet", "ft": "feet",
+        "miles": "miles", "mile": "miles", "mi": "miles",
+        "yards": "yards", "yard": "yards", "yd": "yards",
+    }
+    _ESRI_LINEAR_UNITS = {
+        "meters": "esriSRUnit_Meter",
+        "kilometers": "esriSRUnit_Kilometer",
+        "feet": "esriSRUnit_Foot",
+        "miles": "esriSRUnit_StatuteMile",
+        "yards": "esriSRUnit_Yard",
+    }
+    _LINEAR_UNIT_TO_METERS = {
+        "meters": 1.0,
+        "kilometers": 1000.0,
+        "feet": 0.3048,
+        "miles": 1609.344,
+        "yards": 0.9144,
+    }
+
+    @classmethod
+    def _normalize_linear_unit(cls, units: Optional[str]) -> str:
+        """Canonicalize a free-text linear unit (default meters)."""
+        key = (units or "meters").strip().lower()
+        canonical = cls._LINEAR_UNIT_ALIASES.get(key)
+        if canonical is None:
+            raise ValueError(
+                f"units {units!r} is not a supported linear unit. Use "
+                f"one of: meters, kilometers, feet, miles, yards."
+            )
+        return canonical
+
     async def spatial_query_polygon(
         self,
         resource_id: str,
@@ -1108,6 +1150,8 @@ class AnchorageGISPlugin(DataPlugin):
         filters: Optional[Dict[str, Any]] = None,
         limit: int = 50,
         return_geometry: bool = False,
+        distance: Optional[float] = None,
+        units: str = "meters",
     ) -> List[Dict[str, Any]]:
         """Find features in a target layer that spatially relate to a polygon filter.
 
@@ -1122,9 +1166,35 @@ class AnchorageGISPlugin(DataPlugin):
         that straddle the filter boundary are still included. Set
         ``return_geometry=True`` to get GeoJSON geometries back for
         precise client-side clipping.
+
+        When ``distance`` is a positive number, the filter polygon is
+        buffered by that distance (in ``units``) server-side before the
+        spatial relation is evaluated -- this is how "within N miles/feet
+        of <polygon>" proximity questions are answered (e.g. population
+        within half a mile of a park).
         """
         if limit < 1:
             raise ValueError(f"limit must be at least 1 (got {limit})")
+
+        buffer_distance: Optional[float] = None
+        esri_units: Optional[str] = None
+        if distance is not None and str(distance) != "":
+            try:
+                buffer_distance = float(distance)
+            except (TypeError, ValueError) as exc:
+                raise ValueError(
+                    f"distance must be a number (got {distance!r})"
+                ) from exc
+            if buffer_distance < 0:
+                raise ValueError(
+                    f"distance must be >= 0 (got {buffer_distance})"
+                )
+            if buffer_distance == 0:
+                buffer_distance = None  # no buffer; treat as exact
+            else:
+                esri_units = self._ESRI_LINEAR_UNITS[
+                    self._normalize_linear_unit(units)
+                ]
 
         if not filter_geometry and not filter_item_id:
             raise ValueError(
@@ -1184,6 +1254,12 @@ class AnchorageGISPlugin(DataPlugin):
             "f": "geojson" if return_geometry else "json",
             "returnGeometry": "true" if return_geometry else "false",
         }
+        # Server-side buffer: ArcGIS expands the filter geometry by
+        # `distance` (in `units`) before applying spatialRel, so a plain
+        # parks polygon answers "within half a mile of a park".
+        if buffer_distance is not None:
+            params["distance"] = str(buffer_distance)
+            params["units"] = esri_units
         if return_geometry:
             params["outSR"] = "4326"
             params["maxAllowableOffset"] = str(
@@ -2243,6 +2319,79 @@ class AnchorageGISPlugin(DataPlugin):
             return cls._multipolygon_contains_point(coords, point)
         return False
 
+    # Meters per degree of latitude (spherical mean Earth radius). Degrees
+    # of longitude are scaled by cos(latitude) so the planar approximation
+    # stays metric at Anchorage's ~61 degN, where a degree of longitude is
+    # only ~half a degree of latitude in ground distance.
+    _M_PER_DEG_LAT = 111195.0
+
+    @classmethod
+    def _point_segment_distance_m(
+        cls,
+        point: Tuple[float, float],
+        a: List[float],
+        b: List[float],
+        lat_scale: float,
+    ) -> float:
+        """Shortest distance (meters) from `point` to segment a-b.
+
+        Works in a local equirectangular frame centered on `point`:
+        longitudes are scaled by `lat_scale` = cos(lat) so x/y are both in
+        meters. Accurate to well under a percent over the few-km spans this
+        is used for.
+        """
+        px, py = point
+        ax = (a[0] - px) * cls._M_PER_DEG_LAT * lat_scale
+        ay = (a[1] - py) * cls._M_PER_DEG_LAT
+        bx = (b[0] - px) * cls._M_PER_DEG_LAT * lat_scale
+        by = (b[1] - py) * cls._M_PER_DEG_LAT
+        dx = bx - ax
+        dy = by - ay
+        seg_len_sq = dx * dx + dy * dy
+        if seg_len_sq <= 0.0:
+            return (ax * ax + ay * ay) ** 0.5
+        # Project the origin (the point) onto the segment, clamped to [0, 1].
+        t = -(ax * dx + ay * dy) / seg_len_sq
+        t = max(0.0, min(1.0, t))
+        cx = ax + t * dx
+        cy = ay + t * dy
+        return (cx * cx + cy * cy) ** 0.5
+
+    @classmethod
+    def _point_to_geometry_distance_m(
+        cls, geometry: Dict[str, Any], point: Tuple[float, float]
+    ) -> float:
+        """Shortest distance (meters) from a point to a polygon boundary.
+
+        Returns 0.0 when the point is inside the polygon (holes respected),
+        otherwise the minimum distance to any ring edge. Used to test
+        proximity ("within N of this polygon") in aggregate_by_polygon.
+        """
+        if cls._geometry_contains_point(geometry, point):
+            return 0.0
+        gtype = (geometry or {}).get("type", "")
+        coords = (geometry or {}).get("coordinates") or []
+        rings: List[List[List[float]]] = []
+        if gtype == "Polygon":
+            rings = list(coords)
+        elif gtype == "MultiPolygon":
+            for poly in coords:
+                rings.extend(poly)
+        else:
+            return float("inf")
+        lat_scale = math.cos(math.radians(point[1]))
+        best = float("inf")
+        for ring in rings:
+            for i in range(len(ring) - 1):
+                d = cls._point_segment_distance_m(
+                    point, ring[i], ring[i + 1], lat_scale
+                )
+                if d < best:
+                    best = d
+                    if best == 0.0:
+                        return 0.0
+        return best
+
     @staticmethod
     def _ring_area(ring: List[List[float]]) -> float:
         """Shoelace area (signed). Positive for CCW rings."""
@@ -2779,6 +2928,33 @@ class AnchorageGISPlugin(DataPlugin):
                 "overlap_policy must be one of: first_match, "
                 "all_matches, largest"
             )
+        # Optional proximity buffer: a source feature is bucketed into an
+        # aggregation polygon when its point falls inside OR within
+        # buffer_distance of that polygon. Answers "how many X within N of
+        # each Y" (e.g. population points within half a mile of each park).
+        raw_buffer = args.get("buffer_distance")
+        buffer_m = 0.0
+        buffer_units_canonical: Optional[str] = None
+        if raw_buffer is not None and str(raw_buffer) != "":
+            try:
+                buffer_val = float(raw_buffer)
+            except (TypeError, ValueError) as exc:
+                raise ValueError(
+                    f"buffer_distance must be a number "
+                    f"(got {raw_buffer!r})"
+                ) from exc
+            if buffer_val < 0:
+                raise ValueError(
+                    f"buffer_distance must be >= 0 (got {buffer_val})"
+                )
+            if buffer_val > 0:
+                buffer_units_canonical = self._normalize_linear_unit(
+                    args.get("buffer_units")
+                )
+                buffer_m = (
+                    buffer_val
+                    * self._LINEAR_UNIT_TO_METERS[buffer_units_canonical]
+                )
         max_source = min(
             int(args.get("max_source_features", self.AGG_SOURCE_LIMIT)),
             self.AGG_SOURCE_LIMIT,
@@ -2853,10 +3029,18 @@ class AnchorageGISPlugin(DataPlugin):
         )
         unmatched_count = 0
         for point, props in source_points:
-            matches = [
-                p for p in agg_polygons
-                if self._geometry_contains_point(p["geometry"], point)
-            ]
+            if buffer_m > 0:
+                matches = [
+                    p for p in agg_polygons
+                    if self._point_to_geometry_distance_m(
+                        p["geometry"], point
+                    ) <= buffer_m
+                ]
+            else:
+                matches = [
+                    p for p in agg_polygons
+                    if self._geometry_contains_point(p["geometry"], point)
+                ]
             if not matches:
                 unmatched_count += 1
                 continue
@@ -2884,12 +3068,18 @@ class AnchorageGISPlugin(DataPlugin):
         )
 
         city = self.plugin_config.city_name
+        buffer_label = (
+            f"{raw_buffer} {buffer_units_canonical}"
+            if buffer_m > 0
+            else "none"
+        )
         lines = [
             f"## Aggregation: {source_item_id} -> {aggregation_item_id}",
             f"**City:** {city}  |  **Group field:** `{group_by_field}`",
             f"**Source geometry:** {source_geom_type}  |  "
             f"**Centroid mode:** {centroid_mode}  |  "
-            f"**Overlap policy:** {overlap_policy}",
+            f"**Overlap policy:** {overlap_policy}  |  "
+            f"**Proximity buffer:** {buffer_label}",
             f"**Source features:** {len(source_points):,}  |  "
             f"**Buckets:** {len(bucket_list)}  |  "
             f"**Unmatched:** {unmatched_count:,}",
@@ -2935,10 +3125,16 @@ class AnchorageGISPlugin(DataPlugin):
             ]
 
         if unmatched_count:
+            outside_what = (
+                f"farther than {buffer_label} from every aggregation "
+                f"polygon"
+                if buffer_m > 0
+                else "outside every aggregation polygon"
+            )
             lines += [
                 "",
-                f"_{unmatched_count:,} source feature(s) fell outside "
-                f"every aggregation polygon. This usually indicates "
+                f"_{unmatched_count:,} source feature(s) fell "
+                f"{outside_what}. This usually indicates "
                 f"data-quality signal (stray coordinates, records "
                 f"outside the city boundary)._",
             ]
@@ -4531,7 +4727,12 @@ class AnchorageGISPlugin(DataPlugin):
                     f"filter. Target layer can be polygon, polyline, "
                     f"or point -- use this over centroid-based "
                     f"assignments when features can straddle "
-                    f"boundaries. Call `get_layer_schema` on BOTH "
+                    f"boundaries. PROXIMITY ('within N miles/feet of "
+                    f"X'): set `distance` + `units` to buffer the filter "
+                    f"polygon server-side -- e.g. people within half a "
+                    f"mile of a park = target a population layer, filter "
+                    f"on the parks layer, distance=0.5, units='miles'. "
+                    f"Call `get_layer_schema` on BOTH "
                     f"layers (target and filter) before writing "
                     f"`where`/`filter_where` -- they have different "
                     f"schemas. Set `return_geometry=true` for GeoJSON "
@@ -4610,6 +4811,34 @@ class AnchorageGISPlugin(DataPlugin):
                             ),
                             "default": "1=1",
                         },
+                        "distance": {
+                            "type": "number",
+                            "description": (
+                                "Proximity buffer: expand the filter "
+                                "polygon by this distance (in `units`) "
+                                "before testing the spatial relation. Use "
+                                "for 'within N of' questions, e.g. "
+                                "distance=0.5 units='miles' for 'within "
+                                "half a mile of'. Omit or 0 for an exact "
+                                "(unbuffered) overlap."
+                            ),
+                        },
+                        "units": {
+                            "type": "string",
+                            "enum": [
+                                "meters",
+                                "kilometers",
+                                "feet",
+                                "miles",
+                                "yards",
+                            ],
+                            "description": (
+                                "Linear unit for `distance` (default "
+                                "meters). Ignored when distance is "
+                                "omitted."
+                            ),
+                            "default": "meters",
+                        },
                         "out_fields": {
                             "type": "string",
                             "description": (
@@ -4654,7 +4883,13 @@ class AnchorageGISPlugin(DataPlugin):
                     f"aggregation must be polygons. Returns count + "
                     f"summed numeric fields per bucket, plus an "
                     f"unmatched count. Prefer this over a loop of "
-                    f"spatial_query_point calls."
+                    f"spatial_query_point calls. PROXIMITY: set "
+                    f"`buffer_distance` + `buffer_units` to bucket source "
+                    f"features that fall WITHIN that distance of a polygon "
+                    f"(not just inside it) -- e.g. population points "
+                    f"within half a mile of each park: source=population, "
+                    f"aggregation=parks, buffer_distance=0.5, "
+                    f"buffer_units='miles'."
                 ),
                 input_schema={
                     "type": "object",
@@ -4766,6 +5001,34 @@ class AnchorageGISPlugin(DataPlugin):
                                 "biggest polygon deterministically."
                             ),
                             "default": "first_match",
+                        },
+                        "buffer_distance": {
+                            "type": "number",
+                            "description": (
+                                "Proximity buffer: bucket a source feature "
+                                "into a polygon when its point is inside OR "
+                                "within this distance (in `buffer_units`) "
+                                "of the polygon. Use for 'within N of' "
+                                "questions, e.g. buffer_distance=0.5 "
+                                "buffer_units='miles'. Omit or 0 for "
+                                "strict containment."
+                            ),
+                        },
+                        "buffer_units": {
+                            "type": "string",
+                            "enum": [
+                                "meters",
+                                "kilometers",
+                                "feet",
+                                "miles",
+                                "yards",
+                            ],
+                            "description": (
+                                "Linear unit for `buffer_distance` "
+                                "(default meters). Ignored when "
+                                "buffer_distance is omitted."
+                            ),
+                            "default": "meters",
                         },
                         "max_source_features": {
                             "type": "integer",
@@ -5240,6 +5503,8 @@ class AnchorageGISPlugin(DataPlugin):
                         },
                         limit=effective_limit,
                         return_geometry=return_geometry,
+                        distance=arguments.get("distance"),
+                        units=arguments.get("units", "meters"),
                     ),
                     self._safe_layer_meta(item_id),
                 )
