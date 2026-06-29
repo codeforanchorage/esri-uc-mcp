@@ -231,5 +231,14 @@ client/opencontext-client-*
 config.yaml
 examples/
 
+# eCode360 API credentials — NEVER commit these
+.ecode.env
+.ecode.env.*
+!.ecode.env.example
+.ecode-secrets.env
+*.auto.tfvars
+terraform/*/*.auto.tfvars
+secrets.env
+
 # Claude Code local settings
 .claude/

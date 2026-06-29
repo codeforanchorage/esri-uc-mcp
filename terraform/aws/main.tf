@@ -92,6 +92,11 @@ resource "aws_lambda_function" "mcp_server" {
   environment {
     variables = {
       OPENCONTEXT_CONFIG = ""
+      # eCode360 API credentials, read at runtime by plugins/ecode/plugin.py.
+      # Sourced from sensitive Terraform variables (a gitignored *.auto.tfvars
+      # or TF_VAR_ecode_api_key / TF_VAR_ecode_api_secret), never from config.yaml.
+      ECODE_API_KEY    = var.ecode_api_key
+      ECODE_API_SECRET = var.ecode_api_secret
     }
   }
 

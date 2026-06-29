@@ -68,9 +68,9 @@ fi
 # Default workspace per environment when not explicitly provided
 if [ -z "$TF_WORKSPACE" ]; then
     if [ "$ENVIRONMENT" = "prod" ]; then
-        TF_WORKSPACE="anchorage-gis-prod"
+        TF_WORKSPACE="anchorage-ecode-prod"
     else
-        TF_WORKSPACE="anchorage-gis-staging"
+        TF_WORKSPACE="anchorage-ecode-staging"
     fi
 fi
 

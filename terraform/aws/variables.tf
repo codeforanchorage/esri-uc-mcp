@@ -81,3 +81,17 @@ variable "enable_gcc_route" {
   type        = bool
   default     = false
 }
+
+variable "ecode_api_key" {
+  description = "eCode360 API key (the 'api-key' header). Provide via a gitignored *.auto.tfvars file or TF_VAR_ecode_api_key; never commit it."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "ecode_api_secret" {
+  description = "eCode360 API secret (the 'api-secret' header). Provide via a gitignored *.auto.tfvars file or TF_VAR_ecode_api_secret; never commit it."
+  type        = string
+  sensitive   = true
+  default     = ""
+}

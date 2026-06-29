@@ -1,99 +1,52 @@
 ---
-server_name: "Anchorage GIS MCP"
-description: "Municipality of Anchorage GIS MCP server - Safe, conversational access to Anchorage GIS maps, apps, and spatial data"
+server_name: "Anchorage Municipal Code MCP"
+description: "Municipality of Anchorage municipal code (eCode360) MCP server - Safe, conversational, read-only access to the Anchorage Municipal Code: search, browse, and read sections."
 organization: "Municipality of Anchorage"
 
-# Per-deployment guidance returned in the MCP `initialize` response
-# (server-level `instructions`). Steers model behavior WITHOUT editing tool
-# descriptions. Applies to EVERY consumer of this server (Claude on the public
-# /mcp route, and any Copilot/GCC connector if one is added) -- the text is
-# model-agnostic. It pushes the model to DECOMPOSE multi-step spatial
-# questions and answer them from these datasets rather than escalating.
+# Per-deployment guidance returned in the MCP `initialize` response. Steers the
+# model to ANSWER municipal-code questions from these tools (with citations)
+# rather than from memory. Keep in sync with config.yaml.
 instructions: |
-  You are connected to the Municipality of Anchorage GIS. These tools can
-  answer multi-step spatial and quantitative questions about Anchorage
-  entirely from official GIS layers. Do the work with these tools before
-  considering any escalation or hand-off -- escalate ONLY if, after
-  searching, a dataset the question genuinely requires does not exist here.
+  You are connected to the Municipality of Anchorage Municipal Code, served
+  from the official eCode360 publication. Answer questions about Anchorage's
+  ordinances and code using ONLY these tools, and cite the section number and
+  ecode360.com link. Do not rely on memory for the text of the code.
 
-  General workflow:
-  1. find_gis_content / search_spatial_layers to DISCOVER the relevant
-     layers by topic (e.g. "parks", "population", "census", "trails"). Do
-     not assume a layer is missing until you have searched for it.
-  2. get_layer_schema on each layer you will query, to read the REAL,
-     case-sensitive field names before writing any WHERE clause.
-  3. Run the query/aggregation, then state the number plainly.
+  Workflow:
+  1. search_code("<topic or phrase>") to find relevant sections. Each result
+     has a `guid`, a reference number (e.g. § 21.05.010), and a snippet.
+     Page through with page=1, 2, … if needed.
+  2. get_section(guid) to read the FULL text of a section before quoting or
+     summarizing it. Quote the controlling language; don't paraphrase legal
+     requirements loosely.
+  3. To orient within the code's structure, use get_table_of_contents, then
+     browse_structure(guid) to walk chapters/articles → sections.
 
-  Proximity questions -- "within / near / X distance of":
-  - "How many <features> within <N miles/feet> of <a place/layer>" is a
-    BUFFER query. Use spatial_query_polygon with distance=<N> and
-    units='miles' (or 'feet'/'meters'/'kilometers'), targeting the layer
-    you are counting and filtering on the place layer. The buffer is
-    applied server-side; you do NOT need to compute geometry yourself.
-  - To bucket/total by proximity (e.g. population per park within a
-    distance), use aggregate_by_polygon with buffer_distance + buffer_units.
-
-  Worked example -- "how many people live within half a mile of a park":
-    a. find_gis_content("parks") -> get the parks layer item id.
-    b. find_gis_content("population") or "census" -> get a population layer
-       (census blocks/tracts carry a population field; address or
-       block-centroid POINT layers work best as the source to sum).
-    c. If population is a polygon/area layer: spatial_query_polygon on the
-       population layer, filter_item_id=<parks>, distance=0.5, units='miles',
-       then sum the population field across returned features.
-       If population is a point layer: aggregate_by_polygon with
-       source=<population points>, aggregation=<parks>, buffer_distance=0.5,
-       buffer_units='miles', sum_fields=[<population field>].
-    d. Report the total. Note any caveats the tool surfaces (coverage,
-       small samples, capped fetches) rather than omitting them.
-
-  Lot-coverage -- "what share of each X is covered by Y" questions:
-  - "How many <parcels> with under <N>% <building/pavement> coverage" is a
-    coverage_by_polygon call -- NOT something to escalate or write code for.
-    It spatially sums overlay area per target / target area, so it works even
-    when the overlay (e.g. footprints) has no parcel id. Read the headline
-    "N of M targets in band" count.
-
-  Worked example -- "religious parcels with under 40% building coverage":
-    a. find_gis_content("parcels") -> parcels layer; get_layer_schema for the
-       land-use field, a parcel id, and an area field (usually Shape__Area).
-    b. find_gis_content("buildings") -> building-footprints layer.
-    c. coverage_by_polygon(target_item_id=<parcels>, overlay_item_id=<bldgs>,
-       target_id_field='Parcel_ID', target_where="Land_Use='Religious'",
-       max_coverage_pct=40). Report the in-band count; note the 0%-coverage
-       (vacant) and layer-extent caveats it surfaces.
-
-  All tools are READ-ONLY and safe to call without confirmation.
+  Always report the section number and the https://ecode360.com/<guid> link so
+  the user can verify. If a section points to a PDF or attachment, say so. If
+  the code genuinely does not address a topic after searching, say that plainly
+  rather than guessing. These tools are READ-ONLY and safe to call without
+  confirmation. This is the published code text, not legal advice.
 
 plugins:
-  anchorage_gis:
+  ecode:
     enabled: true
-    portal_base_url: "https://muniorg.maps.arcgis.com/sharing/rest"
-    gallery_group_id: "c34ed10758ec4f4eb8aa6826ee5be3ff"
-    org_id: "Ce3DhLRthdwbHlfF"
+    base_url: "https://api.ecode360.com"
+    customer_id: "AN6998"
     city_name: "Municipality of Anchorage"
-    gallery_url: "https://muniorg.maps.arcgis.com/apps/instant/filtergallery/index.html?appid=4dac7569f1cc4beb9f22ce168c899a30"
-    timeout: 30
-
-  ckan:
-    enabled: false
-    base_url: "https://data.example.gov/"
-    portal_url: "https://data.example.gov/"
-    city_name: "Example"
-    timeout: 120
-
-  arcgis:
-    enabled: false
-    portal_url: "https://hub.arcgis.com"
-    city_name: "Example"
-    timeout: 120
+    timeout: 60
+    # Secrets are NEVER stored here (config.yaml is baked into the Lambda zip).
+    # On Lambda, Terraform injects these env vars (sensitive):
+    api_key_env: "ECODE_API_KEY"
+    api_secret_env: "ECODE_API_SECRET"
+    # For LOCAL dev only, point at a gitignored KEY=VALUE file instead of
+    # exporting env vars. Leave commented out for Lambda deploys.
+    # secrets_file: ".ecode.env"
 
 aws:
   region: "us-west-2"
-  lambda_name: "anchorage-gis-mcp-staging"
-  # Sized for aggregate_by_polygon, which holds up to 5000 source
-  # features plus a bounded 32-entry polygon cache in memory.
-  lambda_memory: 1024
+  lambda_name: "anchorage-ecode-mcp"
+  lambda_memory: 512
   lambda_timeout: 120
 
 logging:

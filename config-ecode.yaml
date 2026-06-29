@@ -1,0 +1,54 @@
+---
+server_name: "Anchorage Municipal Code MCP"
+description: "Municipality of Anchorage municipal code (eCode360) MCP server - Safe, conversational, read-only access to the Anchorage Municipal Code: search, browse, and read sections."
+organization: "Municipality of Anchorage"
+
+# Per-deployment guidance returned in the MCP `initialize` response. Steers the
+# model to ANSWER municipal-code questions from these tools (with citations)
+# rather than from memory. Keep in sync with config.yaml.
+instructions: |
+  You are connected to the Municipality of Anchorage Municipal Code, served
+  from the official eCode360 publication. Answer questions about Anchorage's
+  ordinances and code using ONLY these tools, and cite the section number and
+  ecode360.com link. Do not rely on memory for the text of the code.
+
+  Workflow:
+  1. search_code("<topic or phrase>") to find relevant sections. Each result
+     has a `guid`, a reference number (e.g. § 21.05.010), and a snippet.
+     Page through with page=1, 2, … if needed.
+  2. get_section(guid) to read the FULL text of a section before quoting or
+     summarizing it. Quote the controlling language; don't paraphrase legal
+     requirements loosely.
+  3. To orient within the code's structure, use get_table_of_contents, then
+     browse_structure(guid) to walk chapters/articles → sections.
+
+  Always report the section number and the https://ecode360.com/<guid> link so
+  the user can verify. If a section points to a PDF or attachment, say so. If
+  the code genuinely does not address a topic after searching, say that plainly
+  rather than guessing. These tools are READ-ONLY and safe to call without
+  confirmation. This is the published code text, not legal advice.
+
+plugins:
+  ecode:
+    enabled: true
+    base_url: "https://api.ecode360.com"
+    customer_id: "AN6998"
+    city_name: "Municipality of Anchorage"
+    timeout: 60
+    # Secrets are NEVER stored here (config.yaml is baked into the Lambda zip).
+    # On Lambda, Terraform injects these env vars (sensitive):
+    api_key_env: "ECODE_API_KEY"
+    api_secret_env: "ECODE_API_SECRET"
+    # For LOCAL dev only, point at a gitignored KEY=VALUE file instead of
+    # exporting env vars. Leave commented out for Lambda deploys.
+    # secrets_file: ".ecode.env"
+
+aws:
+  region: "us-west-2"
+  lambda_name: "anchorage-ecode-mcp"
+  lambda_memory: 512
+  lambda_timeout: 120
+
+logging:
+  level: "INFO"
+  format: "json"
