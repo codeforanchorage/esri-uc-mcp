@@ -1,0 +1,27 @@
+# Captured 2026-07-13 (America/Los_Angeles) from the Esri UC 2026 detailed agenda:
+#   https://registration.esri.com/flow/esri/26uc/eventportal/page/detailed-agenda
+#
+# Capture method: fetch/XHR interceptor injected into the page (Chrome), search
+# triggered anonymously (not signed in). The request carried NO cookies — the
+# widget authenticates with the two public rf* header IDs below, which are
+# served to every anonymous visitor in the page source. Replaying this exact
+# request from a cookie-less curl returns HTTP 200 with the full public catalog.
+#
+# Notes discovered while probing (see scripts/snapshot.py):
+# - Pagination: add `from=<offset>&size=<n>` to the form body. The FIRST page
+#   (no `from`) wraps results in {sectionList:[{items,...}]}; paginated pages
+#   return the section object flat at the top level ({items, from, size,...}).
+# - `tab.event=option_1715110492243` scopes to the "Esri User Conference" tab.
+#   Omitting it returns all 982 sessions across UC + co-located summits
+#   (Education Summit, GIS Leadership Summit, Safety & Security Summit,
+#   Global Distributor Summit) with a tabCounts breakdown.
+# - Exhibitors: same headers, POST https://event.esri.com/api/search with
+#   type=exhibitor (321 records, booth numbers in `booths`).
+#   (POST /api/exhibitors exists but returns an empty envelope.)
+
+curl 'https://event.esri.com/api/sessions' \
+  -X POST \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'rfWidgetId: gs5nPlJIt3tgPXa967uifi5UUSE4wqyI' \
+  -H 'rfApiProfileId: jjfM5Cb5NK6gy9f14WVVwis32oNvv6eb' \
+  --data 'tab.event=option_1715110492243&search=agentic&type=session&browserTimezone=America%2FLos_Angeles&catalogDisplay=list'

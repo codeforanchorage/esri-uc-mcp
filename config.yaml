@@ -1,51 +1,47 @@
 ---
-server_name: "Anchorage Municipal Code MCP"
-description: "Municipality of Anchorage municipal code (eCode360) MCP server - Safe, conversational, read-only access to the Anchorage Municipal Code: search, browse, and read sections."
-organization: "Municipality of Anchorage"
+server_name: "Esri UC 2026 MCP"
+description: "Esri User Conference 2026 session catalog, expo directory, and schedule - conversational, read-only access to a bundled snapshot of the public RainFocus catalog."
+organization: "Code for Anchorage"
 
-# Per-deployment guidance returned in the MCP `initialize` response. Steers the
-# model to ANSWER municipal-code questions from these tools (with citations)
-# rather than from memory. Keep in sync with config.yaml.
+# Per-deployment guidance returned in the MCP `initialize` response.
 instructions: |
-  You are connected to the Municipality of Anchorage Municipal Code, served
-  from the official eCode360 publication. Answer questions about Anchorage's
-  ordinances and code using ONLY these tools, and cite the section number and
-  ecode360.com link. Do not rely on memory for the text of the code.
+  You are connected to the 2026 Esri User Conference (San Diego, July 13-17)
+  session catalog and expo directory. The data is a STATIC SNAPSHOT of the
+  public RainFocus catalog bundled with this server — every response carries
+  the snapshot date. Room changes happen; tell attendees to verify last-minute
+  changes in the Esri Events app. Reservations, waitlists, and My Schedule are
+  not visible here.
 
   Workflow:
-  1. search_code("<topic or phrase>") to find relevant sections. Each result
-     has a `guid`, a reference number (e.g. § 21.05.010), and a snippet.
-     Page through with page=1, 2, … if needed.
-  2. get_section(guid) to read the FULL text of a section before quoting or
-     summarizing it. Quote the controlling language; don't paraphrase legal
-     requirements loosely.
-  3. To orient within the code's structure, use get_table_of_contents, then
-     browse_structure(guid) to walk chapters/articles → sections.
+  1. get_tracks_and_types() first when you need filter values — session types,
+     tracks, days, buildings, and exhibitor categories are exact spellings and
+     agents guess them wrong.
+  2. search_sessions(query, day?, type?, track?, after?, before?) for keyword
+     search over titles, abstracts, and speakers; get_session(code) for the
+     full record with abstract and speakers.
+  3. whats_on(mode='now'|'next') for time-aware questions ("what's starting in
+     the next hour?"). It uses the real clock in venue time
+     (America/Los_Angeles); pass at='2026-07-15T14:00' for other moments.
+  4. plan_block(day, start, end, topics) to lay out options for a block of
+     time — it marks overlap conflicts but never picks; compose the schedule
+     with the attendee.
+  5. find_exhibitors(query?, category?) for the expo floor and booth numbers.
 
-  Always report the section number and the https://ecode360.com/<guid> link so
-  the user can verify. If a section points to a PDF or attachment, say so. If
-  the code genuinely does not address a topic after searching, say that plainly
-  rather than guessing. These tools are READ-ONLY and safe to call without
-  confirmation. This is the published code text, not legal advice.
+  All times are venue-local (America/Los_Angeles). An empty result means "no
+  match in the snapshot", never "no such session exists" — the live catalog
+  may have changed since the snapshot. These tools are READ-ONLY, serve only
+  bundled data, and are safe to call without confirmation.
 
 plugins:
-  ecode:
+  esri_uc:
     enabled: true
-    base_url: "https://api.ecode360.com"
-    customer_id: "AN6998"
-    city_name: "Municipality of Anchorage"
-    timeout: 60
-    # Secrets are NEVER stored here (config.yaml is baked into the Lambda zip).
-    # On Lambda, Terraform injects these env vars (sensitive):
-    api_key_env: "ECODE_API_KEY"
-    api_secret_env: "ECODE_API_SECRET"
-    # For LOCAL dev only, point at a gitignored KEY=VALUE file instead of
-    # exporting env vars. Leave commented out for Lambda deploys.
-    # secrets_file: ".ecode.env"
+    conference_name: "2026 Esri User Conference"
+    sessions_file: "data/sessions.json"
+    exhibitors_file: "data/exhibitors.json"
 
 aws:
   region: "us-west-2"
-  lambda_name: "anchorage-ecode-mcp"
+  lambda_name: "esri-uc-mcp"
   lambda_memory: 512
   lambda_timeout: 120
 

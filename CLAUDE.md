@@ -32,9 +32,24 @@ pre-commit run --all-files
 # Go client (requires Go 1.21+)
 cd client && make build
 
-# Deploy to AWS
-./scripts/deploy.sh --environment staging
+# Deploy to AWS (this fork: terraform workspace esri-uc-prod)
+./scripts/deploy.sh --environment prod
+
+# Refresh the bundled Esri UC catalog snapshot (then redeploy)
+python scripts/snapshot.py
 ```
+
+## This fork: esri_uc
+
+This fork deploys the `esri_uc` plugin — the Esri UC 2026 conference catalog.
+Unlike every other plugin, it serves a STATIC SNAPSHOT bundled in the Lambda
+package (`data/sessions.json`, `data/exhibitors.json`, `data/rooms.json`,
+produced by `scripts/snapshot.py`) and makes zero upstream calls at runtime.
+`capture/raw_curl.txt` documents the captured RainFocus request;
+`capture/event_map_services.txt` documents the event-map ArcGIS service behind
+`where_is_room`. deploy.sh copies `data/` into the package. The terraform
+workspace is `esri-uc-prod` in the shared fleet state bucket — NEVER deploy
+into a sibling fork's workspace (it would destroy that fork's stack).
 
 ## Architecture
 

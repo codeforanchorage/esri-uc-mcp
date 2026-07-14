@@ -242,3 +242,6 @@ secrets.env
 
 # Claude Code local settings
 .claude/
+
+# Esri UC snapshot raw API pages (regenerate with scripts/snapshot.py)
+capture/raw/

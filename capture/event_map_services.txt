@@ -1,0 +1,30 @@
+# Esri UC 2026 Event Map — backing ArcGIS services
+# Captured 2026-07-13 from https://webapps-cdn.esri.com/CDN/uc-event-maps/web.html
+# (network resources inspected via the browser performance API; the app is an
+# ArcGIS Maps SDK for JavaScript 4.34 web app — the venue really is a service).
+#
+# Map service (Query capability enabled, answers anonymously):
+#   https://esrieventmaps.esrievents.geocloud.com/arcgis/rest/services/UC_2026_WebMap/MapServer
+#   Layers:
+#     0 - Sessions
+#     1 - Exhibitors
+#     2 - Showcases
+#     3 - Units        <- rooms (2,591 features; indoor-mapping schema:
+#                         UNIT_ID, NAME, NAME_LONG, LEVEL_ID, USE_TYPE,
+#                         RF_RoomName, LocationID). 208 units have
+#                         RF_RoomName = the exact RainFocus room string
+#                         ("Room 33 B | SDCC"), and LocationID = the roomid
+#                         used by the event-map deep links in session data.
+#     4 - Levels       <- floors (13; LEVEL_ID -> NAME e.g. "Upper Level",
+#                         LEVEL_NUMBER, FACILITY_ID)
+#     5 - Facilities   <- buildings (SDCC, Marriott Marquis, Hilton Bayfront)
+#     6 - Sites
+#     7 - Speakers
+#     8 - Map Gallery
+#
+# Webmap item: https://www.arcgis.com/sharing/rest/content/items/777d4b3d8a7d4032b0c93ad06d165e66
+# Basemap vector tiles: https://tiles.arcgis.com/tiles/ifZLdxRsGEXZ7PmR/arcgis/rest/services/UC_2026_07_13_1/VectorTileServer
+#
+# scripts/snapshot.py snapshots layer 3 (RF-linked rooms) + layer 4 (levels)
+# into data/rooms.json for the where_is_room tool. Same static-snapshot rule:
+# no runtime calls to these services.

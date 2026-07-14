@@ -1,44 +1,68 @@
-# OpenContext
-
-<p align="center">
-  <img src="docs/opencontext_logo.png" alt="OpenContext Logo" width="400">
-</p>
+# Esri UC 2026 MCP Server
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io/)
 
----
+An MCP server for the **2026 Esri User Conference** (San Diego, July 13–17):
+session catalog, expo directory, time-aware schedule ("what's on right now"),
+schedule-block planning with conflict detection, and room locations — built on
+the [OpenContext](docs/ARCHITECTURE.md) one-fork-one-server framework.
 
-## Quick Start
+**Endpoint:** `https://3fxxurtf95.execute-api.us-west-2.amazonaws.com/prod/mcp`
+
+## Provenance
+
+All data is a **static snapshot of the RainFocus public session catalog**
+(`event.esri.com`, widget `esri/26uc` — the same API that powers the public
+[detailed agenda](https://registration.esri.com/flow/esri/26uc/eventportal/page/detailed-agenda)),
+taken **2026-07-14 UTC** with `scripts/snapshot.py`: 982 sessions, 321
+exhibitors, and 223 room geometries from the official
+[UC Event Map's](https://webapps-cdn.esri.com/CDN/uc-event-maps/web.html)
+backing ArcGIS service (the conference venue is itself a feature service).
+Nothing behind attendee login is accessed — no My Schedule, reservations, or
+waitlists. The server makes **zero upstream calls at runtime**; every response
+carries the snapshot date, and a catalog refresh is simply
+`python scripts/snapshot.py` + redeploy. Room changes happen — attendees
+should verify last-minute changes in the Esri Events app.
+
+## Try these prompts
+
+1. *"What MCP or agentic AI sessions are on Wednesday afternoon, and do any
+   of them conflict?"*
+2. *"What's starting in the next hour that's relevant to local government?"*
+3. *"Where is my next session, and is there coffee within a five-minute walk
+   of that room?"* (composes `where_is_room`'s lat/lng with maps tools)
+
+## Tools
+
+| Tool | Answers |
+| --- | --- |
+| `search_sessions` | keyword + day/type/track/time-window search |
+| `get_session` | full record: abstract, speakers, room, livestream |
+| `whats_on` | in progress now / starting soon, venue-local clock |
+| `plan_block` | candidates for a time block, overlap conflicts marked |
+| `find_exhibitors` | expo directory with booth numbers |
+| `get_tracks_and_types` | exact filter vocabulary (types, tracks, days…) |
+| `where_is_room` | building, floor, lat/lng, event-map deep link |
+
+## Quick start (local)
 
 ```bash
-# 1. Configure (create config, enable one data source)
-cp config-example.yaml config.yaml
-# Edit config.yaml - set enabled: true for one plugin
-
-# 2. Test locally
-pip install aiohttp
-python3 scripts/local_server.py
-
-# 3. Deploy
-./scripts/deploy.sh
+cp config-example.yaml config.yaml   # esri_uc is already enabled in config.yaml
+python3 scripts/local_server.py      # http://localhost:8000/mcp
 ```
 
-Connect via **Claude Connectors** (same steps on both Claude.ai and Claude Desktop):
+Refresh the snapshot (public catalog only; sequential, 1 s delay between
+requests): `python scripts/snapshot.py`, review the diff in `data/`, redeploy
+with `./scripts/deploy.sh --environment prod`.
 
-1. Go to **Settings** → **Connectors** (or **Customize** → **Connectors** on claude.ai)
-2. Click **Add custom connector**
-3. Enter a name (e.g. "Boston OpenData") and your API Gateway URL
-
-Get the URL: `cd terraform/aws && terraform output -raw api_gateway_url`
-
-See [Getting Started](docs/GETTING_STARTED.md) for full setup.
+Connect via **Claude Connectors**: Settings → Connectors → Add custom
+connector → paste the endpoint URL.
 
 ---
 
-## Documentation
-
+## Framework documentation
 
 | Doc                                        | Description                                     |
 | ------------------------------------------ | ----------------------------------------------- |
@@ -47,31 +71,5 @@ See [Getting Started](docs/GETTING_STARTED.md) for full setup.
 | [Deployment](docs/DEPLOYMENT.md)           | AWS, Terraform, monitoring                      |
 | [Testing](docs/TESTING.md)                 | Local testing (Terminal, Claude, MCP Inspector) |
 
-
----
-
-## Examples
-
-- **Boston OpenData (CKAN):** [examples/boston-opendata/config.yaml](examples/boston-opendata/config.yaml)
-- **Custom plugin:** [examples/custom-plugin/](examples/custom-plugin/)
-
----
-
-## Contributing
-
-Pre-commit hooks (optional):
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-Hooks: Ruff, yamllint, gofmt. Run manually: `pre-commit run --all-files`.
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE).
-
-**Author:** Srihari Raman, City of Boston Department of Innovation and Technology
+Built on OpenContext by Srihari Raman (City of Boston DoIT); this fork by
+Code for Anchorage. MIT licensed — see [LICENSE](LICENSE).

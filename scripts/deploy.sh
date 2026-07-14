@@ -65,12 +65,14 @@ if [ "$ENVIRONMENT" != "staging" ] && [ "$ENVIRONMENT" != "prod" ]; then
     exit 1
 fi
 
-# Default workspace per environment when not explicitly provided
+# Default workspace per environment when not explicitly provided.
+# CRITICAL: each fork gets its own workspace in the shared state bucket —
+# reusing a sibling fork's workspace would plan against (and destroy) its stack.
 if [ -z "$TF_WORKSPACE" ]; then
     if [ "$ENVIRONMENT" = "prod" ]; then
-        TF_WORKSPACE="anchorage-ecode-prod"
+        TF_WORKSPACE="esri-uc-prod"
     else
-        TF_WORKSPACE="anchorage-ecode-staging"
+        TF_WORKSPACE="esri-uc-staging"
     fi
 fi
 
@@ -247,6 +249,9 @@ cp -r core "$PACKAGE_DIR/"
 cp -r plugins "$PACKAGE_DIR/"
 cp -r custom_plugins "$PACKAGE_DIR/" 2>/dev/null || mkdir -p "$PACKAGE_DIR/custom_plugins"
 cp -r server "$PACKAGE_DIR/"
+# Bundle the static catalog snapshot (esri_uc plugin serves these at runtime;
+# there are no upstream calls). Refresh = scripts/snapshot.py + redeploy.
+cp -r data "$PACKAGE_DIR/" 2>/dev/null || true
 cp requirements.txt "$PACKAGE_DIR/" 2>/dev/null || true
 # Ship config.yaml INSIDE the package. The Lambda reads it at runtime
 # (server/http_handler.py::_packaged_config_path) instead of via the

@@ -1,0 +1,6755 @@
+{
+ "snapshot": {
+  "snapshot_taken_at": "2026-07-14T05:51:13+00:00",
+  "source": "RainFocus public catalog (event.esri.com, widget esri/26uc)",
+  "rf_widget_id": "gs5nPlJIt3tgPXa967uifi5UUSE4wqyI",
+  "record_count": 321
+ },
+ "exhibitors": [
+  {
+   "id": "1688746919914001SPuH",
+   "name": "1Spatial by VertiGIS",
+   "description": "1Spatial is a software solutions provider and global leader in managing geospatial data. For more information visit www.1spatial.com.",
+   "booths": [
+    "715"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://1spatial.com/us/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848205323001O0Xm",
+   "name": "20 Lobby",
+   "description": "",
+   "booths": [],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1706558894464001MBx9",
+   "name": "3-GIS",
+   "description": "3-GIS network management solutions connect data, workflows, and teams across telecom and utility networks.",
+   "booths": [
+    "219"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.3-gis.com/en/fiber-network-planning-management-software-3-gis",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1686339895462001OAXy",
+   "name": "Acca Software",
+   "description": "ACCA Software offers BIM and GIS solutions for AEC industries, including Esri-compatible apps; all software IFC certified, openBIM® compliant.",
+   "booths": [
+    "1925"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.accasoftware.com/en/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669770643001nkrO",
+   "name": "AEC",
+   "description": "Meet Esri's team of solutions engineers and product experts dedicated to the Architecture, Engineering, and Construction (AEC) industry. Discover how ArcGIS enhances planning, design, environmental consulting, construction management, project delivery, and operations workflows. Explore Esri solutions for digital twins, BIM and CAD integration, project collaboration, and more. Visit the AEC Showcase area and become an expert on how Esri helps you design, engineer, and build with location in mind.",
+   "booths": [
+    "Architecture & Urban Design",
+    "Environmental Consulting",
+    "AEC",
+    "Construction Management",
+    "Engineering & Consulting",
+    "BIM & CAD in ArcGIS",
+    "ArcGIS GeoBIM",
+    "ArcGIS for AutoCAD",
+    "ArcGIS for Autodesk Forma"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741072452001EnUR",
+   "name": "AI",
+   "description": "ArcGIS is being enhanced with AI. Meet the team shaping how geospatial intelligence powers agentic ecosystems through MCP, and discover how to put geospatial agents to work across ArcGIS. Experience how embedded AI assistants boost productivity and in‑app efficiency, helping you work faster and smarter. Finally, dive into GeoAI tools and models, including pretrained models, foundation models, and new embeddings analysis tools that drive feature extraction, prediction, and forecasting from multimodal data.",
+   "booths": [
+    "",
+    "AI Assistants (kiosk 1)",
+    "AI Agents/MCP (kiosk 1)",
+    "Text",
+    "AI",
+    "",
+    "Imagery and Video",
+    "Deep Learning Studio",
+    "AI Agents/MCP (kiosk 2)",
+    "AI Assistants (kiosk 2)",
+    "3D"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1688423723454001WfzJ",
+   "name": "Airbus",
+   "description": "Airbus, is an industry leader in remote sensing and imagery acquisition that provides easy access to multi-sensor, multi-resolution data",
+   "booths": [
+    "525"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.intelligence-airbusds.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1701112501762001aKXN",
+   "name": "Airspace Link",
+   "description": "Airspace Link is an FAA-Approved Drone (UAS) Service Supplier, leading the way in preparing state & local governments for the emerging drone industry.",
+   "booths": [
+    "1829"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://airspacelink.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1741615866524001BR4q",
+   "name": "Altitude by Geotab",
+   "description": "Altitude by Geotab, a software platform that provides reliable and contextualized mobility insights for public and commercial sector decision-makers.",
+   "booths": [
+    "626"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848614554001Ip9U",
+   "name": "America's Geospatial Story: 250 Years in the Making",
+   "description": "From the Public Land Survey System that mapped a young nation to the satellites and sensors that map it today, America's growth has always been a story told through maps. This special exhibit traces 250 years of American geography and innovation—westward expansion, the rise of aerial photography, the GPS revolution, and the modern GIS platforms shaping our future. See how surveyors, cartographers, and technologists built the spatial infrastructure of a nation. Explore historic maps alongside cutting-edge visualizations celebrating America's semi quincentennial and the geospatial community's role in understanding it.",
+   "booths": [
+    "America 250"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1674262787458001mwK1",
+   "name": "American Association of Geographers",
+   "description": "We provide geographers with the resources to enter the field, develop their careers, and form professional relationships that last a lifetime.",
+   "booths": [
+    "312"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.aag.org",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778690477349001tgbe",
+   "name": "American Red Cross",
+   "description": "",
+   "booths": [
+    "GG7a"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.redcross.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1763152715503001utJK",
+   "name": "Analytics",
+   "description": "Spatial analytics gives geographic context to data for greater understanding. No matter where your data lives, in the cloud or a database, ArcGIS enriches your data with location to better understand patterns, trends, and relationships. Our spatial analytics teams will show you how to start with data engineering, geoprocessing tools, modeling, charts, Python, network analysis, raster analysis, and help you evolve to more advanced analysis like knowledge graphs, real-time, big data, machine learning (ML), and spatial statistics. Visit us at the expo to get answers to all your spatial analytics and data science questions.",
+   "booths": [
+    "ArcGIS Knowledge (kiosk 2)",
+    "ArcGIS Network Analyst (kiosk 2)",
+    "ModelBuilder (kiosk 2)",
+    "Spatial Statistics & Machine Learning",
+    "ArcGIS Knowledge (kiosk 1)",
+    "Data Engineering & Charts",
+    "ArcGIS Spatial Analyst (kiosk 1)",
+    "Analytics",
+    "ArcGIS Network Analyst (kiosk 1)",
+    "Geoprocessing (kiosk 1)",
+    "ModelBuilder (kiosk 1)",
+    "Space Time Analysis & Forecasting",
+    "ArcGIS Spatial Analyst (kiosk 2)",
+    "Spatial Statistics & Geostatistics",
+    "ArcGIS Spatial Analyst (kiosk 3)",
+    "ArcPy (kiosk 2)",
+    "ArcGIS Velocity (kiosk 2)",
+    "R-ArcGIS Bridge",
+    "ArcGIS GeoEvent Server",
+    "ArcPy (kiosk 1)",
+    "ArcGIS Velocity (kiosk 1)",
+    "ArcGIS 3D Analyst",
+    "Geoprocessing (kiosk 2)",
+    "Analysis in Map Viewer",
+    "ArcGIS GeoAnalytics"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1779384154441001CsDo",
+   "name": "Apopo",
+   "description": "",
+   "booths": [
+    "GG8b"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://apopo.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765998209299001t8R8",
+   "name": "Applied Information",
+   "description": "Applied Information’s Glance EVP gives emergency vehicles reliable signal preemption using redundant comms and high-quality travel time data.",
+   "booths": [
+    "ES3 - 12"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://appinfoinc.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1681512844405001AZEz",
+   "name": "Aquanuity",
+   "description": "The ONLY fully ArcGIS Pro 3.x integrated hydraulic modeling software for water, sewer, stormwater, and pipeline renewal prioritization. Come see us!!",
+   "booths": [
+    "A17"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://aquanuity.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138317989001zpdT",
+   "name": "ArcGIS Apps & App Builders",
+   "description": "ArcGIS apps deliver configurable experiences supporting workflows and understanding of markets and communities. Create custom expressions for dynamic visualizations, integrate with Microsoft's enterprise analytics platforms, and automate data workflows. Apps enable data collection, editing, analysis, and compelling storytelling. Mobile workforces achieve field efficiency while staying synced with the office. Visit the Showcase to meet Esri app experts.",
+   "booths": [
+    "ArcGIS Dashboards (kiosk 1)",
+    "Map Viewer (kiosk 2)",
+    "ArcGIS Apps",
+    "ArcGIS for Microsoft Fabric",
+    "ArcGIS Survey123 (kiosk 1)",
+    "ArcGIS for Teams",
+    "ArcGIS Business Analyst (AGA kiosk 1)",
+    "ArcGIS for Power BI",
+    "ArcGIS Data Pipelines (kiosk 2)",
+    "ArcGIS for SharePoint",
+    "ArcGIS Web Editor",
+    "ArcGIS for Excel",
+    "ArcGIS Dashboards (kiosk 2)",
+    "ArcGIS Survey123 (kiosk 2)",
+    "ArcGIS Instant Apps (kiosk 2)",
+    "ArcGIS Maps for Adobe Creative Cloud",
+    "ArcGIS Experience Builder (kiosk 3)",
+    "ArcGIS Field Maps (kiosk 1)",
+    "ArcGIS Connectors for Power Automate",
+    "Arcade",
+    "Map Viewer (kiosk 1)",
+    "ArcGIS Data Pipelines (kiosk 1)",
+    "ArcGIS QuickCapture",
+    "ArcGIS Field Maps (kiosk 3)",
+    "ArcGIS Instant Apps (kiosk 1)",
+    "ArcGIS Experience Builder (kiosk 2)",
+    "ArcGIS Experience Builder (kiosk 1)",
+    "ArcGIS StoryMaps (kiosk 2)",
+    "ArcGIS StoryMaps (kiosk 1)",
+    "ArcGIS Field Maps (kiosk 2)",
+    "ArcGIS Navigator"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741072710001EGov",
+   "name": "ArcGIS Data",
+   "description": "ArcGIS Data enhances your decision-making and simplifies your work with a collection of ArcGIS-ready data and data-driven capabilities, like geocoding, routing, and data enrichment, to power mission critical applications. Visit us at the showcase to ask questions and talk with subject matter experts.",
+   "booths": [
+    "Demographics",
+    "ArcGIS Data",
+    "Geocoding & Locators (kiosk 1)",
+    "Geocoding & Locators (kiosk 2)",
+    "Routing & Network Analysis",
+    "Self-Hosted & On-Premises Data",
+    "Geocoding & Locators (kiosk 3)",
+    "Places & GeoEnrichment"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138318110001zeui",
+   "name": "ArcGIS Enterprise",
+   "description": "ArcGIS Enterprise is self-hosted geographic information system (GIS) software for mapping, analytics, and data management. Deploy in your infrastructure, whether on-premises or in the public or private cloud, to meet compliance, security, and customization needs. Take advantage of a variety of deployment options, including cloud-native architectures. Connect to existing third-party data sources, access ready-to-use spatial content to kick-start your workflows, and seamlessly integrate with ArcGIS Pro, ArcGIS Online, and Esri’s full suite of applications. Whether you’re administering a deployment, supporting users, or planning what’s next, ArcGIS Enterprise helps you meet today’s needs and prepare for the future. Stop by the ArcGIS Enterprise area to: \n\n\n\tGet answers to your questions \n\tSee demonstrations of the latest features \n\tShare how your organization leverages ArcGIS Enterprise \n\tContribute ideas for future enhancements",
+   "booths": [
+    "Geodatabase Functionality (kiosk 1)",
+    "",
+    "Enterprise Geodatabases (kiosk 2)",
+    "ArcGIS Data Store",
+    "Geoprocessing Services",
+    "Getting Started with ArcGIS Enterprise (kiosk 2)",
+    "Geodatabase Functionality (kiosk 2)",
+    "ArcGIS Server",
+    "Automating Installation",
+    "Caching and Vector Tile Services",
+    "Enterprise Geodatabases (kiosk 1)",
+    "Performance and Scalability",
+    "Extending with SOEs",
+    "High Availability and Disaster Recovery",
+    "Databases & ArcGIS",
+    "",
+    "ArcGIS Enterprise on Linux (one demo station; two machines)",
+    "ArcGIS Enterprise Security",
+    "ArcGIS Monitor",
+    "Getting Started with ArcGIS Enterprise (kiosk 1)",
+    "ArcGIS Enterprise System Architecture",
+    "ArcGIS Enterprise on Kubernetes",
+    "ArcGIS Enterprise on Amazon Web Services and Microsoft Azure",
+    "Map Services and Printing",
+    "Extending with Custom Data Feeds",
+    "ArcGIS Enterprise",
+    "Upgrading ArcGIS Enterprise",
+    "ArcGIS Enterprise Portal",
+    "Feature Services"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1683669768833001nYXq",
+   "name": "ArcGIS Living Atlas",
+   "description": "ArcGIS Living Atlas of the World is the premier repository of digital geospatial data and content, curated from the collective work of the entire GIS community. It includes ready-to-use apps, maps, tools, 3D scenes, and data layers to support your GIS workflows. Visit us at the showcase to ask questions, talk with subject matter experts, or see demos of the latest content. Esri curators are available to discuss how you can nominate your own content, making your information more accessible to GIS communities worldwide.",
+   "booths": [
+    "ArcGIS Living Atlas",
+    "Basemaps",
+    "Environment (LA kiosk 1)",
+    "Community Maps Program",
+    "Live Feeds & Real-Time",
+    "Imagery & Elevation",
+    "Living Atlas",
+    "Policy Maps"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138318283001zFHy",
+   "name": "ArcGIS Online",
+   "description": "ArcGIS Online is a complete software as a service for your mapping and analysis workflows that scales with you as you grow to handle significant demand. Let Esri handle software updates and maintenance of your GIS for you so you can focus on advancing your organization’s mission. Visit our showcase to meet the experts, get your questions answered, demo the latest capabilities, provide feedback, and learn more about ArcGIS Online.",
+   "booths": [
+    "ArcGIS Online (AGO kiosk 3)",
+    "ArcGIS Online (AGO kiosk 2)",
+    "ArcGIS Online",
+    "Hosted Data Management (kiosk 1)",
+    "Hosted Data Management (kiosk 3)",
+    "ArcGIS Online Security (kiosk 2)",
+    "ArcGIS Online (AGO kiosk 1)",
+    "ArcGIS Online Security (kiosk 1)",
+    "Hosted Data Management (kiosk 2)",
+    "Research & Design (kiosk 1)",
+    "ArcGIS Online (AGO kiosk 4)",
+    "Research & Design (kiosk 2)"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138318343001zQee",
+   "name": "ArcGIS Pro",
+   "description": "ArcGIS Pro is the trusted desktop GIS software, central to the ArcGIS geospatial platform, used globally to make the maps that run the world.\nVisit the ArcGIS Pro area to meet the team, explore new features, ask questions, and share feedback. ArcGIS Data Reviewer experts will also be available to help.\n \nFor questions about 3D editing in ArcGIS Pro, head to the Imagery & 3D area. For questions about editing geodatabases or working with attribute tables, visit the ArcGIS Enterprise area.",
+   "booths": [
+    "Labeling & Annotation (kiosk 1)",
+    "Layout",
+    "Export",
+    "ArcGIS Pro SDK for .NET",
+    "Coordinate Systems",
+    "arcpy.mp",
+    "Cartography & Symbology (kiosk 1)",
+    "ArcGIS Data Reviewer",
+    "Tasks",
+    "Virtualizing ArcGIS Pro",
+    "Sharing",
+    "Content Management",
+    "Application Framework",
+    "Interactive Data Exploration (kiosk 2)",
+    "Editing (kiosk 2)",
+    "Interactive Data Exploration (kiosk 1)",
+    "Intro to ArcGIS Pro",
+    "",
+    "Labeling & Annotation (kiosk 2)",
+    "3D Layers",
+    "Cartography & Symbology (kiosk 2)",
+    "ArcGIS Pro",
+    "Editing (kiosk 1)",
+    "Vector Tiles"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138318400001zZB9",
+   "name": "ArcGIS Solutions ",
+   "description": "ArcGIS Solutions are industry-specific configurations of ArcGIS that help you maximize the investment you are making in location-based data and technology. They align with your business needs, leverage your authoritative data, and help you improve operations, gain new insight, and enhance services. Visit the ArcGIS Solutions showcase area, where you can explore solutions for state and local governments, utilities, and public safety agencies. Learn how to deploy a solution that aligns with your needs and even share your ideas for future ArcGIS Solutions.",
+   "booths": [
+    "State & Local Government (kiosk 1)",
+    "State & Local Government (kiosk 3)",
+    "State & Local Government (kiosk 2)",
+    "ArcGIS Solutions",
+    "Utilities (kiosk 3)",
+    "Public Safety (kiosk 1)",
+    "Public Safety (kiosk 2)",
+    "Utilities (kiosk 1)",
+    "Utilities (kiosk 2)"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1654620716661001lWQq",
+   "name": "Arxys",
+   "description": "Arxys has been crafting data protection and data analytics appliances for the most demanding organizations for more than 30 years.",
+   "booths": [
+    "O19"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.arxys.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1688568394873001tNs7",
+   "name": "AssetWorks",
+   "description": "AssetWorks provides integrated software to help organizations make data-driven decisions, boosting efficiency, transparency, and cost savings.",
+   "booths": [
+    "2127"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.assetworks.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1681149712157001Bj5c",
+   "name": "Atomic Maps",
+   "description": "Atomic Maps offers cloud-native imagery management for enterprise AI and GIS.",
+   "booths": [
+    "229"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://atomicmaps.io/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1718750954242001LEa0",
+   "name": "Autodesk",
+   "description": "Autodesk's mission is to empower everyone, everywhere to design and make anything.",
+   "booths": [
+    "825"
+   ],
+   "categories": [
+    "Sponsor",
+    "Gold Sponsor"
+   ],
+   "url": "https://www.autodesk.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Gold Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1748898975424001vEeV",
+   "name": "Avolve",
+   "description": "Avolve delivers the most trusted and proven electronic plan review solutions on the market, ProjectDox and DigEplan.",
+   "booths": [
+    "1924"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://avolvesoftware.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1670364777607001jKxs",
+   "name": "AWS",
+   "description": "Amazon Web Services (AWS) is the world’s most comprehensive and broadly adopted cloud platform, offering over 200 fully featured services from data centers globally. Millions of customers—including the fastest-growing startups, largest enterprises, and leading government agencies—are using AWS to lower costs, become more agile, and innovate faster.",
+   "booths": [
+    "2313"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://aws.amazon.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753210778513001pwgc",
+   "name": "Bad Elf LLC",
+   "description": "Bad Elf GNSS receivers deliver affordable accuracy through easy-to-use hardware supported by continuously evolving firmware, apps, and cloud services.",
+   "booths": [
+    "524"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://bad-elf.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1742942218580001ovfi",
+   "name": "Baron Weather",
+   "description": "Baron Weather brings real-time weather into ArcGIS to improve situational awareness, reduce risk, and support faster decisions.",
+   "booths": [
+    "ES3 - 5"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://baronweather.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1748989014291001OTX7",
+   "name": "Baron Weather",
+   "description": "As an Esri Gold Partner, Baron Weather provides precise, reliable data integrated with ArcGIS to deliver actionable, location-based weather insights.",
+   "booths": [
+    "913"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://baronweather.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655141161805001l33d",
+   "name": "Bent Ear Solutions",
+   "description": "Bent Ear Solutions turns your existing data and technology into real-time situational awareness for faster decisions. No new software required.",
+   "booths": [
+    "ES3 16"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.bentearsolutions.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620717812001lVu0",
+   "name": "Berntsen International, Inc",
+   "description": "InfraMarker RFID bridges physical assets to their digital records in ArcGIS, making verified asset identity the standard of confident, efficient work.",
+   "booths": [
+    "714"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.berntseninternational.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1742206839985001yPCf",
+   "name": "Blackshark.ai",
+   "description": "Image intelligence at mission speed. Real-time object detection and 3D simulation, deployed at scale.",
+   "booths": [
+    "336"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.blackshark.ai/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652367116738001sS9R",
+   "name": "Blue Raster LLC",
+   "description": "From interactive maps to cloud infrastructure, we help organizations visualize, analyze, and share their world.",
+   "booths": [
+    "2224"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.blueraster.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682353290638001LC3F",
+   "name": "Bootcamp GIS",
+   "description": "Bootcamp GIS offers a GeoAI Certificate taught by industry SMEs with career services to help you win a job.",
+   "booths": [
+    "225"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://bootcampgis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1743699304839001wZc6",
+   "name": "Bootcamp GIS",
+   "description": "Bootcamp GIS offers a GeoAI Certificate taught by industry SMEs with career services to help you win a job.",
+   "booths": [
+    "A114"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://bootcampgis.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1752595501625001rS9n",
+   "name": "Bradshaw Consulting Services, Inc. (BCS)",
+   "description": "BCS develops solutions for public safety agencies to leverage technology & strategies to improve efficiency and effectiveness in logistical operations",
+   "booths": [
+    "2212"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.bcs-gis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1770235985549001pLym",
+   "name": "Bradshaw Consulting Services, Inc. (BCS)",
+   "description": "BCS develops solutions for public safety agencies to leverage technology & strategies to improve efficiency and effectiveness in logistical operations",
+   "booths": [
+    "ES3 - 4"
+   ],
+   "categories": [
+    "Sponsor",
+    "Safety & Security Summit Sponsor"
+   ],
+   "url": "https://www.bcs-gis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1654620720943001lY1b",
+   "name": "Bureau of Indian Affairs",
+   "description": "Bureau of Indian Affairs, Branch of Geospatial Services.",
+   "booths": [
+    "NN2"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://opendata-1-bia-geospatial.hub.arcgis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1732749803922001eRW0",
+   "name": "Bureau of Reclamation",
+   "description": "The mission of the Bureau of Reclamation is to manage, develop, and protect water and related resources in an environmentally and economically sound manner in the interest of the American public.",
+   "booths": [
+    "F1"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.usbr.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138318635001zmGA",
+   "name": "Business",
+   "description": "Meet Esri's team of solutions engineers and product experts dedicated to business in the private sector. Discover how ArcGIS in business can deliver insights that inform strategic decisions across enterprise-wide operations, driving growth, efficiency, and resilience. You will find demo kiosks with representatives from industries such as Retail, Real Estate, Insurance, Financial Services,Technology,Manufacturing & Logistics, and Media & Entertainment. Members of the ArcGIS Business Analyst team are also available this year, ready to answer questions and demonstrate new and exciting features.",
+   "booths": [
+    "Insurance",
+    "Financial Services & Banking",
+    "Retail",
+    "Mapping & Analytics",
+    "Real Estate",
+    "Media & Entertainment",
+    "Manufacturing & Logistics",
+    "ArcGIS Business Analyst",
+    "Business"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1768342431877001PVLp",
+   "name": "California State University Northridge, Geography & Environmental Studies",
+   "description": "",
+   "booths": [
+    "A108"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1754431445849001iWgj",
+   "name": "Caltrans",
+   "description": "",
+   "booths": [
+    "OO8"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://dot.ca.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138318521001zO0G",
+   "name": "Careers In GIS",
+   "description": "A career in GIS creates powerful change in our community, society, and world. The Careers in GIS booth helps you explore what’s possible. Stop by to talk about career goals, resumes, and LinkedIn tips, and explore our new digital job board! No appointment is necessary",
+   "booths": [
+    "Careers in GIS"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1652367116822001snNT",
+   "name": "Carlson Software",
+   "description": "Carlson Software specializes in mapping and GIS products for the GIS, engineering, surveying, construction, and mining industries worldwide.",
+   "booths": [
+    "113"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.carlsonsw.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1733903113860001eAuk",
+   "name": "Cellular Expert",
+   "description": "Ultra-fast wave propagation & radio communication planning software integrated into ArcGIS or over API for digital twins in Telecom, Defense, IoT.",
+   "booths": [
+    "213"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.cellular-expert.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1780491813251001Wb75",
+   "name": "Center for Plant Conservation",
+   "description": "",
+   "booths": [
+    "GG3"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652224899851001HbP0",
+   "name": "CentralSquare ",
+   "description": "CentralSquare proudly serves over 8,000 organizations across North America by providing public safety & administration software solutions.",
+   "booths": [
+    "1619"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.centralsquare.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1710359442680001vP6S",
+   "name": "Cintoo",
+   "description": "Cintoo transforms point clouds into precise 3D meshes to power BIM coordination and scalable digital twin workflows.",
+   "booths": [
+    "2126"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://cintoo.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1769806754363001bZvD",
+   "name": "Civic Vanguard Inc",
+   "description": "Civic Vanguard empowers local governments with its GIS-centric software and services platform, CivQuest.",
+   "booths": [
+    "S10"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1758658567038001ePmO",
+   "name": "CivicPlus",
+   "description": "CivicPlus® empowers civic leaders with an impact-led platform that balances better services with real-world resources.",
+   "booths": [
+    "130"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.civicplus.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1769536351911001Bc4i",
+   "name": "Claremont Graduate University",
+   "description": "",
+   "booths": [
+    "011"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Education Zone Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Education Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "16559347586720015q5S",
+   "name": "Claremont Graduate University",
+   "description": "For 100 years, CGU develops bold leaders through 80+ specialized master’s, PhD, and doctoral programs. Empowering change-makers to shape the future.",
+   "booths": [
+    "A104"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://www.cgu.edu/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674150966013001fxuM",
+   "name": "Cloudpoint Geospatial",
+   "description": "We provide GIS services to local governments, utilities, public safety, and campus facilities, promoting informed data-driven decision-making.",
+   "booths": [
+    "725"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.cloudpointgeo.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138318695001zSDK",
+   "name": "Community Development",
+   "description": "Visit the Community Development Showcase to learn strategies you can take back to design thriving, sustainable communities. See how spatial analysis and 3D digital twins are used to model scenarios, monitor housing capacity and affordability, increase transparency in stakeholder engagement, and idenitfy gaps in services. This showcase is also an opportunity to connect with industry experts, create valuable partnerships, and gain the tools and insights you need to embark on your next planning project.",
+   "booths": [
+    "Community Development",
+    "ArcGIS Urban",
+    "Housing",
+    "ArcGIS CityEngine",
+    "Future-Proof Development",
+    "Planning & Design",
+    "Stakeholder Engagement (CIG kiosk 1)"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1781112995298001kKbk",
+   "name": "CompassCom Software Group",
+   "description": "Trusted Esri partners since 1994, CompassData and CompassCom deliver geospatial accuracy and real-time GIS intelligence for smarter decisions.",
+   "booths": [
+    "O23"
+   ],
+   "categories": [
+    "Sponsor",
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1644257482962001oWLQ",
+   "name": "con terra GmbH",
+   "description": "con terra is an Esri Platinum Partner, bringing ArcGIS expertise and business-critical solutions to customers for 30 years.",
+   "booths": [
+    "425"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.conterra.de/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1689350833545001sT4B",
+   "name": "Cotality ",
+   "description": "Cotality is a data-driven technology company that connects the entire property ecosystem.",
+   "booths": [
+    "2226"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.corelogic.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765560050614001RORq",
+   "name": "CSULB - CPACE",
+   "description": "California State University, Long Beach, through CPaCE, partners with industry to deliver innovative workforce and lifelong learning programs.",
+   "booths": [
+    "A109"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1762808736176001yJRK",
+   "name": "CUSI",
+   "description": "CUSI is a U.S. software company providing utility billing and CIS solutions, with 40+ years serving water, gas, electric, and waste utilities.",
+   "booths": [
+    "237"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://cusi.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138318813001zF4x",
+   "name": "Customer Service ",
+   "description": "Stop by the Customer Service booth to get help with your order, review your licensing details and renewal status. Our experienced staff will demonstrate key areas of the My Esri site, including how to view and edit renewal quotes, review license summaries, download software, manage authorization numbers, assign user access, and more.",
+   "booths": [
+    "Customer Service"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1682698173605001bLf5",
+   "name": "CyberTech/Spatialitics",
+   "description": "CyberTech’s expertise is Enterprise Cloud Transformation. We deliver Cloud-based SAP digitalized solutions and Esri ArcGIS Enterprise platforms.",
+   "booths": [
+    "719"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.cybertech.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1685653297602001lEtR",
+   "name": "cyclomedia",
+   "description": "Cyclomedia delivers accurate 360° street-level imagery, LiDAR, and data insights to help organizations manage public infrastructure.",
+   "booths": [
+    "105"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.cyclomedia.com/us",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1732696090073001hSLs",
+   "name": "Cyient Inc.",
+   "description": "Cyient is a global ER&D leader delivering AI-powered engineering across products, plants and networks for 300+ customers in 30 countries at scale",
+   "booths": [
+    "A39"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1722351214614001pIFO",
+   "name": "Cyvl",
+   "description": "Cyvl uses AI and LiDAR to deliver actionable insights, optimize resources, and support data-driven decisions for sustainable infrastructure management",
+   "booths": [
+    "528"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.cyvl.ai/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620718157001lbch",
+   "name": "Dataminr",
+   "description": "Dataminr’s pioneering real-time AI platform discovers the earliest signals of events, risks and threats from within public data.",
+   "booths": [
+    "1825"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.dataminr.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1686173591315001njnW",
+   "name": "Dataminr",
+   "description": "Dataminr’s pioneering real-time AI platform discovers the earliest signals of events, risks and threats from within public data.",
+   "booths": [
+    "ES3 - 6"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.dataminr.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1743701086961001FhwD",
+   "name": "dataplor",
+   "description": "Dataplor sets the gold standard in global location intelligence with accurate, dynamic POI and mobility insights updated in near-real-time.",
+   "booths": [
+    "A15"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1744142047772001t0QL",
+   "name": "DCSE",
+   "description": "Most utilities use GIS to map assets. DCSE turns ArcGIS Utility Network into a Utility Intelligence Platform—connecting GIS, assets, and operations.",
+   "booths": [
+    "812"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://dcse.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655141065778001WKLY",
+   "name": "Deccan International",
+   "description": "Empowering Fire & EMS with predictive modeling and analytics to improve response times, defend budgets, and plan with confidence.",
+   "booths": [
+    "ES3 - 13"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://deccanintl.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1681510308862001AIck",
+   "name": "DeepWalk",
+   "description": "At DeepWalk, we simplify sidewalk maintenance using iPhone LiDAR to deliver fast, GIS-informed inspections and data-driven improvement plans.",
+   "booths": [
+    "S7"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://www.deepwalk.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138318881001zpNy",
+   "name": "Defense & Intelligence",
+   "description": "ArcGIS derives meaning from data across your enterprise to achieve National Security objectives. ArcGIS leverages AI, advanced analytic methods, and apps to enhance decision making.\nVisit the Defense & Intelligence Area to:\n\n\n\tDiscover insights by leveraging geospatial AI integrated with advanced analytics\n\tIntegrate National Imagery, graph analytics, and GIS data to enhance situational awareness\n\tEmploy Defense mapping solutions to create authoritative maps and data for National Mappinga across your enterprise to achieve National Security objectives. ArcGIS leverages AI, advanced analytic methods, and enterprise apps to enhance decision making.",
+   "booths": [
+    "ArcGIS AllSource (kiosk 2)",
+    "Intelligence (kiosk 1)",
+    "Intelligence (kiosk 2)",
+    "Defense (kiosk 2)",
+    "Defense & Intelligence",
+    "ArcGIS AllSource (kiosk 1)",
+    "Defense (kiosk 1)",
+    "ArcGIS Topographic Mapping",
+    "Defense Solutions"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1776380590298001Pv2I",
+   "name": "Dell/NVIDIA",
+   "description": "We are a global team united under a single purpose: to drive human progress through the power of technology.",
+   "booths": [
+    "010"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655413798797001cFJY",
+   "name": "Deloitte",
+   "description": "Deloitte helps organizations leverage the power of location to gain critical insights for improving their mission outcomes. Our dedicated team of analysts, software developers, data scientists, and strategists couple innovative data-driven approaches with cutting-edge geospatial solutions to deliver results—where it matters.",
+   "booths": [
+    "2412"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www2.deloitte.com/us/en/services/consulting.html",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1736293135493001wsHQ",
+   "name": "Design, Build, and Sustain ArcGIS Systems",
+   "description": "Discover how ArcGIS serves as an enterprise‑ready geospatial platform that is configurable, interoperable, scalable, and secure by design. Take the next step toward geospatial excellence and learn how to design, build, and sustain systems with ArcGIS that meet your organization's business needs.\n\nTalk to experts about: \n\n\n\tGeospatial strategy and governance, including aligning GIS initiatives to business objectives and establishing decision‑making, standards, and accountability. \n\tCore principles and pillars of the ArcGIS Well‑Architected Framework, such as  security, performance, scalability and integration with other business systems such as ServiceNow, Salesforce, Microsoft, Autodesk, AWS and Adobe.\n\tEmpowering your workforce to foster engagement and maximize adoption. \n\tInstallation, software authorization, and administering your deployment. \n\tGlobal readiness, including localization, internationalization, and Esri’s commitment to accessibility and inclusivity.",
+   "booths": [
+    "",
+    "",
+    "Design",
+    "Strategic Workforce Development​",
+    "Accessibility​",
+    "ArcGIS Notebooks",
+    "System Integration​ (kiosk 1)",
+    "Cloud Migration and Implementation​",
+    "Geospatial Change Management",
+    "Enterprise Sites",
+    "Installation and Deployment​",
+    "Localization​",
+    "Observability and Monitoring",
+    "ArcGIS Hub (kiosk 2)",
+    "",
+    "",
+    "ArcGIS Hub (kiosk 1)",
+    "Geospatial Strategy​",
+    "ArcGIS Online Partnered Collaboration​",
+    "Internationalization",
+    "Extending with webhooks​",
+    "Performance",
+    "ArcGIS Workflow Manager​",
+    "Organization Administration",
+    "Authorization and Licensing​",
+    "System Integration​ (kiosk 2)",
+    "Governance",
+    "Security & Compliance​",
+    "ArcGIS Enterprise Distributed Collaboration​",
+    "Privacy & Trusted AI",
+    "Well-Architected Framework"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1777059316690001ZUkb",
+   "name": "Developer Technologies ",
+   "description": "Connect with Esri developers and engineers who build the ArcGIS SDKs and open source mapping projects. Discover a world of possibilities across web, mobile, desktop, game engines, and server platforms. Come see new capabilities including AI and MCP. Our developer area is essential for anyone looking to design, build and deploy custom experiences with location services, or to extend, script, and automate ArcGIS systems. Join us to fully unleash the potential of ArcGIS in your projects.",
+   "booths": [
+    "Calcite Design System",
+    "ArcGIS API for Python (kiosk 1)",
+    "ArcGIS Maps SDK for JavaScript",
+    "ArcGIS Maps SDKs for Native Apps",
+    "ArcGIS Maps SDKs for Game Engines",
+    "ArcGIS API for Python (kiosk 2)",
+    "Open Source",
+    "Developer Technologies",
+    "ArcGIS Location Services",
+    "ArcGIS Location Platform"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1674170475574001lgsg",
+   "name": "Dig-Smart, LLC",
+   "description": "Providing one call ticket management and 811 software solutions for public and private utilities working in damage prevention",
+   "booths": [
+    "625"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.dig-smart.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1767815150109001WLFl",
+   "name": "DOT-US, L.P. (Decision Optimization Technology)",
+   "description": "Decision Optimization Technology™ delivers superior analytics and helps agencies make smarter decisions by maximizing their return on investment.",
+   "booths": [
+    "A37"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777915694103001jZDz",
+   "name": "Ducks Unlimited, Inc.",
+   "description": "",
+   "booths": [
+    "GG5b"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.ducks.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1689282869694001pqSw",
+   "name": "dymaptic",
+   "description": "dymaptic is an Esri Gold Partner specializing in custom GIS solutions and AI-powered spatial tools that help organizations make smarter decisions.",
+   "booths": [],
+   "categories": [
+    "Sponsor",
+    "GIS Leadership Summit Sponsor"
+   ],
+   "url": "https://dymaptic.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "GIS Leadership Summit Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1652367117166001sbAF",
+   "name": "dymaptic",
+   "description": "dymaptic is an Esri Gold Partner specializing in custom GIS solutions and AI-powered spatial tools that help organizations make smarter decisions.",
+   "booths": [
+    "436"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://dymaptic.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1742926403336001zeVs",
+   "name": "Eagle Point Software",
+   "description": "Eagle Point Software’s Pinnacle Series applied learning solution empowers AECO, design & manufacturing teams with expert-led, on-demand training.",
+   "booths": [
+    "329"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1688422399967001xQZf",
+   "name": "EagleView",
+   "description": "EagleView is a leading provider of aerial imagery, property insights and software. EagleView owns 300+ patents, a large geospatial data and imagery library, and encompasses 94% of the US population.",
+   "booths": [
+    "2019"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.eagleview.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1655138319002001zWe4",
+   "name": "Earth Sciences",
+   "description": "Step into the Earth Sciences area, where scientific discovery meets real‑world impact. Engage with ArcGIS through hands‑on demos and user stories that show how an open, interoperable analysis ecosystem connects data to insight, insight to action, and science to decisions addressing critical environmental challenges. Meet experts, share ideas, and see how geospatial workflows accelerate discovery, reduce time spent on data wrangling, and help build resilience for the future.",
+   "booths": [
+    "Geoscience",
+    "Earth Sciences",
+    "Weather & Marine Science"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1771243779266001S7Y5",
+   "name": "EarthDaily",
+   "description": "EarthDaily is a global Earth observation company focused on delivering science-grade data and analytics designed for broad-area change detection.",
+   "booths": [
+    "128"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620718340001l5WV",
+   "name": "East View Geospatial",
+   "description": "East View Geospatial is a leading provider of worldwide maps, imagery, geospatial data and GIS services. Uncommon information. Extraordinary places.",
+   "booths": [
+    "828"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://geospatial.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1768244098898001uO8q",
+   "name": "Ecopia AI",
+   "description": "Ecopia's AI map engine extracts high-precision vector map data from imagery at scale for visualizations, analytics, and decision-making.",
+   "booths": [
+    "A13"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753206147673001KrEG",
+   "name": "Ensemble",
+   "description": "Ensemble is a digital software company. Our GDi Ensemble OSS helps CSPs worldwide plan, build, and operate networks.",
+   "booths": [
+    "519"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://ensemble-oss.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1673648818378001fnSF",
+   "name": "ENTRUST Solutions Group",
+   "description": "Providing comprehensive and dependable engineering, consulting, and automation services to pipeline companies, utilities, and industrial customers",
+   "booths": [
+    "109"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://entrustsol.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1718296691383001hAUv",
+   "name": "Environics Analytics",
+   "description": "EA's vision is to make people’s lives better and make clients more successful through transformative data insights and analytics.",
+   "booths": [
+    "412"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138319116001zMxm",
+   "name": "Environment ",
+   "description": "The Environment showcase is designed for GIS professionals supporting environmental protection, land and wildlife management, parks and recreation, and climate resilience. Through real‑world user stories and Esri’s latest capabilities and solutions, you’ll discover practical insights and tools tailored to today’s environmental challenges. Whether you’re exploring new approaches to environmental permitting, real‑time wildlife management, parks and recreation planning, or climate resilience, Esri industry experts will be on hand to help you turn ideas into action.",
+   "booths": [
+    "Parks & Recreation",
+    "Environment",
+    "Land & Wildlife Management",
+    "Climate Resilience",
+    "Environmental Protection"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1663865885407001praD",
+   "name": "Eos Positioning Systems",
+   "description": "Eos designs award-winning high-accuracy GNSS receivers for ArcGIS apps on all devices. Visit us to explore our newest GNSS solutions for GIS users.",
+   "booths": [
+    "1025"
+   ],
+   "categories": [
+    "Sponsor",
+    "Gold Sponsor"
+   ],
+   "url": "https://eos-gnss.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Gold Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1720462674415001sAgL",
+   "name": "Epoch Solutions Group",
+   "description": "Epoch Solutions Group is a leading provider of mobile workforce management software for utilities since 2006 with over 72 million customers served.",
+   "booths": [
+    "813"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://epochsg.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1730398454801001kd1s",
+   "name": "Epson America Inc",
+   "description": "Epson is a leader in the Professional Imaging printing market, delivering high-performance solutions for GIS professionals. Visit proimaging.epson.com",
+   "booths": [
+    "414"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://epson.com/usa",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669770572001nq5h",
+   "name": "Equity & Social Justice",
+   "description": "The Equity and Social Justice showcase supports organizations working to expand economic mobility in their communities. Connect with Esri experts to explore how GIS helps identify barriers, improve access to opportunity, and inform more equitable decisions. No matter what industry you support, you will discover tools that help people thrive and build pathways to lasting mobility.",
+   "booths": [
+    "Equity & Social Justice",
+    "Economic Mobility",
+    "GeoEquity Strategy"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1727277195224001z4Gs",
+   "name": "Es2",
+   "description": "ES2 delivers value to Government, Ports, and AEC organizations by developing GIS & Drone programs, implementing solutions, and collecting data for you",
+   "booths": [
+    "1213"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.es2-inc.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1666138020224001a0Xl",
+   "name": "Esri",
+   "description": "This exhibitor is only used for adding technical sessions as sponsored sessions to enable the Request for Sales Follow Up button.",
+   "booths": [],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "https://www.esri.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138319178001zlTa",
+   "name": "Esri Community",
+   "description": "Discover Esri Community, a free online resource for finding answers to GIS and ArcGIS product questions, sharing enhancement ideas, and collaborating with Esri users around the globe. Stop by our booth for a personalized demo - we look forward to getting you connected!",
+   "booths": [
+    "Esri Community"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1700605978323001DwZC",
+   "name": "Esri Services",
+   "description": "Visit the Esri Services Area to connect with experts who can help you solve your toughest challenges and make a bigger impact with GIS. Ask questions and get advice that will help you turn ideas into solutions that drive sustained growth and innovation.\n\n\n\tDiscover flexible training and certification options for you and your team\n\tBook a 1-1 appointment for guidance on enhancing your geospatial solutions (limited availability)\n\tJoin us for an Insight Talk in the Implementation Strategies Theater",
+   "booths": [
+    "Enterprise Services",
+    "Esri Services",
+    "Advantage Program",
+    "Certification",
+    "Custom Services",
+    "Esri Academy",
+    "Training"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1715709313146001F95U",
+   "name": "Federal User Showcase",
+   "description": "The Federal User Showcase features key US Government agencies highlighting their important work that impacts the nation. ArcGIS is the nervous system for each enterprise that helps federal agencies connect communities and apply geospatial innovations that responsibly manage and protect land, food, infrastructure, and the people they serve. At the showcase guests will be able to learn about crucial missions from Wildland Fire, Reclamation, National Mapping, Transportation, Land Management, Census, Indian Affairs, Agriculture, Oversight, Policy and more! Meet subject matter experts from Federal Government agencies to discuss how they're utilizing GIS across their enterprise, developing governance, applying AI, creating digital twins, integrating with other enterprise systems, and ensuring data readiness. Find out how GIS is enabling agency staff and leaders to integrate diverse types of data to derive understanding, operationalize solutions, communicate insights, and engage stakeholders and the public.",
+   "booths": [
+    "Federal User Showcase"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1779848338660001NNLN",
+   "name": "Fireside Chats ",
+   "description": "Join us at 11:30 a.m. each day of the conference to hear from expert geospatial storytellers as they discuss their approach to using cartographic and storytelling principles to create content that informs, inspires, and influences. You'll also have an opportunity to ask your own storytelling questions during each session. Speakers include Dawn Wright, John Nelson, members of Esri’s MapX team, representatives from the National Geographic Society, student StoryMaps competition awardees, and more.",
+   "booths": [],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1685561156420001qTxX",
+   "name": "First American Data & Analytics",
+   "description": "First American Data & Analytics delivers accurate, complete, and current U.S. parcel data to power geospatial workflows and location-based insights.",
+   "booths": [
+    "319"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://dna.firstam.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683846046025001nILo",
+   "name": "First Due",
+   "description": "End-to-end software for Fire & EMS agencies - built to run your entire operation in one place.",
+   "booths": [
+    "ES3 - 11"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.firstdue.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778101317493001mxQc",
+   "name": "FlameMapper",
+   "description": "",
+   "booths": [
+    "ES3 - 14"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://flamemapper.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620721266001luqA",
+   "name": "FloodMapp",
+   "description": "FloodMapp delivers real-time, GIS-integrated flood intelligence to protect people, infrastructure, and operations from flood risk.",
+   "booths": [
+    "2112"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.floodmapp.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1697678310322001stNs",
+   "name": "Frontier Precision",
+   "description": "Geospatial solutions for GIS, mosquito/weed control, local government, DOTs, water monitoring, drones, land mobile mapping, & surveying applications.",
+   "booths": [
+    "419"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://frontierprecision.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1762797893268001ulek",
+   "name": "Fugro",
+   "description": "World-leading Geo-data specialist mapping Earth's surface and subsurface. We deliver insights for safe, sustainable project design and management.",
+   "booths": [
+    "026"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1706136700537001vNbF",
+   "name": "Fulcrum",
+   "description": "Esri Silver Partner Fulcrum brings AI-powered voice capture to GIS data collection, streamlining workflows and syncing with ArcGIS in real time.",
+   "booths": [
+    "122"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.fulcrumapp.com/?utm_medium=email&utm_source=outbound&utm_campaign=evt_24-07-15_all_all_all_esri-user-conference_2393-vendor-email-esri",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1773689349145001AqZF",
+   "name": "Genetec",
+   "description": "Genetec Inc. is a global technology company that has been transforming the physical security industry for over 25 years.",
+   "booths": [
+    "ES3 - 2"
+   ],
+   "categories": [
+    "Sponsor",
+    "Safety & Security Summit Sponsor"
+   ],
+   "url": "https://www.genetec.com/[genetec.com]",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1652367117581001s0km",
+   "name": "GEO Jobe GIS Consulting",
+   "description": "GEO Jobe offers GIS Professional Services, U.S.-Based Support Services, and created the “ABCs of GIS,” a suite of administrative apps for ArcGIS.",
+   "booths": [
+    "1119"
+   ],
+   "categories": [
+    "Platinum Sponsor"
+   ],
+   "url": "https://geo-jobe.com",
+   "raw_tags": {
+    "RecognitionLevel": [
+     "Platinum Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1654620718686001l0pY",
+   "name": "GeoCam",
+   "description": "GeoCam - Aerial , Street, and Indoor mapping services. Using our proprietary cameras we deploy teams to image and map assets and infrastructure.",
+   "booths": [
+    "2400"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.geocam.xyz/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652367117412001sFUw",
+   "name": "GeoComm",
+   "description": "For 30+ years, GeoComm empowers public safety with advanced GIS solutions, delivering real-time location intelligence to emergency response teams.",
+   "booths": [
+    "2213"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.geocomm.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765576036983001mRnB",
+   "name": "geoConvergence, LLC",
+   "description": "Award-winning GIS consulting firm & Esri Gold Partner. Specializing in ArcGIS Enterprise & Indoors implementation, custom solutions & managed services",
+   "booths": [
+    "O18"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753985777952001b9Yr",
+   "name": "GeoCue",
+   "description": "GeoCue offers hardware and LP360 advanced LiDAR & photogrammetry software for precise aerial, mobile, and handheld mapping.",
+   "booths": [
+    "227"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1751835466440001MTxK",
+   "name": "Geodesign for a Changing Climate: the World’s Most Important Design Problem",
+   "description": "The display features Geodesign and OpenPlanMap, a new innovation of the Esri Community Maps program designed to gather planning data from around the world, share it with stakeholders, and assess the collective global impacts of planning. This display also showcases two approaches to addressing the world’s most important design problem: global climate change. Developed by teams from the International Geodesign Collaboration (IGC), these initiatives explore how bottom-up and top-down approaches to planning can inform one another to create more sustainable communities locally and globally.",
+   "booths": [
+    "GeoDesign"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1712942234023001sFnp",
+   "name": "GEODNET",
+   "description": "GEODNET is a highly reliable, Web3 RTK Network that uses DePIN principles. Providing 100x improvement in position accuracycompared to standalone GPS.",
+   "booths": [
+    "526"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://geodnet.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683309462598001qant",
+   "name": "GeoGomm",
+   "description": "For 30+ years, GeoComm empowers public safety with advanced GIS solutions, delivering real-time location intelligence to emergency response teams",
+   "booths": [
+    "ES3 - 3"
+   ],
+   "categories": [
+    "Sponsor",
+    "Safety & Security Summit Sponsor"
+   ],
+   "url": "https://www.geocomm.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1683048288037001mh8l",
+   "name": "GEOGRAPH",
+   "description": "GEOGRAPH helps teams map and manage fiber networks with a trusted GIS platform, backed by experienced people and real human support you can rely on.",
+   "booths": [
+    "1012"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://geograph.tech/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1703605058806001k7NC",
+   "name": "GeoMarvel LLC",
+   "description": "GeoMarvel is an award-winning GIS & Esri Gold Partner delivering scalable GIS, cloud, data, & custom app solutions backed by 30+ years of expertise.",
+   "booths": [
+    "325"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://geomarvel.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683055300310001LPkL",
+   "name": "Geonexus",
+   "description": "Geonexus provides seamless ArcGIS integration for enterprise systems serving utilities, transportation, and government organizations worldwide.",
+   "booths": [
+    "514"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://geo-nexus.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674846183552001KKjd",
+   "name": "Geospatial Professional Network (formerly URISA)",
+   "description": "Stop by to learn about membership, GIS-Pro, the GIS Leadership Academy, Vanguard Cabinet, GISCorps, our Mentoring Network, and more!",
+   "booths": [
+    "314"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.urisa.org",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674252714272001J5PQ",
+   "name": "Getac",
+   "description": "Rugged Laptops, Tablets, and Video purpose-built for Public Safety.",
+   "booths": [
+    "512"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.getac.com/us",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753987814588001q715",
+   "name": "GFT",
+   "description": "GFT helps owners use GIS across the project lifecycle, connecting data, systems, and teams for clearer, more scalable decisions.",
+   "booths": [
+    "429"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652367117705001snv9",
+   "name": "GIS Certification Institute",
+   "description": "GISCI is a non-profit that promotes the advancement of proficient GIS professionals through its international GISP® certification program.",
+   "booths": [
+    "313"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.gisci.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669771952001nL2u",
+   "name": "GIS Day ",
+   "description": "Visit the GIS Day booth, where we invite attendees to learn how they can participate in and lead GIS Day celebrations around the world. Stop by to explore resources, discover ways to engage students, educators, nonprofits, and communities, and see how GIS is being used to inspire geographic literacy and real‑world problem solving. Attendees can connect with the GIS Day team, get ideas for hosting an event, and register to take part in this global celebration of GIS.",
+   "booths": [
+    "GIS Day"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1738000692104001hsJk",
+   "name": "GIS for Good",
+   "description": "The GIS for Good Showcase is a place for those using GIS to maximize the impact of our work to support people, planet, prosperity, & peace using the geographic approach. Network and learn from Esri staff that lead the special programs and initiatives designed to help you apply GIS for Good in support of Climate Change, Conservation, Sustainable Development, Humanitarian Action, and Nonprofits. Come join us as we apply GIS for a more sustainable and prosperous future for all.",
+   "booths": [
+    "GIS for Good"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741075226001EzQ0",
+   "name": "GIS for Good - Climate Action",
+   "description": "A changing climate is impacting communities and businesses around the world.  Visit us in the GIS for Good showcase to join the conversation and explore data and tools that can help build more resilient communities.  Learn how GIS can assist throughout your climate resilience journey; visualizing climate change indicators, understanding risk exposure, evaluate options to mitigate current and future impacts and inform and engage citizens.   Come to share, learn and be inspired!",
+   "booths": [
+    "GIS for Good - Climate Action"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741075556001EgO4",
+   "name": "GIS for Good - Conservation",
+   "description": "Visit the Conservation Kiosk to explore how geography strengthens conservation work from science to action. Learn how ArcGIS integrates environmental, social, and economic data to reveal the patterns shaping biodiversity, support collaboration across organizations, and empower teams working in the field. Through maps, analysis, and visual storytelling, GIS provides a shared foundation for understanding place, aligning effort, and advancing conservation outcomes.",
+   "booths": [
+    "GIS for Good - Conservation"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1683669770996001nnuO",
+   "name": "GIS for Good - Education",
+   "description": "Learn how ArcGIS enhances teaching, learning and research across K-12 and higher education and improves school and campus operations. GIS education equips students with 21st century skills that prepare them for meaningful careers. ArcGIS supports decision-making for maintaining safe and sustainable institutions. Meet the Esri Education team and learn about teaching resources, software options, and other solutions for educators, students, and administrators.",
+   "booths": [
+    "Education",
+    "K-12 Schools",
+    "Higher Education",
+    "Smart Campus Operations"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741075305001EZwX",
+   "name": "GIS for Good - Humanitarian",
+   "description": "Delivering humanitarian assistance in both sudden onset and protracted crises of today's world requires geographic insight. Humanitarian organizations around the world apply Esri's tools and solutions to analyze risk and vulnerability, plan response operations, mobilize and implement teams efficiently, and monitor and evaluate their effectiveness and sustainability.  Please join us in the GIS For Good Showcase in the UC Expo to find out more about how you can leverage Esri’s solutions and ensure your organization's efforts have maximum humanitarian impact.",
+   "booths": [
+    "GIS for Good - Humanitarian"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741075388001Epo0",
+   "name": "GIS for Good - Nonprofit",
+   "description": "Stop by the Nonprofit kiosk and discover how GIS can power smarter, more impactful nonprofit work. You’ll connect with experts who work alongside nonprofits to strengthen fundraising, grantmaking, volunteer management, advocacy, storytelling, and impact reporting. Come see what’s new and discover practical solutions designed to help you advance your mission‑driven work.",
+   "booths": [
+    "GIS for Good - Nonprofit"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1744741075471001Euyp",
+   "name": "GIS for Good - Sustainable Development",
+   "description": "Please join us in the GIS for Good Showcase at the UC Expo to learn how the geographic approach enables organizations to make a positive impact on people, the planet, and prosperity through the collection, analysis, and sharing of SDG data. Visit with Esri’s global development team members to learn how GIS helps UN, national governments, and local authoritative data producers collect, track, report, and ultimately achieve the 2030 Agenda for Sustainable Development.",
+   "booths": [
+    "GIS for Good - Sustainable Development"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1782500330356001cWz1",
+   "name": "Global Water Cycle: The Movement of Water",
+   "description": "All life on earth is sustained by the global water cycle—the movement of water from atmosphere to land to oceans and back to the atmosphere. This interactive map gallery exhibit depicts the phenomenon using seven globes, five representing components of the water cycle, and two representing the daily and seasonal impacts of the sun. The exhibit is a companion to the new Esri Press title Geowater: A Geographic Approach to Water Data and Forecasting by David Maidment.",
+   "booths": [
+    "GeoWater"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1770572839839001tAgu",
+   "name": "GovWell",
+   "description": "",
+   "booths": [
+    "2414"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://govwell.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683154286575001u7p7",
+   "name": "Granicus",
+   "description": "Granicus helps governments connect with residents worldwide using cloud-based communications, websites, meetings, records, and digital services.",
+   "booths": [
+    "2025"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://granicus.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848495839001KZcH",
+   "name": "Harris County Regional Toll Roads - LED Display",
+   "description": "This unique display shows regional toll roads in the Harris County \\ Houston, Texas area by using LED lights. The display uses ESRI's Experience Builder at an iPad kiosk station to interact with the display allowing the user to query different types of toll road information via LED lights. The lights are connected to the actual GIS data through web services. As viewers look at the map, they will notice QR codes on the map. The QR codes will take the viewer to various ESRI applications specific to the how the Harris County Toll Road Authority uses GIS.",
+   "booths": [
+    "Harris County Toll Road Authority"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1673645204902001f8sU",
+   "name": "HDR",
+   "description": "HDR is a 100% employee-owned professional services firm specializing in architecture, engineering, environmental and construction services.",
+   "booths": [
+    "1113"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.hdrinc.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669769885001nlRJ",
+   "name": "Health & Human Services",
+   "description": "Stop by the Health & Human Services showcase to meet with health experts and see how GIS supports communities in crisis and recovery. Explore real-time dashboards and coordinated field operations for disaster displacement and homelessness response. Learn how mapping health needs, coverage, and network adequacy improves access and targets services and investments. See how integrated facility, logistics, and network analysis improves planning, continuity, inspections, compliance, and public health communication.",
+   "booths": [
+    "Healthy & Human Services",
+    "Hospitals & Humans Systems",
+    "Public Health & Human Services"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1700268651767001iMrF",
+   "name": "HERE",
+   "description": "HERE is the world’s leading mapping company.",
+   "booths": [
+    "1212"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.here.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1674258567034001uw9J",
+   "name": "Houseal Lavigne",
+   "description": "Houseal Lavigne is an innovative planning and design firm leveraging GIS to improve and transform communities around the globe.",
+   "booths": [
+    "1312"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.hlplanning.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620719065001lRb2",
+   "name": "HP",
+   "description": "HP is fast-forwarding the industry into a new era where workflows, teams, and ideas move seamlessly from physical to digital, from vision to reality.",
+   "booths": [
+    "613"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.hp.com/us-en/hp-information.html",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1763145318455001EkIx",
+   "name": "Hubexo",
+   "description": "Hubexo is the global leader in providing the essential data-driven insights that shape the built environment.  By delivering innovative data, insights, and software solutions to the global construction industry, Hubexo enables its customers to navigate complex challenges, sell more, improve efficiency, and build more sustainably.  ConstructionWire, powered by Hubexo, offers a suite of vertical-specific, planned construction data solutions for lead generation, site selection, market research, and competitive analysis. It provides critical information for the evolution of commercial real estate. Founded in Sweden in 1936 and operating in 25 countries, Hubexo helps customers sell more efficiently and sustainably and leads the future of construction innovation.",
+   "booths": [
+    "337"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://hubexo.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1729485140166001llD5",
+   "name": "Hydrosat",
+   "description": "Hydrosat is a leading thermal intelligence company delivering infrared satellite data and analytics for resource monitoring and risk detection.",
+   "booths": [
+    "215"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://hydrosat.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1754055924896001H3yp",
+   "name": "Hypack, a Xylem Brand ",
+   "description": "HYPACK, a Xylem brand, has delivered trusted hydrographic survey and dredging software with planning and data visualization tools for over 40 years.",
+   "booths": [
+    "226"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620721386001lMve",
+   "name": "IALEIA",
+   "description": "IALEIA represents public & private sector intelligence analysts through advocacy, training, certification, networking, professionalism & research.",
+   "booths": [
+    "ES3 - 17"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.ialeia.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1670539115424001nczg",
+   "name": "ICEYE",
+   "description": "ICEYE provides 24/7 global monitoring with the largest SAR constellation, aiding organizations from all sectors with objective, data-driven decisions.",
+   "booths": [
+    "333"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.iceye.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1672781742828001peCL",
+   "name": "ICF International",
+   "description": "ICF is a global consulting services company approximately 9,000 full-time and part-time employees, but we are not your typical consultants. At ICF, business analysts and policy specialists work together with digital strategists, data scientists and creatives. We combine unmatched industry expertise with cutting-edge engagement capabilities to help organizations solve their most complex challenges.",
+   "booths": [
+    "A09"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.icf.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1744741075817001Ejny",
+   "name": "Imagery & 3D",
+   "description": "Visit the Imagery & 3D Showcase to explore end‑to‑end workflows for managing, analyzing, and visualizing imagery and 3D data. Experience reality mapping and 3D capabilities that power digital twins, immersive XR experiences, bathymetry and elevation data management, and more confident decision‑making. Learn how geospatial AI accelerates imagery, point cloud, and video workflows, with outputs like meshes and Gaussian splats enabling high‑fidelity, interactive exploration across desktop, web, and extended reality.",
+   "booths": [
+    "3D Data & Editing",
+    "3D Apps",
+    "Geospatial Video",
+    "Imagery Content",
+    "Image Analysis (kiosk 1)",
+    "Lidar and Point Clouds",
+    "Oriented Imagery",
+    "Drone Mapping (kiosk 1)",
+    "Imagery & 3D",
+    "3D Visualization",
+    "Large Area Mapping (kiosk 2)",
+    "Digital Twin",
+    "Image Analysis (kiosk 2)",
+    "3D Analysis",
+    "Image Management",
+    "XR",
+    "Imagery Apps",
+    "Large Area Mapping (kiosk 1)",
+    "Drone Mapping (kiosk 2)"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1768460267110001c8Ni",
+   "name": "IMPRO Satellite Image Processing and Telecommunication Inc.",
+   "description": "",
+   "booths": [
+    "236"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://improsat.com.tr/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1774887024567001VSXK",
+   "name": "Indian Land Tenure Foundation",
+   "description": "",
+   "booths": [
+    "NN4"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.indiancarbon.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669768981001nNps",
+   "name": "Indoor GIS",
+   "description": "Indoor GIS is a floor-aware system for visualizing, analyzing, managing, and navigating indoor spaces. It supports asset and space management, safety, security, and occupant and visitor experiences. Indoor GIS is foundational for operational digital twins: powered by an Indoors Information Model and floor-aware indoor maps created with ArcGIS Indoors, and extended with real-time feeds, imagery, 3D, AI, indoor positioning, field apps, and integration with third party facility systems. This gives owners and operators visibility and control over operations, improving decision-making, reducing costs.\n\nStop by to view live demos, meet product experts, and learn about the latest features.",
+   "booths": [
+    "ArcGIS Indoors for Mapping",
+    "Indoor GIS",
+    "ArcGIS Indoors for Reality Mapping",
+    "Indoor Digital Twin",
+    "ArcGIS IPS for Indoor Positioning",
+    "ArcGIS Indoors for Space Planning"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1700606859329001D5zs",
+   "name": "Info Desk ",
+   "description": "Make the Info Desk your first stop when navigating the Esri Showcase. Located in the center of the hall, the Info Desk provides both a self-service and full-service experience to guide you to the product, capability, industry, or partner in the expo that can best fit your needs.",
+   "booths": [
+    "Info Desk"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1677537914047001cks6",
+   "name": "Infor",
+   "description": "Infor is a global leader in cloud-based, industry-specific enterprise software. Visit www.infor.com.",
+   "booths": [
+    "2024"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.infor.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1751835465564001M3C0",
+   "name": "Inspiration Zone",
+   "description": "Step into the Inspiration Zone to explore special displays from organizations making a difference, including Tompkins Conservation (this year’s keynote speaker), National Geographic Society, Women in GIS, and more. Discover their stories, connect with their missions, and get inspired by the impactful work happening across the geospatial community!",
+   "booths": [
+    "Inspiration Zone"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1744212907250001GEmZ",
+   "name": "International Association of Assessing Officers",
+   "description": "IAAO serves property assessment professionals worldwide from government jurisdictions & agencies as well as various business & academic communities.",
+   "booths": [
+    "O29"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777526740726001kL4o",
+   "name": "International Association of Crime Analysts, Inc",
+   "description": "The IACA is a 501(c)3 dedicated to providing training, networking and professional opportunities to crime and intelligence analysts around the world.",
+   "booths": [
+    "ES3 - 9"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775232190550001nPuI",
+   "name": "International Association of Fire Chiefs",
+   "description": "The International Association of Fire Chiefs (IAFC) represents the leadership of firefighters and emergency responders worldwide.",
+   "booths": [
+    "ES3 - 10"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.iafc.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1691628995709001XPzt",
+   "name": "iSpatial Techno Solutions",
+   "description": "iSpatial delivers AI-powered GIS solutions globally, transforming data into insights for smart cities, utilities, and sustainable development.",
+   "booths": [
+    "614"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://ispatialtec.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1664323189229001pRUD",
+   "name": "ITpipes ",
+   "description": "ITpipes delivers smart inspection software and AI solutions, helping agencies turn pipeline data into insight for proactive infrastructure management.",
+   "booths": [
+    "16"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://itpipes.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775061313010001gJvM",
+   "name": "IUCN and Canadian Wildlife Federation",
+   "description": "",
+   "booths": [
+    "GG4"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://iucn.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1691691042749001rtEk",
+   "name": "Juniper Systems",
+   "description": "Juniper Systems, Inc. is a manufacturer of ultra-rugged tablets, handheld computers, GPS receivers, mapping software, and field computing solutions.",
+   "booths": [
+    "627"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://junipersys.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620719180001lPE7",
+   "name": "Khatib & Alami",
+   "description": "K&A an international multidisciplinary consultancy comprising architects, engineers, planners, and other specialists. www.khatibalami.com",
+   "booths": [
+    "1112"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.khatibalami.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1731459267691001e4Ms",
+   "name": "KloudGin",
+   "description": "KloudGin is the only mobile-first, cloud-native work and asset management solution purpose-built for utilities and essential service providers.",
+   "booths": [
+    "527"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://kloudgin.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138319693001zX1K",
+   "name": "Land Records & Cadastre",
+   "description": "Explore innovative Land Records and Land Administration solutions using ArcGIS. Learn how top organizations improve spatial accuracy in managing land rights and responsibilities with ArcGIS Parcel Fabric, improve property value assessments, and engage with stakeholders. Also learn how ArcGIS can enhance Right-of-Way (ROW) management by mapping land interests, strategically planning infrastructure projects, and improving safety and compliance.",
+   "booths": [
+    "ArcGIS Parcel Fabric (kiosk 3)",
+    "Land Records & Cadastre",
+    "ArcGIS Parcel Fabric (kiosk 2)",
+    "Stakeholder Engagement (LRC kiosk 1)",
+    "Land Administration",
+    "Value Analysis",
+    "ArcGIS Parcel Fabric (kiosk 1)"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1738339255647001io7m",
+   "name": "Langan",
+   "description": "Langan provides GIS, survey, & related technology services in supporting state & local governments, theme parks, resorts, & educational organizations.",
+   "booths": [
+    "724"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.langan.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674263039599001JHXw",
+   "name": "Laser Tech",
+   "description": "TruPulse® rangefinders are conveniently powerful on their own & pair with popular GIS programs to add remote positioning workflows to your toolkit.",
+   "booths": [
+    "2027"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.lasertech.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652367118093001sGIb",
+   "name": "Laserfiche",
+   "description": "Laserfiche is the leading SaaS provider of intelligent content management and business process automation.",
+   "booths": [
+    "204"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.laserfiche.com/solutions/esri/?utm_source=2024esriuc&utm_medium=industry-paid&utm_content=ucemail&utm_campaign=government",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1751835465958001M0M2",
+   "name": "Learning Zone",
+   "description": "Discover the Learning Zone’s Hands-On Learning Lab, open Tuesday–Thursday, where you can build new skills and explore GIS tools. Don’t miss the Special Displays, including the inspiring work of Young Scholars award recipients from around the world. Visit to learn, connect, and get inspired by innovative projects and global talent in geospatial science!",
+   "booths": [
+    "Learning Zone"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1682024212416001TFPE",
+   "name": "Lebanese Red Cross",
+   "description": "Lebanese Red Cross (LRC), founded in 1945, is a volunteer-led humanitarian organization providing emergency relief and support to vulnerable people.",
+   "booths": [
+    "GG7b"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.redcross.org.lb/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1688949772009001Oh99",
+   "name": "Leica Geosystems",
+   "description": "With more than 200 years of history, Leica Geosystems, part of Hexagon, is the trusted supplier of premium sensors, software and services.",
+   "booths": [
+    "1919"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://pure-surveying.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1677188412154001Thdk",
+   "name": "LightBox",
+   "description": "Leading CRE information and technology platform, connecting people, businesses and data to help facilitate faster, easier, more accurate decisions.",
+   "booths": [
+    "101"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.lightboxre.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1766008331021001h5U0",
+   "name": "Locus",
+   "description": "Locus are data integration and automation specialists, helping organisations master the use of FME and Esri's Data Interoperability Extension.",
+   "booths": [
+    "A31"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1644257153815001DGi0",
+   "name": "Locusview",
+   "description": "Locusview’s Digital Construction Management platform enables utilities to automate data capture during construction & streamline the close-out process",
+   "booths": [
+    "324"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.locusview.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775559979986001UcoD",
+   "name": "LumiDB",
+   "description": "The spatial data engine that makes petabyte-scale 3D point cloud archives instantly queryable and streamable into GIS, CAD, LiDAR or AI tool.",
+   "booths": [
+    "S6"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://www.lumidb.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682358074565001UTDx",
+   "name": "Mach9",
+   "description": "Mach9 builds AI software that automates feature extraction from LiDAR and imagery, delivering CAD and GIS outputs up to 96x faster than manual methods",
+   "booths": [
+    "2314"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.mach9.ai/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1744054579025001iiTG",
+   "name": "MaintStar",
+   "description": "MaintStar is the trusted company with legendary customer service & powerful asset, land, and customer request management software suites and modules.",
+   "booths": [
+    "A35"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.maintstar.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775669914904001Q32G",
+   "name": "Map of Life Solutions",
+   "description": "",
+   "booths": [
+    "S8"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://mapoflife.ai/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848856582001ODqe",
+   "name": "Mapping a Living Planet: GIS for Conservation",
+   "description": "From Audubon's century of bird population science to the Forest Stewardship Council's global standards for responsible forestry, geospatial technology is at the heart of protecting our natural world. This special exhibit highlights how GIS powers habitat mapping, migratory bird tracking, deforestation monitoring, and certified sustainable land management across millions of acres worldwide. Discover how conservation organizations use location intelligence to guide policy, restore ecosystems, and safeguard biodiversity for future generations—proving that where we look shapes how we protect.",
+   "booths": [
+    "Conservation"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1721667931618001AFMm",
+   "name": "MaxVision, Rugged Portable Computers LLC",
+   "description": "MaxVision builds rugged portable workstations, servers, and displays—durable, high-computing, & configurable for mission‑critical operations.",
+   "booths": [
+    "2214"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.maxvision.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1754313639399001coCk",
+   "name": "MCCI LLC",
+   "description": "MCCi is how you can finally break free from the manual and repetitive processes that dominate your document management, permitting and licensing.",
+   "booths": [
+    "232"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765305755196001dDsh",
+   "name": "Measure ",
+   "description": "",
+   "booths": [
+    "S3"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://www.measur.ing/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775300501182001NnH2",
+   "name": "Merkator Group",
+   "description": "",
+   "booths": [
+    "132"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.merkator.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1733343164770001rron",
+   "name": "Michael Baker Inc",
+   "description": "Michael Baker International & DATAMARK Technologies is a leading provider of engineering, consulting, advisory services & public safety GIS.",
+   "booths": [
+    "2113"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://mbakerintl.com/technology/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620719475001lRmR",
+   "name": "Michael Bauer Research GmbH",
+   "description": "MB-Research provides high-quality regional market data and digital boundaries with global coverage for your national and international analysis.",
+   "booths": [
+    "624"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.mb-research.de",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1700265065702001u1Lf",
+   "name": "Microsoft",
+   "description": "Our mission is to empower every person and every organization on the planet to achieve more. Together, Esri ArcGIS and Microsoft Azure deliver advanced spatial and analytic tools to the cloud securely, bringing location intelligence to your business operations.",
+   "booths": [
+    "Microsoft Lounge"
+   ],
+   "categories": [
+    "Gold Sponsor"
+   ],
+   "url": "https://www.microsoft.com/en-us/",
+   "raw_tags": {
+    "RecognitionLevel": [
+     "Gold Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1721111056076001n8M7",
+   "name": "MipMap",
+   "description": "GTO/MipMap delivers Digital Twin, GIS, Remote Sensing and Geomatic Engineering solutions worldwide.",
+   "booths": [
+    "2124"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.mipmap-technologies.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1774023968016001tA7S",
+   "name": "NASA",
+   "description": "NASA Earth Science operates more than 20 satellites in orbit & sponsors 100s of research programs to put Earth observation data to use for society.",
+   "booths": [
+    "E3"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://science.nasa.gov/earth/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682030458799001puO4",
+   "name": "National Geographic Society and Museum of Exploration",
+   "description": "The National Geographic Society is a global nonprofit dedicated to using science, exploration, education, and storytelling to illuminate and protect the wonder of our world. For more than 130 years, the Society has supported explorers, scientists, educators, and storytellers whose work expands understanding of our world. The newly unveiled National Geographic Museum of Exploration immerses visitors in a new era of discovery. Marking a major revitalization of our campus in Washington, D.C., the museum features an unprecedented collection of photographic, interactive and educational exhibits.",
+   "booths": [
+    "National Geographic Society"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1734117249470001Sj6X",
+   "name": "National Geospatial-Intelligence Agency (NGA)",
+   "description": "",
+   "booths": [
+    "2319"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "www.nga.mil",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138319761001zmot",
+   "name": "National Mapping & Statistics",
+   "description": "Visit the Mapping & Statistics Showcase to connect with leading experts in aviation, maritime, national mapping, official statistics, and geospatial ecosystems (NSDI/SDI). Discover how geospatial authorities use GIS to produce fundamental and foundational information that addresses socioeconomic, security, and environmental challenges in government and society. Experts will cover ArcGIS Topographic Mapping, ArcGIS Maritime, ArcGIS Bathymetry, ArcGIS Aviation Charting, ArcGIS Hub, and more.",
+   "booths": [
+    "National Mapping & Statistics",
+    "Official Statistics",
+    "Maritine & Ocean Mapping",
+    "Modern National Mapping",
+    "Modernizing Aviation",
+    "Geospatial Ecosystems & SDI"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1759431643537001on5u",
+   "name": "National Oceanic and Atmospheric Administration",
+   "description": "",
+   "booths": [
+    "E1"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.noaa.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683759233008001nmx4",
+   "name": "National Tribal Geographic Information Support Center",
+   "description": "Tribal GIS, a non-profit organization, provides geospatial assistance to Native American Tribal Governments and Native American organizations.",
+   "booths": [
+    "NN1"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.tribalgis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848695639001j3Pf",
+   "name": "National Trust for Historic Preservation: ROUTE 66 REMAP",
+   "description": "In celebration of the 2026 centennial of Route 66, the National Trust for Historic Preservation created ROUTE 66 REMAP, a StoryMap collection that explores the evolving and nuanced story of Route 66 through maps and place-based data. Through the power of geospatial tools, we can acknowledge the Route's past, understand where it's changing, and envision its sustainable and thriving future. Explore a sample of these stories throughout this display.",
+   "booths": [
+    "National Trust for Historic Preservation"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1683669770438001nLtP",
+   "name": "Native Nations",
+   "description": "Gather at the Native Nations Showcase to meet and reconnect with other tribal & indigenous colleagues from the USA and around the world to hear stories, reconnect with each other, find alignment, and move forward with hope for the future.  Discover how tribes foster environmental stewardship, ensure public health & safety, drive economic development,  promote community resilience, and more with ArcGIS. GIS is the common language for this work; OneMAP for reconnecting our lands and communities. Make sure you check out our custom UC 2026 StoryMap to enhance your event experience and ensure you attend all Native Nations focused events!",
+   "booths": [
+    "Connecting Tribal Systems & People",
+    "Native Nations"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138319823001zt61",
+   "name": "Natural Resources",
+   "description": "Visit the Natural Resources showcase to see how location drives better decisions across Agriculture, Forestry, Mining, Petroleum, Pipeline, and Renewable Energy. Explore demos, uncover insights with spatial analysis, and connect with experts and peers to discuss real-world challenges, operations, and innovation.",
+   "booths": [
+    "Renewable Energy",
+    "Forestry",
+    "Agriculture",
+    "Natural Resources",
+    "Petroleum (kiosk 1)",
+    "Pipeline",
+    "ArcGIS Pipeline Referencing",
+    "Petroleum (kiosk 2)",
+    "Mining"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1764796068034001ru5O",
+   "name": "Naviam GIS Technologies ",
+   "description": "Naviam is the world’s leading IBM Maximo partner, helping organizations modernize and maximize the value of their assets through our suite of products",
+   "booths": [
+    "A07"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1712937891675001hXJj",
+   "name": "NCTech",
+   "description": "NCTech, a leading provider of HD street-level imagery & 3D insights, empowers field teams to assess ground-truth faster, safer, and more accurately.",
+   "booths": [
+    "428"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://nctechimaging.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1664325726737001BcGJ",
+   "name": "Nearmap",
+   "description": "Nearmap is a location intelligence company that provides imagery, insights and answers to manage risk, plan infrastructure, and respond to disaster.",
+   "booths": [
+    "2219"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.nearmap.com/us/en",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1675431327897001qWDg",
+   "name": "NEXGEN Asset Management",
+   "description": "Meet NEXGEN the most technologically advanced enterprise asset management program on the market, integrating future-first CMMS software with AI.",
+   "booths": [
+    "415"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://nexgenam.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753482458207001IHbk",
+   "name": "Nodeology LLC",
+   "description": "360° video & photo widgets for rapid capture and visualization in ArcGIS, accelerating field-to-desk workflows.",
+   "booths": [
+    "2015"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1752081569912001mwPE",
+   "name": "Novotx an Accela Company",
+   "description": "Novotx, an Accela company, is a GIS-centric asset and work management platform built on Esri ArcGIS for utilities and local government teams.",
+   "booths": [
+    "819"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753816250029001JOKW",
+   "name": "NSGIC (National States Geographic Information Council)",
+   "description": "NSGIC advances national geospatial policy and facilitates collaboration in the geospatial community, enabling informed decision-making through maps.",
+   "booths": [
+    "315"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1694447458537001CpQE",
+   "name": "NV5",
+   "description": "NV5 provides geospatial services and software to solve mission critical challenges – from data acquisition to analytics to enterprise GIS solutions.",
+   "booths": [
+    "925"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.nv5.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778522655193001MCVX",
+   "name": "Okaya.me",
+   "description": "",
+   "booths": [
+    "ES3 - 7"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.okaya.me/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1695849256651001NAYB",
+   "name": "Ookla",
+   "description": "We help organizations drive better connectivity outcomes with unmatched network insights.",
+   "booths": [
+    "1912"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.ookla.com/esri",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138319950001ztHa",
+   "name": "Open Platform",
+   "description": "ArcGIS is an open, interoperable, standards compliant, secure platform. The Open Platform area features four kiosks covering OGC web services, GIS data formats, data interoperability, ETL patterns, metadata management, catalogs, and search. Topics include open-source technologies, data sovereignty, cloud native patterns, open data/SDI/NSDI, low code/no-code approaches, and Esri Geoportal Server. We look forward to visiting with you.",
+   "booths": [
+    "OGC Web Services",
+    "",
+    "GIS Data Formats and Specifications",
+    "GIS Metadata",
+    "Open Platform",
+    "Data Interoperability & ETL Patterns"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1710957467770001rRLv",
+   "name": "OpenGov",
+   "description": "Proactively manage your assets, simplify work orders, plan for capital improvements, and make the most of your resources with OpenGov's EAM software",
+   "booths": [
+    "1725"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://opengov.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1702332751890001u2u7",
+   "name": "Pandell",
+   "description": "A unified platform that enhances land asset life cycle management through integrated land management, GIS analysis, and location intelligence.",
+   "booths": [
+    "200"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1673647883328001k1pi",
+   "name": "ParcelQuest",
+   "description": "ParcelQuest empowers property intelligence through seamlessly integrating authoritative,  county-sourced parcel data into your GIS environment.",
+   "booths": [
+    "424"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.ParcelQuest.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777066618672001mYsl",
+   "name": "Partnering with Esri & Startup Zone",
+   "description": "Step into the Partnering with Esri Zone at the 2026 Esri User Conference-your hub for innovation, connection, and opportunity within the Esri Partner Network (EPN). \n\nExplore a dynamic space where our partners take center stage, featuring: \n\nFind out how you can join the network by becoming an Esri partner or learn more about collaborating with existing Esri partners to enhance your projects. \n\nInviting meeting spaces to connect directly with the Esri Partner Team and discover how to maximize your partnership. \n\nA Partner Spotlight Theater bringing partner-led innovations to life through live demos and real-world success stories. \n\nA high-energy Startup Zone spotlighting emerging technologies and the next generation of geospatial solutions from Esri Startup Program partners. \n\nFor our Esri partners, this is your opportunity to connect with your Partner Manager, discover available benefits, and explore what’s next for your business. Stay informed on the latest updates to Lead Generation, Selling Programs, Specialties, and reseller opportunities through Partner Referral-all designed to help you grow your business, strengthen relationships with new and existing clients, and align with Esri technology for continued success. \n\n Not a partner yet? Learn how to become an official Esri Partner or connect with organizations in the Esri Partner Network (EPN). EPN partners support Esri users and customers with ArcGIS-enabled solutions, implementation services, and industry-specific content. Visit www.esri.com/partners to get started. \n\nThis is where partnerships turn into possibilities.",
+   "booths": [
+    "Partner Presentation Theater",
+    "Partner with Esri & Startup Zone",
+    "Startup Zone",
+    "Benefits & Opportunities",
+    "Selling"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1654622055094001c3Ef",
+   "name": "Penn State World Campus",
+   "description": "Learn about Penn State’s award-winning programs in GIS, spatial data science, remote sensing, programming, and GEOINT. Earn your master’s online.",
+   "booths": [
+    "O15"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Education Zone Exhibitor"
+   ],
+   "url": "https://www.worldcampus.psu.edu/penn-state-online-gis-geoint-degrees?utm_source=esri-event&utm_medium=offline&utm_campaign=GEOSPATIAL%2021-22&utm_content=exhibitorlisting2geoportcp&cid=FFLN49680",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Education Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765295369049001uURE",
+   "name": "Penn State World Campus",
+   "description": "Learn about Penn State’s award-winning programs in GIS, spatial data science, remote sensing, programming, and GEOINT. Earn your master’s online.",
+   "booths": [
+    "A118"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1753722285482001smLc",
+   "name": "PipeAid",
+   "description": "PipeAid delivers precise sewer digital twins, faster inspection coding, and standardized assessments — powered by data as a service.",
+   "booths": [
+    "S13"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://urldefense.com/v3/__https:/pipeaid.com/__;!!CKZwjTOV!yA0XhE0SaCz9Qm3s5B39DKP0ViRoZkZLD2XIF5jQ94nZZamOW8-5nenCbJ9p47NP9vnaKv4lfOc0$",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1752079497206001KV7X",
+   "name": "Placer.ai",
+   "description": "Placer.ai is a leading location analytics platform providing deep insights into consumer behavior and market trends to optimize business decisions.",
+   "booths": [
+    "119"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1751835465069001MRC4",
+   "name": "Plenary Zone",
+   "description": "Visit the Plenary Zone to meet organizations featured in the Plenary Session! Discover how the City of Allentown, NextEra Energy, NOAA’s National Weather Service, and Rete Ferroviaria Italiana are making an impact. Learn from their experiences, explore their innovative projects, and see how they’re using geospatial technology to solve real-world challenges.",
+   "booths": [
+    "Plenary Zone"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1766005811294001wiGp",
+   "name": "Polimorphic",
+   "description": "Polimorphic delivers AI-powered government front desk tools that improve service access, streamline workflows, and enhance resident experience.",
+   "booths": [
+    "A11"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1721667372740001dFy7",
+   "name": "PreCise MRM",
+   "description": "PreCise integrates GPS/AVL tracking with GIS for mobile asset monitoring. Our web-based app provides real-time data to optimize operations.",
+   "booths": [
+    "1914"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://precisemrm.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674253287628001JJhd",
+   "name": "Pro-West & Associates",
+   "description": "Pro-West empowers government and industry with award-winning geospatial data, solutions, systems and training that deliver location transformation.",
+   "booths": [
+    "1813"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.prowestgis.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1767720425854001m5xR",
+   "name": "Psomas",
+   "description": "",
+   "booths": [
+    "A33"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://psomas.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138320071001z7UX",
+   "name": "Public Safety",
+   "description": "Esri’s Public Safety team will be available to advise attendees on how to leverage the power of ArcGIS technology to create a safer more resilient community by addressing the challenges facing today’s first responders. The team will be available to discuss the latest templates, applications, and workflows developed in response to emerging trends. OPS Center Theater presentations will illustrate Esri’s vision of how GIS allows agencies to create safer more resilient communities by improving their ability to respond to public safety and national security threats.",
+   "booths": [
+    "",
+    "Disaster Response Program",
+    "",
+    "National Security",
+    "Wildland Fire",
+    "Fire",
+    "Emergency Communications",
+    "Public Safety",
+    "Emergency Management",
+    "Law Enforcement / Justice"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1655138320133001z7fc",
+   "name": "Public Works",
+   "description": "Stop by the Public Works Showcase to explore how agencies are building next‑generation public works operations with GIS. Discover real user stories, live demos, and Esri’s latest enterprise capabilities supporting asset management, field and fleet operations, facilities, solid waste, and more. Connect with subject matter experts to learn how your peers are modernizing workflows, improving visibility, and scaling GIS across the organization.",
+   "booths": [
+    "Public Works",
+    "Connected Field and Fleet Teams",
+    "Capital Improvement Program",
+    "Next Generation Public Works",
+    "Smart Operations and Maintenance",
+    "Safer Streets and Sidewalks"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1743427100383001iEcb",
+   "name": "Pulsiam",
+   "description": "SafetyNet One, powered by ArcGIS, provides real-time situational awareness and mission-critical support for public safety agencies.",
+   "booths": [
+    "ES3 - 1"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.pulsiam.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683161741918001dOtR",
+   "name": "PwC",
+   "description": "At PwC, we help clients build trust and transform complexity into advantage with our global, tech-forward network of 364,000+ people in 136 countries.",
+   "booths": [
+    "712"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.pwc.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1677703359569001fTfx",
+   "name": "QSIT ",
+   "description": "QSIT, a leading GIS application development and consulting firm, is a proud member of Alkan Holding Group",
+   "booths": [
+    "212"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.qsitint.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620719848001l187",
+   "name": "Quantum-Systems GmbH",
+   "description": "Quantum Systems develops advanced eVTOL sUAS, enhancing range and versatility with edge computing and AI for governmental and commercial clients.",
+   "booths": [
+    "228"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.quantum-systems.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1752595349492001O1XL",
+   "name": "Quartic Solutions LLC",
+   "description": "Helping local governments make GIS work in the real world. We keep architecture simple, performance high, and solutions aligned with your mission.",
+   "booths": [
+    "1214"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://quarticsolutions.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1706905072172001q44I",
+   "name": "Radiodetection",
+   "description": "Radiodetection develops solutions that support underground utility locating, mapping, and asset management for critical infrastructure.",
+   "booths": [
+    "025"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.radiodetection.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1677015202580001QEFy",
+   "name": "RAMTeCH Software Solutions, Inc.",
+   "description": "Since 1992, RAMTeCH—an Esri Gold Partner—has been a global leader in providing innovative geospatial and technology services for utilities and telecom organizations. As a Utility Network Specialty Partner, RAMTeCH offers industry-leading solutions for Managed Services, System Implementation, GIS, and Specialized Consulting Services. From leveraging our Esri Award-Winning Utility Network Advantage Program (UNAP) to support preliminary planning to our proprietary applications for Conflation, Data Migration, and Mobile Applications, the RAMTeCH Team is recognized for high-quality performance, exceptional value, and customer-focused operations.   RAMTeCH operates across three core business units: Spatial Enterprise Solutions, Energy Data Management, and Engineering Services. With over 30 years in delivering successful North American utility projects within the Spatial Enterprise Solutions Team, backed by a global team of 3,200+ professionals and ISO 9001:2015 and ISO 27001:2022 certifications, RAMTeCH empowers organizations to enhance operational performance, reduce risk, and confidently adopt and scale the Esri Utility Network for long-term success.",
+   "booths": [
+    "612"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.ramtech-corp.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1775493195008001WiEj",
+   "name": "Raven Connected",
+   "description": "Raven improves public agency infrastructure management by turning your existing fleet into virtual inspectors.",
+   "booths": [
+    "126"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://ravenconnected.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674257470514001eCOA",
+   "name": "Regrid",
+   "description": "Regrid is the leading provider of land parcels and location context data for your maps, apps and spatial analysis.",
+   "booths": [
+    "727"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://regrid.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1783619456932001aO5b",
+   "name": "Relax & Recharge Zone",
+   "description": "Take a break and recharge—literally! This inviting space offers charging stations for your devices, comfortable seating, and engaging activities. Whether you need a quick reset between sessions or a spot to connect with others, the Relax and Recharge Zone is your go-to place to unwind, refresh, and get energized for the rest of your day.",
+   "booths": [
+    "Relax & Recharge Zone"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1721233184213001An5e",
+   "name": "ReportAll",
+   "description": "ReportAll provides continuously updated, best-in-class nationwide parcel data with its Feature Service for ArcGIS® and LandGlide mobile app.",
+   "booths": [
+    "824"
+   ],
+   "categories": [
+    "Sponsor",
+    "Silver Sponsor"
+   ],
+   "url": "https://reportallusa.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Silver Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1736887252518001I7v8",
+   "name": "Rextag Corp",
+   "description": "Rextag is the premier GIS data provider for energy infrastructure data in North America & Europe.",
+   "booths": [
+    "426"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://rextag.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1741607403340001qGhC",
+   "name": "RINA",
+   "description": "At RINA, GIS, engineering, and construction experts deliver sustainable asset management solutions in energy, transport, and infrastructure globally.",
+   "booths": [
+    "1215"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682368867903001SBaM",
+   "name": "Rio Hondo College",
+   "description": "Los Angeles County Rio Hondo College’s GIS Program offers online and in-person GIS certificate and degree, taught by experienced professionals",
+   "booths": [
+    "A105"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://page.riohondo.edu/gis/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1696957257914001UH0f",
+   "name": "RMSI North America",
+   "description": "As Network Management Specialty, RMSI helps utilities in GN-UN implementation, LiDAR-based conflation and AI/ML-based auto easement mapping solutions.",
+   "booths": [
+    "413"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.rmsi.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682702378362001tJrg",
+   "name": "ROK Technologies",
+   "description": "ROK Technologies helps organizations migrate, optimize, manage, and scale ArcGIS Enterprise in the Cloud.",
+   "booths": [
+    "1625"
+   ],
+   "categories": [
+    "Sponsor",
+    "Platinum Sponsor"
+   ],
+   "url": "https://24443230.hs-sites.com/rokesriuc2026",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Platinum Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1682708192034001kjJJ",
+   "name": "RouteSmart Technologies",
+   "description": "RouteSmart Technologies provides route optimization solutions that solve the most complex vehicle routing challenges.",
+   "booths": [
+    "1115"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.routesmart.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1652367118797001sD6N",
+   "name": "Safe Software",
+   "description": "Safe Software helps transform organizations with FME, the only All-Data Any-AI Enterprise Integration Platform with support for spatial data.",
+   "booths": [
+    "1719"
+   ],
+   "categories": [
+    "Sponsor",
+    "Silver Sponsor"
+   ],
+   "url": "https://safe.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Silver Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1731507808235001YdgQ",
+   "name": "Samsara",
+   "description": "The pioneer of the Connected Operations™ Cloud, a platform that helps organizations harness IoT data to gain insights and improve physical operations.",
+   "booths": [
+    "OO6"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://samsara.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1751835465800001MlfT",
+   "name": "San Diego Region GIS: TOGETHER, WE MAP THE REGION",
+   "description": "This display showcases how public agencies and academic institutions across the San Diego region are leveraging GIS to enhance operations, support decision-making, and better serve their communities. From improving internal workflows for staff to delivering transparent, accessible data to the public, these organizations are transforming how services are planned and delivered. This display highlights collaborative efforts that use ArcGIS to drive innovation, efficiency, and community impact.",
+   "booths": [
+    "San Diego County Region"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1654622122417001ziYR",
+   "name": "San Francisco State University",
+   "description": "School of the Environment and the Institute for Geographic Information Science at San Francisco State University.",
+   "booths": [
+    "A100"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "http://gis.sfsu.edu",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1696964806668001ozmX",
+   "name": "SBS",
+   "description": "SBS is the leader in intelligent design solutions for electric & gas distribution networks, transmission networks, substations, and broadband networks",
+   "booths": [
+    "1013"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.spatialbiz.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1689101255101001Xqz7",
+   "name": "Schneider Electric",
+   "description": "Schneider Electric is a world leader in helping utilities on their digital transformation journey with solutions and services for Grids of the Future.",
+   "booths": [
+    "619"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.se.com/ww/en/work/solutions/for-business/electric-utilities/smart-grid/control-center.jsp",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1776104806439001Jl1Z",
+   "name": "Seminole Tribe of Florida",
+   "description": "",
+   "booths": [
+    "NN3"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1742360037786001U1jE",
+   "name": "Shovels",
+   "description": "Shovels uses AI to clean and unify fragmented permit, contractor, and property data—turning public records into Shovel-ready intelligence.",
+   "booths": [
+    "S2"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1677362958558001pTlA",
+   "name": "Sidwell",
+   "description": "Sidwell delivers enterprise GIS solutions for government, specializing in land records, parcel management, and ArcGIS implementations.",
+   "booths": [
+    "2312"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.sidwellco.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1711051782512001Xp8H",
+   "name": "SkyFi",
+   "description": "Dual-use geospatial intelligence marketplace connecting users to Earth observation data and analytics.",
+   "booths": [
+    "S4"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://www.skyfi.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1704396604966001Znqz",
+   "name": "SkyWatch",
+   "description": "SkyWatch's Content Store makes it easy to browse and buy ready-to-use premium satellite imagery for your GIS workflows.",
+   "booths": [
+    "2013"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://skywatch.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778186098700001uYem",
+   "name": "Society for Conservation GIS (SCGIS)",
+   "description": "",
+   "booths": [
+    "GG6"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1773437662379001ACrG",
+   "name": "Solonic",
+   "description": "Solonic",
+   "booths": [
+    "S9"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://www.solonic.co/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1774303692705001xqEP",
+   "name": "SparkPNT",
+   "description": "High-precision positioning, navigation and timing hardware that's powerful, user-upgradeable, and able to be repaired.",
+   "booths": [
+    "A29"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.sparkfun.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1743688497341001NhTO",
+   "name": "Spexi Geospatial Inc",
+   "description": "The Aerial Intelligence Layer That’s Always On, Always Updated",
+   "booths": [
+    "332"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1749254324300001c6xr",
+   "name": "SSP Innovations, LLC",
+   "description": "SSP Innovations helps utilities modernize their GIS operations through expert strategy, Utility Network migration, and managed geospatial services.",
+   "booths": [
+    "1019"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1777066774044001vbqm",
+   "name": "State and Local Government",
+   "description": "Reimagined for a better experience, the State and Local Government area gives you more opportunities to connect with industry experts. Visit the dedicated Resource Center to grab free educational resources and the Spotlight theater for featured sessions with subject matter experts and technical staff. Explore the solutions helping governments of all sizes expand GIS across departments and discover how geospatial analysis can strengthen policy development and decision‑making.",
+   "booths": [
+    "State and Local Government"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1751835466279001M4Py",
+   "name": "Storytelling with Maps",
+   "description": "Explore special displays that celebrate the diverse voices of our users and showcase unique storytelling approaches and formats. Join fellow GIS enthusiasts at cozy “fireside chats” featuring both users and experts as they share insights and experiences. Check the detailed agenda for session times and don’t miss this inspiring area dedicated to the art of storytelling with maps!",
+   "booths": [
+    "Storytelling with Maps"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1779848396133001Khyx",
+   "name": "Storytelling with Maps ",
+   "description": "",
+   "booths": [],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1676585056788001hrXG",
+   "name": "StreetLight",
+   "description": "Transportation analytics for efficient, safe, and sustainable infrastructure",
+   "booths": [
+    "224"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.streetlightdata.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1774469475544001hG1h",
+   "name": "Sun Ridge Systems, Inc.",
+   "description": "RIMS by Sun Ridge Systems is a premier, integrated, and trusted CAD/RMS platform powering real-time public safety operations.",
+   "booths": [
+    "ES3 - 15"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://www.sunridgesystems.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1772223086243001cxbG",
+   "name": "Symetri",
+   "description": "Symetri provides ArcGIS Enterprise services, BIM-to-GIS integration, digital twin solutions, and asset lifecycle intelligence for the AECO industry.",
+   "booths": [
+    "2014"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.symetri.us/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655138320443001zak1",
+   "name": "Technical Support",
+   "description": "Visit the Technical Support area to get one-on-one help from Support Analysts and Engineers. Get assistance troubleshooting software issues, exploring best practices, and following up on existing cases or reported bugs. Our team provides personalized guidance and keeps you informed on progress, helping you resolve issues efficiently and get the most out of your ArcGIS software.",
+   "booths": [
+    "Technical Support"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1733419725901001kqvO",
+   "name": "TEKsystems",
+   "description": "TEKsystems Global Services is a leading provider of business and technology services.",
+   "booths": [
+    "2012"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.teksystems.com/en/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1655326689184001QcLo",
+   "name": "TerraGo Technologies ",
+   "description": "TerraGo develops innovative software for the dissemination and collaboration of GEOINT between national systems and field operators for any mission.",
+   "booths": [
+    "328"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://terragotech.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1650403418280001ryhT",
+   "name": "Texas A&M University ",
+   "description": "The Department of Geography at Texas A&M University provides undergraduate and graduate degrees in Geography and Geographic Information Science.",
+   "booths": [
+    "005"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Education Zone Exhibitor"
+   ],
+   "url": "https://geography.tamu.edu/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Education Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765490278120001obuC",
+   "name": "Texas A&M University ",
+   "description": "The Department of Geography at Texas A&M University provides undergraduate and graduate degrees in Geography and Geographic Information Science.",
+   "booths": [
+    "A117"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778739001211001B6x7",
+   "name": "The HALO Trust",
+   "description": "",
+   "booths": [
+    "GG8a"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.halotrust.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848577543001IIP3",
+   "name": "The Living Forest ",
+   "description": "“The Living Forest,” showcases how Earth Observation, AI, and GIS make environmental change tangible. It transforms complex geospatial insights into a compelling public experience, strengthening Esri’s brand presence far beyond our traditional audiences.",
+   "booths": [
+    "The Living Forest"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1779911005768001gEFJ",
+   "name": "The Southeastern Grasslands Institute",
+   "description": "",
+   "booths": [
+    "GG5a"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848651704001sKOZ",
+   "name": "The UCSB Guide to the Geographic Approach",
+   "description": "The UCSB Guide is a collaborative, open-access initiative designed to address the challenge of keeping pace with rapid technological change by providing educators with a comprehensive series of ready-to-use, problem-based, ethics-embedded learning modules that bridge the gap between academic theory and the practical frontier of modern GIS, Remote Sensing, GeoAI, and Spatial Data Science.",
+   "booths": [
+    "UC Santa Barbara"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1749481779184001AD7p",
+   "name": "Timmons Group, Inc.",
+   "description": "When clients need clarity and control of fiber and utility systems, Timmons Group delivers Utility Network, strategic planning, and asset management.",
+   "booths": [
+    "713"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.timmonsgis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848891460001Klxx",
+   "name": "Tompkins Conservation: Wild Beyond Borders",
+   "description": "ILD BEYOND BORDERS: A CONTINENTAL VISION takes you behind the scenes of rewilding as we face catastrophic biodiversity loss, asking the question: how do we change the end of the story? President and co-founder of Tompkins Conservation and former CEO of Patagonia, Inc., Kris Tompkins has helped create 16 national parks, while bringing back 35 species. Her shared legacy with her late husband Doug Tompkins continues today through Rewilding Argentina and Rewilding Chile. Their story is told in Wild Life, a documentary by the Oscar-winning directors Jimmy Chin and Chai Vasarhelyi.",
+   "booths": [
+    "Tompkins Conservation"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1752691072925001EXlO",
+   "name": "TomTom",
+   "description": "Billions of data points. Millions of sources. Thousands of communities. We are the mapmaker bringing it together to build the world’s smartest map.",
+   "booths": [
+    "513"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1762794626267001Kf3V",
+   "name": "Topcon Positioning Systems",
+   "description": "Topcon, a leader in precision technology, transforms global infrastructure by leveraging innovative solutions and the power of precision.",
+   "booths": [
+    "2119"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1683669770037001nE19",
+   "name": "Transportation",
+   "description": "The Transportation Showcase will highlight solutions and best practices for roads and highways, ports, airports, public transit, and rail professionals. Stop by to ask our subject matter experts and technical staff about the technologies and capabilities that are helping your peers improve mobility, manage right-of-way, and ensure safe and reliable transportation systems for those you serve.",
+   "booths": [
+    "Optimized Port Operations",
+    "Transportation",
+    "ArcGIS Aviation Airports",
+    "ArcGIS Roads & Highways",
+    "Deliver Smart Airports",
+    "Smarter Roads & Highways",
+    "Expand Public Transit",
+    "Build the Future of Rail"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1753881510976001DN4K",
+   "name": "TRC Companies, Inc ",
+   "description": "TRC delivers GIS consulting, implementation and integration for grid operators. Our 750+ experts offer the industry’s deepest grid OT expertise.",
+   "booths": [
+    "2125"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1670453872923001QVvM",
+   "name": "Trimble Inc.",
+   "description": "As an Esri Platinum Partner, Trimble is empowering ArcGIS users with the latest solutions in reality capture and asset lifecycle management.",
+   "booths": [
+    "1125"
+   ],
+   "categories": [
+    "Sponsor",
+    "Platinum Sponsor"
+   ],
+   "url": "https://www.trimble.com/en/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Platinum Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1752110444800001kOUQ",
+   "name": "Tyler Technologies, Inc.",
+   "description": "Tyler Technologies is a leading provider of integrated software and technology services for the public sector.",
+   "booths": [
+    "1819"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1758904412111001ETbJ",
+   "name": "U.S. Census Bureau",
+   "description": "The Census Bureau's mission is to serve as the nation’s leading provider of quality data about its people and economy.",
+   "booths": [
+    "014"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Federal Agency Booth"
+   ],
+   "url": "https://www.census.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Federal Agency Booth"
+    ]
+   }
+  },
+  {
+   "id": "1654620722358001le2Q",
+   "name": "U.S. Environmental Protection Agency",
+   "description": "The U.S Environmental Protection Agency leverages geospatial technology to support its mission of EPA to protect human health and the environment.",
+   "booths": [
+    "E4"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.epa.gov/geospatial",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1712067969212001ZoAm",
+   "name": "U.S. Geological Survey",
+   "description": "",
+   "booths": [
+    "F2"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.usgs.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778268110760001AGRP",
+   "name": "UC San Diego",
+   "description": "",
+   "booths": [
+    "A111"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682704364006001qkZn",
+   "name": "UDC",
+   "description": "UDC is a Platinum Esri Partner, offering GIS-centric system integration services to utilities and infrastructure companies globally.",
+   "booths": [
+    "919"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.udcus.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1677361897353001p3A2",
+   "name": "UNIGIS International Association",
+   "description": "UNIGIS is a worldwide network of universities cooperating in the design and delivery of distance learning in GIS and GIScience",
+   "booths": [
+    "A101"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://unigis.net/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1741634265963001li0I",
+   "name": "University of Arizona GIST Program",
+   "description": "The UArizona (GIST) program provides educational training (BA/MS/Cert degrees) for those seeking employment in the high growing geospatial industry.",
+   "booths": [
+    "A116"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1772062204778001XtGE",
+   "name": "University of Denver",
+   "description": "The University of Denver is one of the premier institutions of higher education in geographic information science (GISc).",
+   "booths": [
+    "A115"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1765300472496001clpy",
+   "name": "University of Maryland",
+   "description": "Our MS programs in GIS and GEOINT are dedicated to providing cutting-edge, graduate-level training and education.",
+   "booths": [
+    "A120"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1766159695941001XMsC",
+   "name": "University of Minnesota",
+   "description": "",
+   "booths": [
+    "O13"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Education Zone Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Education Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1776887214071001Q0VO",
+   "name": "University of Minnesota",
+   "description": "Proud of world-class education, groundbreaking research, and our commitment to partnering with communities in our drive to serve Minnesota.",
+   "booths": [
+    "GG2"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "16546216129670012E5M",
+   "name": "University of Minnesota",
+   "description": "Proud of world-class education, groundbreaking research, and our commitment to partnering with communities in our drive to serve Minnesota.",
+   "booths": [
+    "A113"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://thespatialuniversity.umn.edu",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1747080275479001tg1G",
+   "name": "University of Redlands",
+   "description": "",
+   "booths": [
+    "ES3 - 8"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Safety & Security Summit Exhibitor"
+   ],
+   "url": "https://redlands.edu/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Safety & Security Summit Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1702580056918001zVd0",
+   "name": "University of Redlands ",
+   "description": "A leader in spatial education, University of Redlands integrates GIS technologies and data science into instruction to solve real-world problems.",
+   "booths": [
+    "1913"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.redlands.edu/meet-redlands/urspatial/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "16559224967660012iHW",
+   "name": "University of Redlands GIS Department",
+   "description": "At University of Redlands, students use GIS, data science, and spatial technologies to solve real-world problems and build workplace competencies.",
+   "booths": [
+    "A110"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "http://www.redlands.edu/gis/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1713177513984001CaMC",
+   "name": "University of Rhode Island",
+   "description": "Learn anywhere with us with this flexible 12-credit certificate program. Learn geospatial technology skills from working GIS professionals.",
+   "booths": [
+    "A106"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "https://web.uri.edu/online/programs/certificate/gis-and-geospatial-technologies/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1715958113230001YSls",
+   "name": "University of Richmond ",
+   "description": "The School of Professional and Continuing Studies at the University of Richmond offers undergraduate and graduate programs for adult students.",
+   "booths": [
+    "A112"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777998814927001w2v5",
+   "name": "University of Wyoming, School of Computing",
+   "description": "",
+   "booths": [
+    "A107"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1743788807796001cPh9",
+   "name": "Unseen Labs",
+   "description": "Unseenlabs US, a subsidiary of Unseenlabs SAS, delivers RF intelligence from Gen1/Gen2 satellites for Land, Sea, and Space domain awareness.",
+   "booths": [
+    "S5"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Startup Zone Exhibitor"
+   ],
+   "url": "https://unseenlabs.com/en/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Startup Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1674761740652001dnp2",
+   "name": "UP42",
+   "description": "UP42 transforms how organizations order, access, and analyze Earth observation data. We bring together the world’s leading providers, in one platform.",
+   "booths": [
+    "234"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://up42.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620722503001lw4y",
+   "name": "Urban Sky",
+   "description": "We deliver low-cost, high-resolution imagery and wildfire monitoring using tactically deployed stratospheric balloons.",
+   "booths": [
+    "432"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://urbansky.com/",
+   "raw_tags": {
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777584015989001NHtb",
+   "name": "US Department of Energy Pacific Northwest National Laboratory",
+   "description": "PNNL focuses on advancing scientific knowledge and technology solutions for energy resilience, national security, and environmental sustainability",
+   "booths": [
+    "E2"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "https://www.pnnl.gov/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1677357556500001o74Y",
+   "name": "USC Spatial Sciences Institute",
+   "description": "USC Spatial Sciences Institute leads interdisciplinary research and education in GIS and spatial data science solutions for local & global challenges",
+   "booths": [
+    "007"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Education Zone Exhibitor"
+   ],
+   "url": "https://gis.usc.edu/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Education Zone Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1743191221552001ix0q",
+   "name": "USC Spatial Sciences Institute",
+   "description": "USC Spatial Sciences Institute leads interdisciplinary research and education in GIS and spatial data science solutions for local & global challenges",
+   "booths": [
+    "A119"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Academic Fair Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Academic Fair Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1763151937948001GHeq",
+   "name": "User Research Lab",
+   "description": "Making great technology depends on understanding why and how people use it. We invite you to be a part of Esri’s user-centered design process and help us put this approach into action. Share your thoughts and participate in research that will influence the tools that thousands of people use every day.\n\n\nAt the Esri User Research Lab, you can:\n\n\n\tComplete a 60-minute research session for Esri swag (watch your inbox for a sign-up link in January!)\n\tParticipate in short studies that explore or test things we are currently designing\n\tGive feedback to improve your experience with Esri software, apps, websites, and services\n\tSign up to get involved in future testing events and research activities",
+   "booths": [],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1777066926330001xZH2",
+   "name": "Utilities, Telecom, and Water",
+   "description": "Connect with our full utilities team and discover solutions designed to address challenges across the Electric, Gas, Telecommunications, Water, Water Resources, and Utility Network sectors. This year, we’ll also feature a new kiosk showcasing Imagery, 3D, and Reality Capture. Explore capabilities in modern network management, mobile workflows, and advanced real-time analytics. As in previous years, meet our Account Managers, Solutions Engineers, Professional Services, and Marketing teams all in one place.",
+   "booths": [
+    "Telecommunications (kiosk 1)",
+    "Water Utilities (kiosk 1)",
+    "Water Resources",
+    "Telecommunications (kiosk 2)",
+    "Water Utilities (kiosk 2)",
+    "Gas (kiosk 2)",
+    "",
+    "Imagery",
+    "",
+    "",
+    "Electric (kiosk 2)",
+    "Water Utilities (kiosk 3)",
+    "Network Management",
+    "Utilities",
+    "Gas (kiosk 1)",
+    "Electric (kiosk 1)",
+    ""
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1650403418170001r2CP",
+   "name": "Vantor",
+   "description": "Vantor is forging the new frontier of spatial intelligence to unlock a more autonomous, interoperable world.",
+   "booths": [
+    "726"
+   ],
+   "categories": [
+    "Sponsor",
+    "Bronze Sponsor"
+   ],
+   "url": "https://www.maxar.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Bronze Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1711464291197001izXo",
+   "name": "Verisk Maplecroft",
+   "description": "Identify, analyse and monitor external business risks and opportunities across operations, supply chains and investments",
+   "booths": [
+    "1929"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.maplecroft.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1654620720675001lNvq",
+   "name": "Verizon Connect",
+   "description": "Verizon Connect Solutions, Fleet Tracking, Fleet Dashcam, Field Service & Scheduling, Compliance Management, Asset Tracking",
+   "booths": [
+    "022"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "http://www.verizonconnect.com",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1705937966285001QE5d",
+   "name": "VertiGIS",
+   "description": "VertiGIS is a leading spatial asset data management solution provider, helping organizations accomplish even more with Esri’s ArcGIS.",
+   "booths": [
+    "1219"
+   ],
+   "categories": [
+    "Sponsor",
+    "Silver Sponsor"
+   ],
+   "url": "https://www.vertigis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Sponsor"
+    ],
+    "RecognitionLevel": [
+     "Silver Sponsor"
+    ]
+   }
+  },
+  {
+   "id": "1670455268584001Qy0A",
+   "name": "Vexcel ",
+   "description": "Vexcel Data Program is the largest aerial imagery program in the world, collecting high-res imagery and geospatial data in 40+ countries.",
+   "booths": [
+    "2026"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://vexceldata.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1721069837571001kRt9",
+   "name": "ViewPro",
+   "description": "ViewPro offers innovative use of GIS technology for Cities & Local Government to provide enhanced visibility into their daily workflow.",
+   "booths": [
+    "2114"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.viewprogis.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848926750001sT4E",
+   "name": "What in the World?",
+   "description": "Interact with and interpret imagery from the Content Store for ArcGIS to answer questions and you could win a prize!",
+   "booths": [
+    "What in the World"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1652367119321001sV22",
+   "name": "Wingtra",
+   "description": "Headquartered in Switzerland, Wingtra is the world’s leading VTOL drone producer for mapping, survey and mining industry professionals. Since its market entry in early 2017, Wingtra has partnered with more than 70 of the biggest equipment dealers and has been selling mapping drones globally ever since.",
+   "booths": [
+    "208"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://wingtra.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1779848772104001jIiP",
+   "name": "Women in GIS (Awards and Scholarships Committee)",
+   "description": "Women in GIS (WiGIS) is a vibrant community uniting women passionate about geospatial technologies. Visit our special display in the Map Lounge to discover how you can get involved! We're here to break down barriers like job discrimination, pay gaps, and professional isolation, empowering women to thrive in their careers. Through WiGIS, you'll find a supportive network that fosters connections, resource sharing, and professional growth. And, we welcome allies who share our commitment to a more equitable geospatial community. We also celebrate excellence through our Awards & Scholarships Program, recognizing outstanding women with awards and scholarships in partnership with Esri.",
+   "booths": [
+    "Women in GIS (Awards and Scholarships Committee)"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  },
+  {
+   "id": "1736971368901001YyPB",
+   "name": "Woodwell Climate Research Center",
+   "description": "Woodwell Climate Research Center conducts science for solutions at the nexus of climate, people, and nature.",
+   "booths": [
+    "O24"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.woodwellclimate.org/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "165643191454000164hn",
+   "name": "World Geospatial Industry Council",
+   "description": "WGIC is a global not-for-profit representing private geospatial companies, advancing policy, advocacy, and industry collaboration worldwide.",
+   "booths": [
+    "O27"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://wgicouncil.org",
+   "raw_tags": {
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1682948411104001Z1IO",
+   "name": "WSP",
+   "description": "WSP is one of the world’s leading professional services firms, uniting its engineering, advisory and science-based expertise to shape communities to advance humanity. From local beginnings to a globe-spanning presence today, WSP operates in over 50 countries and employs approximately 73,000 professionals, known as Visioneers. Together they pioneer solutions and deliver innovative projects in the transportation, infrastructure, environment, building, energy, water, and mining and metals sectors. WSP is publicly listed on the Toronto Stock Exchange (TSX:WSP).",
+   "booths": [
+    "912"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.powereng.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1778513535383001SGqC",
+   "name": "Xoople ",
+   "description": "Building the Earth’s System of Record™",
+   "booths": [
+    "1827"
+   ],
+   "categories": [
+    "Exhibitor"
+   ],
+   "url": "https://www.xoople.com/",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1777302964212001SOzk",
+   "name": "YMCA of the USA",
+   "description": "See how the YMCA is putting geoanalytics into practice to drive real community impact. Visit our booth to learn how we’ve combined local and national data into accessible tools, like the Community Insights app, that help YMCA leaders identify unmet needs, uncover opportunity, and make stronger, place-based decisions.",
+   "booths": [
+    "GG1"
+   ],
+   "categories": [
+    "Exhibitor",
+    "Showcase Exhibitor"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Exhibitor"
+    ],
+    "RecognitionLevel": [
+     "Showcase Exhibitor"
+    ]
+   }
+  },
+  {
+   "id": "1700606500402001AYSl",
+   "name": "Young Professionals Network",
+   "description": "The Esri Young Professionals Network (YPN) booth is designed to be a central hub for all GIS professionals; especially if you are wanting to make new connections and collaborate with the Esri YPN staff. Plan to swing by the booth in Exhibit Hall A (by the demo theatres) to get resources for career growth, expanding your network, and learn about our new YPN Ambassador Program and YPN Chapters across the United States.",
+   "booths": [
+    "Young Professionals Network"
+   ],
+   "categories": [
+    "Showcase"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Showcase"
+    ],
+    "RecognitionLevel": [
+     "Showcase"
+    ]
+   }
+  },
+  {
+   "id": "1751835466195001MYgw",
+   "name": "Young Scholars ",
+   "description": "Esri is constantly working on developing the next generation of GIS leaders. The Young Scholars program allows Esri, our international distributors, and the international education team to recognize exemplary work of current undergraduate and graduate students majoring in geospatial science disciplines at international universities. Winning entries come from all over the world and are selected by a university panel formed by Esri’s distributor in the recipient’s respective country. The Young Scholar recipients travel to San Diego and get to expose their work at the Map Gallery.",
+   "booths": [
+    "Young Scholars"
+   ],
+   "categories": [
+    "Map Lounge"
+   ],
+   "url": "",
+   "raw_tags": {
+    "ExpoType": [
+     "Map Lounge"
+    ]
+   }
+  }
+ ]
+}
