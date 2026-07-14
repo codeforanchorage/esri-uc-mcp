@@ -14,9 +14,7 @@ api_burst_limit = 10
 # DNS for codeforanchorage.org is managed externally at DreamHost, so the
 # ACM validation CNAME and the routing CNAME are added there by hand (see
 # outputs acm_validation_cname_name/value and custom_domain_target).
-# Left empty for the first deploy — set to "esri-uc.codeforanchorage.org"
-# once the DNS records can be added, then re-apply.
-custom_domain = ""
+custom_domain = "esri-uc.codeforanchorage.org"
 
 # Cap concurrent Lambda executions. Cost and blast-radius protection if
 # WAF is bypassed via distributed sources. Conversational MCP traffic does
