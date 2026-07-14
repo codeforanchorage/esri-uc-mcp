@@ -9,7 +9,7 @@ session catalog, expo directory, time-aware schedule ("what's on right now"),
 schedule-block planning with conflict detection, and room locations — built on
 the [OpenContext](docs/ARCHITECTURE.md) one-fork-one-server framework.
 
-**Endpoint:** `https://3fxxurtf95.execute-api.us-west-2.amazonaws.com/prod/mcp`
+**Endpoint:** `https://esri-uc.codeforanchorage.org/mcp`
 
 ## Provenance
 
